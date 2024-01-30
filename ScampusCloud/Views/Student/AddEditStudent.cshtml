@@ -296,12 +296,12 @@
                                                     <label class="col-form-label col-3 text-lg-right text-left">Campus</label>
                                                     <div class="col-3">
                                                         @Html.DropDownListFor(model => model.CampusId, new SelectList(Model.lstCampus, "Value", "Text"), "Select Campus"
-                                               , new { @class = "form-control" })
+                                               , new { @class = "form-control", @id = "ddlCampus" })
                                                     </div>
                                                     <label class="col-form-label col-3 text-lg-right text-left">College</label>
-                                                    <div class="col-3">
-                                                        @*@Html.DropDownListFor(model => model.CollageId, new SelectList(Model.lstCollage, "Value", "Text"), "Select College"
-                                               , new { @class = "form-control" })*@
+                                                    <div class="col-3" id="colleage">
+                                                        @Html.DropDownListFor(model => model.CollageId, new List<SelectListItem>(), "Select College"
+                                               , new { @class = "form-control", @id = "ddlColleage" })
                                                     </div>
                                                 </div>
                                                 <!--end::Group-->
@@ -309,8 +309,8 @@
                                                 <div class="form-group row">
                                                     <label class="col-form-label col-3 text-lg-right text-left">Department</label>
                                                     <div class="col-3">
-                                                        @*@Html.DropDownListFor(model => model.DepartmentId, new SelectList(Model.lstDepartment, "Value", "Text"), "Select Department"
-                                               , new { @class = "form-control" })*@
+                                                        @Html.DropDownListFor(model => model.DepartmentId, new List<SelectListItem>(), "Select Department"
+                                               , new { @class = "form-control", @id = "ddlDepartment" })
                                                     </div>
                                                     <label class="col-form-label col-3 text-lg-right text-left">Year</label>
                                                     <div class="col-3">
@@ -338,12 +338,12 @@
                                                     <label class="col-form-label col-3 text-lg-right text-left">Admission Type</label>
                                                     <div class="col-3">
                                                         @Html.DropDownListFor(model => model.AdmissionTypeId, new SelectList(Model.lstAdmissionType, "Value", "Text"), "Select Admission Type"
-                                               , new { @class = "form-control" })
+                                               , new { @class = "form-control", @id = "ddlAdminssionType" })
                                                     </div>
                                                     <label class="col-form-label col-3 text-lg-right text-left">Admission Type Short</label>
                                                     <div class="col-3">
-                                                        @*@Html.DropDownListFor(model => model.AdmissionTypeShortId, new SelectList(Model.lstAdmissionTypeShort, "Value", "Text"), "Select Admission Type Short"
-                                               , new { @class = "form-control" })*@
+                                                        @Html.DropDownListFor(model => model.AdmissionTypeShortId, new List<SelectListItem>(), "Select Admission Type Short"
+                                               , new { @class = "form-control", @id = "ddlAdminssionTypeShort" })
                                                     </div>
                                                 </div>
                                                 <!--end::Group-->
@@ -427,7 +427,7 @@
                                                 <div class="form-group row">
                                                     <label class="col-form-label col-3 text-lg-right text-left">Degital Status</label>
                                                     <div class="col-3">
-                                                       
+
                                                     </div>
 
                                                 </div>
@@ -446,7 +446,7 @@
                                         @*<div class="col-xl-2"></div>*@
                                         <div class="col-xl-9">
                                             <div class="my-2">
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -547,8 +547,64 @@
             $('#dv_EmpImag').css('background-image', 'url(' + imageUrl + ')');
         }
         $("#chkIsactive").change(function () {
-            debugger;
             $("#hdnIsactive").val($(this).is(':checked'));
+        });
+
+        $('#ddlCampus').change(function () {
+            $.ajax({
+                type: "post",
+                url: "/Student/GetColleageByCampus",
+                data: { ScampusId: $('#ddlCampus').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var colleage = "<select id='ddlColleage'>";
+                    colleage = colleage + '<option value="">Select College</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        colleage = colleage + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    colleage = colleage + '</select>';
+                    $('#ddlColleage').html(colleage);
+                }
+            });
+        });
+
+        $('#ddlColleage').change(function () {
+            $.ajax({
+                type: "post",
+                url: "/Student/GetDepartmentByColleage",
+                data: { ColleageId: $('#ddlColleage').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var department = "<select id='ddlDepartment'>";
+                    department = department + '<option value="">Select Department</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        department = department + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    department = department + '</select>';
+                    $('#ddlDepartment').html(department);
+                }
+            });
+        });
+
+        $('#ddlAdminssionType').change(function () {
+            $.ajax({
+                type: "post",
+                url: "/Student/GetAdmissionTypeShort",
+                data: { AdmissionTypeId: $('#ddlAdminssionType').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var admissionTypeShort = "<select id='ddlAdminssionTypeShort'>";
+                    admissionTypeShort = admissionTypeShort + '<option value="">Select Admission Type Short</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        admissionTypeShort = admissionTypeShort + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    admissionTypeShort = admissionTypeShort + '</select>';
+                    $('#ddlAdminssionTypeShort').html(admissionTypeShort);
+                }
+            });
         });
     </script>
 }

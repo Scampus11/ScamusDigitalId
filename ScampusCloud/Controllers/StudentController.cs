@@ -332,7 +332,42 @@ namespace ScampusCloud.Controllers
             drpList = _StudentRepository.BindYearDropDown(CompanyId);
             return drpList;
         }
-
+        [HttpPost]
+        public ActionResult GetColleageByCampus(string ScampusId)
+        {
+            int CampusId;
+            List<SelectListItem> colleageNames = new List<SelectListItem>();
+            if (!string.IsNullOrEmpty(ScampusId))
+            {
+                CampusId = Convert.ToInt32(ScampusId);
+                colleageNames = _StudentRepository.BindColleageDropDown(SessionManager.CompanyId.ToString(), CampusId);
+            }
+            return Json(colleageNames, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult GetDepartmentByColleage(string ColleageId)
+        {
+            int colleageId;
+            List<SelectListItem> departmentNames = new List<SelectListItem>();
+            if (!string.IsNullOrEmpty(ColleageId))
+            {
+                colleageId = Convert.ToInt32(ColleageId);
+                departmentNames = _StudentRepository.BindDepartmentDropDown(SessionManager.CompanyId.ToString(), colleageId);
+            }
+            return Json(departmentNames, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult GetAdmissionTypeShort(string AdmissionTypeId)
+        {
+            int admissionTypeId;
+            List<SelectListItem> admissionShortTypeNames = new List<SelectListItem>();
+            if (!string.IsNullOrEmpty(AdmissionTypeId))
+            {
+                admissionTypeId = Convert.ToInt32(AdmissionTypeId);
+                admissionShortTypeNames = _StudentRepository.BindAdmissionTypeShortDropDown(SessionManager.CompanyId.ToString(), admissionTypeId);
+            }
+            return Json(admissionShortTypeNames, JsonRequestBehavior.AllowGet);
+        }
         #endregion
     }
 

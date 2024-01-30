@@ -300,6 +300,8 @@
     <Content Include="assets\plugins\global\fonts\socicon\socicon.svg" />
     <Content Include="assets\plugins\global\plugins.bundle.css" />
     <Content Include="assets\plugins\global\plugins.bundle.js" />
+    <Content Include="bin\ScampusCloud.dll" />
+    <Content Include="bin\ScampusCloud.pdb" />
     <Content Include="Connection\ConnectionString.txt" />
     <Content Include="Content\Site.css" />
     <Content Include="css\site.css" />

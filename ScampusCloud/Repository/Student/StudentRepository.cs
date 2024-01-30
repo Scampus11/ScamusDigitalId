@@ -238,5 +238,41 @@ namespace ScampusCloud.Repository.Student
 			objQueryBuilder.AddFieldValue("@CompanyId", CompanyId, DataTypes.Text, false);
 			return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
 		}
-	}
+        public List<SelectListItem> BindColleageDropDown(string CompanyId, int ScampusId)
+        {
+            QueryBuilder objQueryBuilder = new QueryBuilder
+            {
+                TableName = "Tbl_Mstr_College_Master",
+                StoredProcedureName = @"Sps_Load_College_Dropdown",
+                SetQueryType = QueryBuilder.QueryType.SELECT,
+            };
+            objQueryBuilder.AddFieldValue("@CompanyId", CompanyId, DataTypes.Text, false);
+            objQueryBuilder.AddFieldValue("@ScampusId", ScampusId, DataTypes.Numeric, false);
+            return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
+        }
+        public List<SelectListItem> BindDepartmentDropDown(string CompanyId, int ColleageId)
+        {
+            QueryBuilder objQueryBuilder = new QueryBuilder
+            {
+                TableName = "Tbl_Mstr_Student_Department_Master",
+                StoredProcedureName = @"Sps_Load_Student_Department_Dropdown",
+                SetQueryType = QueryBuilder.QueryType.SELECT,
+            };
+            objQueryBuilder.AddFieldValue("@CompanyId", CompanyId, DataTypes.Text, false);
+            objQueryBuilder.AddFieldValue("@CollegeId", ColleageId, DataTypes.Numeric, false);
+            return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
+        }
+        public List<SelectListItem> BindAdmissionTypeShortDropDown(string CompanyId, int AdmissionTypeId)
+        {
+            QueryBuilder objQueryBuilder = new QueryBuilder
+            {
+                TableName = "Tbl_Mstr_Admission_Master",
+                StoredProcedureName = @"Sps_Load_AdmissionTypeShort_Dropdown",
+                SetQueryType = QueryBuilder.QueryType.SELECT,
+            };
+            objQueryBuilder.AddFieldValue("@CompanyId", CompanyId, DataTypes.Text, false);
+            objQueryBuilder.AddFieldValue("@Id", AdmissionTypeId, DataTypes.Numeric, false);
+            return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
+        }
+    }
 }
