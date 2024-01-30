@@ -332,8 +332,6 @@ namespace ScampusCloud.Controllers
             drpList = _StudentRepository.BindYearDropDown(CompanyId);
             return drpList;
         }
-        
         #endregion
-
     }
 }
