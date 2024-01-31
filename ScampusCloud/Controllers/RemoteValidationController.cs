@@ -9,6 +9,7 @@ using ScampusCloud.Repository.DegreeType;
 using ScampusCloud.Repository.JobTitle;
 using ScampusCloud.Repository.Program;
 using ScampusCloud.Repository.Reader;
+using ScampusCloud.Repository.SessionMaster;
 using ScampusCloud.Repository.Staff;
 using ScampusCloud.Repository.StaffDepartment;
 using ScampusCloud.Repository.StudentCompany;
@@ -51,6 +52,7 @@ namespace ScampusCloud.Controllers
         YearModel Year=new YearModel();
         VisitorStatusModel VisitorStatus = new VisitorStatusModel();
         ReaderModel Reader = new ReaderModel();
+        SessionMasterModel SessionMaster = new SessionMasterModel();
 
         public RemoteValidationController()
         {
@@ -819,5 +821,41 @@ namespace ScampusCloud.Controllers
 
         }
         #endregion
+
+        #region Reader
+        [HttpPost]
+        public ActionResult IsSessionMasterCodeExist(string Code = "")
+        {
+            SessionMasterRepository _Repository = new SessionMasterRepository();
+            string Original_Code = SessionManager.Code;
+            bool IsEditMode = !string.IsNullOrEmpty(Original_Code) ? true : false;
+            string returnMsg = "";
+
+            if (IsEditMode && !string.Equals(Original_Code, Code))
+            {
+                SessionMaster.ActionType = "Remote";
+                SessionMaster.Code = Code;
+                SessionMaster.CompanyId = SessionManager.CompanyId;
+                SessionMaster = _Repository.AddEdit_SessionMaster(SessionMaster);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            else if (!IsEditMode)
+            {
+                SessionMaster.ActionType = "Remote";
+                SessionMaster.Code = Code;
+                SessionMaster.CompanyId = SessionManager.CompanyId;
+                SessionMaster = _Repository.AddEdit_SessionMaster(SessionMaster);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            if (SessionMaster == null)
+                return Json(true);
+            else if (SessionMaster.Code == null)
+                return Json(true);
+            else
+                return Json(false);
+
+        }
+        #endregion
+        
     }
 }
