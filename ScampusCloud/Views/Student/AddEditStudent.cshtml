@@ -427,7 +427,7 @@
                                                 <div class="form-group row">
                                                     <label class="col-form-label col-3 text-lg-right text-left">Degital Status</label>
                                                     <div class="col-3">
-
+                                                        @Html.CheckBoxFor(m => m.IsDigitalStatus, new {@class="form-control"})
                                                     </div>
 
                                                 </div>
@@ -442,13 +442,11 @@
                                 <!--begin::Tab-->
                                 <div class="tab-pane px-9" id="kt_user_edit_tab_4" role="tabpanel">
                                     <!--begin::Row-->
-                                    <div class="row">
-                                        @*<div class="col-xl-2"></div>*@
-                                        <div class="col-xl-9">
-                                            <div class="my-2">
-
-                                            </div>
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            @Html.CheckBoxFor(m => m.IsEnableHostel, new { @class = "form-control" })
                                         </div>
+                                        <label class="col-form-label col-3 text-lg-right text-left">Hospital Status</label>
                                     </div>
                                     <!--end::Row-->
                                     <div class="separator separator-dashed my-10"></div>
@@ -468,8 +466,73 @@
         </div>
     </form>
 </div>
+<style type="text/css">
+    .row label {
+        display: inline-block;
+    }
+</style>
 @section Scripts{
     <script>
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "post",
+                url: "/Student/GetColleageByCampus",
+                data: { ScampusId: $('#ddlCampus').val() },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var colleage = "<select id='ddlColleage'>";
+                    colleage = colleage + '<option value="">Select College</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        colleage = colleage + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    colleage = colleage + '</select>';
+                    $('#ddlColleage').html(colleage);
+
+                    $('#ddlColleage').val('@Model.CollageId');
+
+                }
+            });
+
+
+            $.ajax({
+                type: "post",
+                url: "/Student/GetDepartmentByColleage",
+                data: { ColleageId: '@Model.CollageId' },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var department = "<select id='ddlDepartment'>";
+                    department = department + '<option value="">Select Department</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        department = department + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    department = department + '</select>';
+                    $('#ddlDepartment').html(department);
+                    $('#ddlDepartment').val('@Model.DepartmentId');
+                }
+            });
+
+            $.ajax({
+                type: "post",
+                url: "/Student/GetAdmissionTypeShort",
+                data: { AdmissionTypeId: '@Model.AdmissionTypeId' },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    var admissionTypeShort = "<select id='ddlAdminssionTypeShort'>";
+                    admissionTypeShort = admissionTypeShort + '<option value="">Select Admission Type Short</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        admissionTypeShort = admissionTypeShort + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                    }
+                    admissionTypeShort = admissionTypeShort + '</select>';
+                    $('#ddlAdminssionTypeShort').html(admissionTypeShort);
+                    $('#ddlAdminssionTypeShort').val('@Model.AdmissionTypeShortId')
+                }
+            });
+        });
+
     $(function () {
          @if(TempData.ContainsKey("Message"))
         {

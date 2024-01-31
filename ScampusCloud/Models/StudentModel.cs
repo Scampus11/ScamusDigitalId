@@ -13,7 +13,7 @@ namespace ScampusCloud.Models
 		public Guid? CompanyId { get; set; }
 
 		[Required(ErrorMessage = "Student Id is required")]
-		[Remote(action: "IsStudentIdExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Student Id is already in use.")]
+		//[Remote(action: "IsStudentIdExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Student Id is already in use.")]
 		public string StudentId { get; set; }
 
 		[Required(ErrorMessage = "First Name is required")]
@@ -74,7 +74,15 @@ namespace ScampusCloud.Models
 
 		public string DepartmentName { get; set; }
 		public string JobTitleName { get; set; }
+		public bool IsDigitalStatus { get; set; }
+        public bool IsEnableHostel { get; set; }
+		public int HostelId { get; set; }
+        public int BlockId { get; set; }
+        public int FloorId { get; set; }
+        public int RoomId { get; set; }
+        public int BedId { get; set; }
+        public int LockerId { get; set; }
 
-	}
+    }
 
 }

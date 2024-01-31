@@ -1,0 +1,195 @@
+CREATE PROCEDURE SP_Student_CURD
+@Id int = null,
+@StudentID nvarchar(50)=null,
+@Code varchar(500) = null,
+@CompanyId uniqueidentifier = null,
+@FirstName nvarchar(500) = null,
+@FatherName nvarchar(500) = null,
+@GrandFatherName nvarchar(500) = null,
+@FullNameAmharic varchar(500) = null,
+@Gender varchar(50) = null,
+@DateOfBirth varchar(50) = null,
+@ColleageId int = null,
+@DepartmentId int = null,
+@CampusId int = null,
+@YearId int = null,
+@ProgramId int = null,
+@DegreeTypeId int = null,
+@AdmissionTypeId int = null,
+@AdmissionTypeShortId int = null,
+@ValidDateUntil varchar(50) = null,
+@IssueDate varchar(50) = null,
+@EmailId nvarchar(500) = null,
+@CardStatusId int = null,
+@CardNumber varchar(500) = null,
+@IsDegitalStatus bit = null,
+@IsEnableHostel bit = NULL,
+@HostelId int = null,
+@BlockId int = null,
+@FloorId int = null,
+@RoomId int = null,
+@BedId int = null,
+@LockerId int = null,
+@ImagePath nvarchar(500) = null,
+@SignaturePath nvarchar(500) = null,
+@ImageBase64 varchar(max) = null,
+@SignatureBase64 varchar(max) = null,
+@Isactive bit = 0,
+@CreatedBy uniqueidentifier=null,
+@ModifiedBy uniqueidentifier=null,
+@ActionType nvarchar(20) = ''
+AS
+BEGIN
+   SET NOCOUNT ON;
+   IF @ActionType = 'Insert'  
+	BEGIN  
+		--Start Campus
+	    INSERT INTO [dbo].[Tbl_Mstr_Student_Master]
+           ([StudentId]
+           ,[Code]
+           ,[CompanyId]
+           ,[FirstName]
+           ,[FatherName]
+           ,[GrandFatherName]
+           ,[FullNameAmharic]
+           ,[Gender]
+           ,[DateOfBirth]
+           ,[CollageId]
+           ,[DepartmentId]
+           ,[CampusId]
+           ,[YearId]
+           ,[ProgramId]
+           ,[DegreeTypeId]
+           ,[AdmissionTypeId]
+           ,[AdmissionTypeShortId]
+           ,[ValidDateUntil]
+           ,[IssueDate]
+           ,[EmailId]
+           ,[CardStatusId]
+           ,[CardNumber]
+           ,[IsDegitalStatus]
+           ,[IsEnableHostel]
+           ,[HostelId]
+           ,[BlockId]
+           ,[FloorId]
+           ,[RoomId]
+           ,[BedId]
+           ,[LockerId]
+           ,[ImagePath]
+           ,[SignaturePath]
+           ,[ImageBase64]
+           ,[SignatureBase64]
+           ,[IsDeleted]
+           ,[Isactive]
+           ,[CreatedDate]
+           ,[ModifiedDate]
+           ,[CreatedBy]
+           ,[ModifiedBy])
+     VALUES
+           (@StudentID,
+		    @Code,
+			@CompanyId,
+			@FirstName,
+			@FatherName,
+			@GrandFatherName,
+			@FullNameAmharic,
+			@Gender,
+			@DateOfBirth,
+			@ColleageId,
+			@DepartmentId,
+			@CampusId,
+			@YearId,
+			@ProgramId,
+			@DegreeTypeId,
+			@AdmissionTypeId,
+			@AdmissionTypeShortId,
+			@ValidDateUntil,
+			@IssueDate,
+			@EmailId,
+			@CardStatusId,
+			@CardNumber,
+			@IsDegitalStatus,
+			@IsEnableHostel,
+			@HostelId,
+			@BlockId,
+			@FloorId,
+			@RoomId,
+			@BedId,
+			@LockerId,
+			@ImagePath,
+			@SignaturePath,
+			@ImageBase64,
+			@SignatureBase64,
+			0,
+			@Isactive,
+			GETDATE(),
+			GETDATE(),
+			@CreatedBy,
+			@ModifiedBy
+		   )
+	END  
+   IF @ActionType = 'Edit' OR @ActionType='Remote'
+	BEGIN  
+		select S.Id,S.[StudentId],S.Code,S.CompanyId,
+		S.FirstName,S.FatherName,S.GrandFatherName,S.FullNameAmharic,
+		S.Gender,S.DateOfBirth as BirthDate,S.CollageId,S.DepartmentId,
+		S.CampusId,S.YearId,S.ProgramId,S.DegreeTypeId,S.AdmissionTypeId,S.AdmissionTypeShortId,S.ValidDateUntil,S.IssueDate,
+		S.EmailId,S.CardStatusId,S.CardNumber,S.IsDegitalStatus as IsDigitalStatus,S.IsEnableHostel,S.HostelId,S.BlockId,S.FloorId,S.RoomId,
+		S.BedId,S.LockerId,S.ImagePath,S.SignaturePath,S.ImageBase64,S.SignatureBase64,S.IsDeleted,S.Isactive,S.CreatedDate,
+		S.ModifiedDate,S.CreatedBy,S.ModifiedBy
+		from Tbl_Mstr_Student_Master S 
+		WHERE S.Id=@Id  and CompanyId=@CompanyId
+	END  
+   IF @ActionType = 'Update'  
+	BEGIN  
+
+	--Start Campus
+		UPDATE Tbl_Mstr_Student_Master SET  
+			[StudentId] = @StudentID
+           ,[Code] = @Code
+           ,[CompanyId] = @CompanyId
+           ,[FirstName] = @FirstName
+           ,[FatherName] = @FatherName
+           ,[GrandFatherName] = @GrandFatherName
+           ,[FullNameAmharic] = @FullNameAmharic
+           ,[Gender] = @Gender
+           ,[DateOfBirth] = @DateOfBirth
+           ,[CollageId] = @ColleageId
+           ,[DepartmentId] = @DepartmentId
+           ,[CampusId] = @CampusId
+           ,[YearId] = @YearId
+           ,[ProgramId] = @ProgramId
+           ,[DegreeTypeId] = @DegreeTypeId
+           ,[AdmissionTypeId] = @AdmissionTypeId
+           ,[AdmissionTypeShortId] = @AdmissionTypeShortId
+           ,[ValidDateUntil] = @ValidDateUntil
+           ,[IssueDate] = @IssueDate
+           ,[EmailId] = @EmailId
+           ,[CardStatusId] = @CardStatusId
+           ,[CardNumber] = @CardNumber
+           ,[IsDegitalStatus] = @IsDegitalStatus
+           ,[IsEnableHostel] = @IsEnableHostel
+           ,[HostelId] = @HostelId
+           ,[BlockId] = @BlockId
+           ,[FloorId] = @FloorId
+           ,[RoomId] = @RoomId
+           ,[BedId] = @BedId
+           ,[LockerId] = @LockerId
+           ,[ImagePath] = @ImagePath
+           ,[SignaturePath] = @SignaturePath
+           ,[ImageBase64] = @ImageBase64
+           ,[SignatureBase64] = @SignatureBase64
+           ,[Isactive] = @Isactive
+           ,[ModifiedDate] = GETDATE()
+           ,[ModifiedBy] = @ModifiedBy
+		WHERE CompanyId = @CompanyId and Id=@Id
+	--End Campus
+
+
+	
+	END  
+   IF @ActionType = 'Delete'  
+	BEGIN  
+		Delete from Tbl_Mstr_Student_Master Where Id = @Id
+	END 
+END
