@@ -859,7 +859,72 @@ namespace ScampusCloud.Controllers
         }
         #endregion
 
-        #region
+        #region Student
+        [HttpPost]
+        public ActionResult IsStudentIdExist(string StudentId = "")
+        {
+            StudentRepository _Repository = new StudentRepository();
+            string Original_StudentId = SessionManager.StudentId;
+            bool IsEditMode = !string.IsNullOrEmpty(Original_StudentId) ? true : false;
+            string returnMsg = "";
+
+            if (IsEditMode && !string.Equals(Original_StudentId, StudentId))
+            {
+                StudentModel.ActionType = "Remote";
+                StudentModel.StudentId = StudentId;
+                StudentModel.CompanyId = SessionManager.CompanyId;
+                StudentModel = _Repository.AddEdit_Student(StudentModel);
+                returnMsg = $"StudentId '{StudentId}' is already in use.";
+            }
+            else if (!IsEditMode)
+            {
+                StudentModel.ActionType = "Remote";
+                StudentModel.StudentId = StudentId;
+                StudentModel.CompanyId = SessionManager.CompanyId;
+                StudentModel = _Repository.AddEdit_Student(StudentModel);
+                returnMsg = $"StudentId '{StudentId}' is already in use.";
+            }
+            if (StudentModel == null)
+                return Json(true);
+            else if (StudentModel.StudentId == null)
+                return Json(true);
+            else
+                return Json(false);
+
+        }
+
+        [HttpPost]
+        public ActionResult IsStudentEmailIdExist(string EmailId = "")
+        {
+            StudentRepository _StudentRepository = new StudentRepository();
+            string Original_EmailId = SessionManager.EmailId;
+            bool IsEditMode = !string.IsNullOrEmpty(Original_EmailId) ? true : false;
+            string returnMsg = "";
+
+            if (IsEditMode && !string.Equals(Original_EmailId, EmailId))
+            {
+                StudentModel.ActionType = "Remote";
+                StudentModel.EmailId = EmailId;
+                StudentModel.CompanyId = SessionManager.CompanyId;
+                StudentModel = _StudentRepository.AddEdit_Student(StudentModel);
+                returnMsg = $"Email Id '{EmailId}' is already in use.";
+            }
+            else if (!IsEditMode)
+            {
+                StudentModel.ActionType = "Remote";
+                StudentModel.EmailId = EmailId;
+                StudentModel.CompanyId = SessionManager.CompanyId;
+                StudentModel = _StudentRepository.AddEdit_Student(StudentModel);
+                returnMsg = $"Email Id '{EmailId}' is already in use.";
+            }
+            if (StudentModel == null)
+                return Json(true);
+            else if (StudentModel.EmailId == null)
+                return Json(true);
+            else
+                return Json(false);
+
+        }
 
         [HttpPost]
         public ActionResult IsStudentCodeExist(string Code = "")
@@ -893,7 +958,6 @@ namespace ScampusCloud.Controllers
                 return Json(false);
 
         }
-
         #endregion
     }
 }
