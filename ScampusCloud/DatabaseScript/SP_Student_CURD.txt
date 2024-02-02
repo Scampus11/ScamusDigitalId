@@ -1,4 +1,11 @@
-CREATE PROCEDURE SP_Student_CURD
+USE [ScampusCloud]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Student_CURD]    Script Date: 02/03/2024 1:21:31 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[SP_Student_CURD]
 @Id int = null,
 @StudentID nvarchar(50)=null,
 @Code varchar(500) = null,
@@ -138,7 +145,7 @@ BEGIN
 		S.BedId,S.LockerId,S.ImagePath,S.SignaturePath,S.ImageBase64,S.SignatureBase64,S.IsDeleted,S.Isactive,S.CreatedDate,
 		S.ModifiedDate,S.CreatedBy,S.ModifiedBy
 		from Tbl_Mstr_Student_Master S 
-		WHERE S.Id=@Id  and CompanyId=@CompanyId
+		WHERE (S.Id=@Id OR S.Code=@Code OR S.EmailId=@EmailId OR S.StudentId=@StudentID)  and CompanyId=@CompanyId
 	END  
    IF @ActionType = 'Update'  
 	BEGIN  
