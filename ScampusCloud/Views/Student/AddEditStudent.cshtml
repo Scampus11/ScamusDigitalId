@@ -33,7 +33,9 @@
     </div>
 </div>
 <div class="container">
-    <form class="form fv-plugins-bootstrap fv-plugins-framework" asp-controller="Student" asp-action="AddEditStudent" method="post" id="frmStudent">
+
+    @using (Html.BeginForm("AddEditStudent", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
         <div class="row">
             <div class="col-md-12">
                 <!--begin::Card-->
@@ -179,10 +181,14 @@
                                                         @*style="background-image: url(data:image/png;base64,@Model.ImageBase64)"*@
                                                         <div class="image-input-wrapper commonBgSize empimage"></div>
                                                         @*style="background-image: url(data:image/png;base64,@Model.ImageBase64)"*@
-                                                        <input type="hidden" asp-for="Image64byte" id="empImgSrc" />
+                                                        @*<input type="hidden" asp-for="ImageBase64" id="empImgSrc" />*@
+
+                                                        @Html.HiddenFor(Model => Model.ImageBase64)
+                                                        @Html.HiddenFor(Model => Model.ImagePath)
+
                                                         <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Add/Update Image">
                                                             <i class="fa fa-pen icon-sm text-muted"></i>
-                                                            <input type="file" asp-for="EmployeePic" onchange="loadEmpImage(this);" id="externalEmpImgId">
+                                                            <input type="file" asp-for="EmployeePic" onchange="readPhotofile(this);" name="uploadPhotoFile" id="externalEmpImgId">
                                                             <input type="hidden" name="profile_avatar_remove">
                                                         </label>
                                                         <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="" data-original-title="Cancel Image">
@@ -198,12 +204,13 @@
                                                 <div class="col-3">
                                                     <div class="image-input image-input-outline" id="dv_EmpImag">
                                                         @*style="background-image: url(data:image/png;base64,@Model.Image64byte)"*@
-                                                        <div class="image-input-wrapper commonBgSize empimage"></div>
+                                                        <div class="image-input-wrapper commonBgSize empSignatureimage"></div>
                                                         @*style="background-image: url(data:image/png;base64,@Model.Image64byte)"*@
-                                                        <input type="hidden" asp-for="Image64byte" id="empImgSrc" />
+                                                        @Html.HiddenFor(Model => Model.SignatureBase64)
+                                                        @Html.HiddenFor(Model => Model.SignaturePath)
                                                         <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Add/Update Image">
                                                             <i class="fa fa-pen icon-sm text-muted"></i>
-                                                            <input type="file" asp-for="EmployeePic" onchange="loadEmpImage(this);" id="externalEmpImgId">
+                                                            <input type="file" asp-for="EmployeePic" onchange="readSignaturefile(this);" name="uploadSignatureFile" id="externalEmpImgId">
                                                             <input type="hidden" name="profile_avatar_remove">
                                                         </label>
                                                         <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="" data-original-title="Cancel Image">
@@ -425,11 +432,15 @@
                                                 <!--end::Group-->
                                                 <!--begin::Group-->
                                                 <div class="form-group row">
-                                                    <label class="col-form-label col-3 text-lg-right text-left">Degital Status</label>
+                                                    <label class="col-form-label col-3 text-lg-right text-left">
+                                                        <span style="display: inline-block; vertical-align: middle;">Digital Status</span>
+                                                    </label>
                                                     <div class="col-3">
-                                                        @Html.CheckBoxFor(m => m.IsDigitalStatus, new {@class="form-control"})
+                                                        <div class="form-check" style="display: inline-block; vertical-align: middle;">
+                                                            @Html.CheckBoxFor(m => m.IsDigitalStatus, new { @class = "form-check-input" })
+                                                        </div>
                                                     </div>
-
+                                                    <div class="separator separator-dashed my-10"></div>
                                                 </div>
                                                 <!--end::Group-->
                                             </div>
@@ -441,15 +452,30 @@
                                 <!--end::Tab-->
                                 <!--begin::Tab-->
                                 <div class="tab-pane px-9" id="kt_user_edit_tab_4" role="tabpanel">
-                                    <!--begin::Row-->
-                                    <div class="form-group row">
-                                        <div class="col-3">
-                                            @Html.CheckBoxFor(m => m.IsEnableHostel, new { @class = "form-control" })
+                                    <div class="row">
+                                        @*<div class="col-xl-2"></div>*@
+                                        <div class="col-xl-9">
+                                            <div class="my-2">
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-form-label col-3 text-lg-right text-left">
+                                                        <span style="display: inline-block; vertical-align: middle;">Hostel Status</span>
+                                                    </label>
+                                                    <div class="col-3">
+                                                        <div class="form-check" style="display: inline-block; vertical-align: middle;">
+                                                            @Html.CheckBoxFor(m => m.IsEnableHostel, new { @class = "form-check-input" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="separator separator-dashed my-10"></div>
+                                                </div>
+                                                <!--end::Group-->
+                                            </div>
                                         </div>
-                                        <label class="col-form-label col-3 text-lg-right text-left">Hospital Status</label>
                                     </div>
-                                    <!--end::Row-->
-                                    <div class="separator separator-dashed my-10"></div>
+                                    <!--end::Card-->
+                                    @*</div>*@
+                                    <!--end::Container-->
+                                    @*</div>*@
                                 </div>
                                 <!--end::Tab-->
                             </div>
@@ -464,7 +490,9 @@
                 </div>
             </div>
         </div>
-    </form>
+    }
+
+
 </div>
 <style type="text/css">
     .row label {
@@ -475,6 +503,11 @@
     <script>
 
         $(document).ready(function () {
+            debugger;
+            $('.empimage').css('background-image', 'url(data:image/png;base64,' + '@Model.ImageBase64' + ')')
+            $('.empSignatureimage').css('background-image', 'url(data:image/png;base64,' + '@Model.SignatureBase64' + ')')
+            $('.#ImagePath').val('@Model.ImagePath')
+            $('.#SignaturePath').val('@Model.SignaturePath')
             $.ajax({
                 type: "post",
                 url: "/Student/GetColleageByCampus",
@@ -669,5 +702,39 @@
                 }
             });
         });
+
+        function readPhotofile(input) {
+            let base64String = "";
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    base64String = reader.result.replace("data:", "")
+                        .replace(/^.+,/, "");
+                    $("#ImageBase64").val(base64String);
+                    $('#dv_EmpImag').css('background-image', 'url()');
+                    $('.empimage').css('background-image', 'url(data:image/png;base64,' + base64String + ')');
+                    $('#RemoveEmplImg').show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function readSignaturefile(input) {
+            let base64String = "";
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    base64String = reader.result.replace("data:", "")
+                        .replace(/^.+,/, "");
+                    $("#SignatureBase64").val(base64String);
+                    $('#dv_EmpSignatureImag').css('background-image', 'url()');
+                    $('.empSignatureimage').css('background-image', 'url(data:image/png;base64,' + base64String + ')');
+                    $('#RemoveEmplImg').show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
 }

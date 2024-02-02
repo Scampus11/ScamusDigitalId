@@ -12,6 +12,7 @@ using ScampusCloud.Repository.Reader;
 using ScampusCloud.Repository.SessionMaster;
 using ScampusCloud.Repository.Staff;
 using ScampusCloud.Repository.StaffDepartment;
+using ScampusCloud.Repository.Student;
 using ScampusCloud.Repository.StudentCompany;
 using ScampusCloud.Repository.StudentDepartment;
 using ScampusCloud.Repository.StudentFacility;
@@ -53,6 +54,7 @@ namespace ScampusCloud.Controllers
         VisitorStatusModel VisitorStatus = new VisitorStatusModel();
         ReaderModel Reader = new ReaderModel();
         SessionMasterModel SessionMaster = new SessionMasterModel();
+        StudentModel StudentModel = new StudentModel();
 
         public RemoteValidationController()
         {
@@ -856,6 +858,42 @@ namespace ScampusCloud.Controllers
 
         }
         #endregion
-        
+
+        #region
+
+        [HttpPost]
+        public ActionResult IsStudentCodeExist(string Code = "")
+        {
+            StudentRepository _Repository = new StudentRepository();
+            string Original_Code = SessionManager.Code;
+            bool IsEditMode = !string.IsNullOrEmpty(Original_Code) ? true : false;
+            string returnMsg = "";
+
+            if (IsEditMode && !string.Equals(Original_Code, Code))
+            {
+                StudentModel.ActionType = "Remote";
+                StudentModel.Code = Code;
+                StudentModel.CompanyId = SessionManager.CompanyId;
+                StudentModel = _Repository.AddEdit_Student(StudentModel);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            else if (!IsEditMode)
+            {
+                StudentModel.ActionType = "Remote";
+                StudentModel.Code = Code;
+                StudentModel.CompanyId = SessionManager.CompanyId;
+                StudentModel = _Repository.AddEdit_Student(StudentModel);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            if (StudentModel == null)
+                return Json(true);
+            else if (StudentModel.Code == null)
+                return Json(true);
+            else
+                return Json(false);
+
+        }
+
+        #endregion
     }
 }

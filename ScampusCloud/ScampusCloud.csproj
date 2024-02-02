@@ -311,6 +311,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\loading-squre.gif" />
+    <Content Include="Images\MicrosoftTeams-image1.png" />
     <Content Include="js\site.js" />
     <Content Include="lib\bootstrap\dist\css\bootstrap-grid.css" />
     <Content Include="lib\bootstrap\dist\css\bootstrap-grid.min.css" />

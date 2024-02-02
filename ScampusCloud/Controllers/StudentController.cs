@@ -13,6 +13,8 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using static ScampusCloud.RouteConfig;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace ScampusCloud.Controllers
 {
@@ -117,6 +119,28 @@ namespace ScampusCloud.Controllers
             {
                 _StudentModel.ActionType = "Insert";
             }
+
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i]; 
+                if(file.ContentLength > 0)
+                {
+                    int fileSize = file.ContentLength;
+                    string fileName = file.FileName;
+                    string mimeType = file.ContentType;
+                    System.IO.Stream fileContent = file.InputStream;
+                    file.SaveAs(Server.MapPath("~/Images/" + fileName)); //File will be saved in application root
+                    if (Request.Files.AllKeys[i].Equals("uploadPhotoFile"))
+                    {
+                        _StudentModel.ImagePath = "~/Images/" + fileName;
+                    }
+                    else
+                    {
+                        _StudentModel.SignaturePath = "~/Images/" + fileName;
+                    }
+                }
+                
+            }
             var officemaster = _StudentRepository.AddEdit_Student(_StudentModel);
             if (!string.IsNullOrEmpty(saveAndExit))
             {
@@ -155,6 +179,7 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<th class='datatable-cell'>Student ID</th>");
                     strHTML.Append("<th class='datatable-cell'>Email</th>");
                     strHTML.Append("<th class='datatable-cell'>Department</th>");
+                    strHTML.Append("<th class='datatable-cell'>Photo</th>");
                     strHTML.Append("<th class='datatable-cell hide'>Job Title</th>");
                     strHTML.Append("<th class='datatable-cell'>Action</th>");
                     strHTML.Append("</tr>");
@@ -163,12 +188,16 @@ namespace ScampusCloud.Controllers
                     foreach (var item in lstStudent)
                     {
                         string ImgSrc = string.Empty;
+                        string PhotoImgSrc = string.Empty;
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StudentId + "','Student','Student','Delete')";
                         string CardManagementEvent = "CardManagement('" + item.Id + "')";
                         //if (!string.IsNullOrEmpty(item.Image64byte))
                         //    ImgSrc = "data:image/jpg;base64," + item.Image64byte;
                         //else
                         //    ImgSrc = "data:image/jpg;base64," + Constant.DefaultPersonIconBase64String;
+
+                        if (!string.IsNullOrEmpty(item.ImageBase64))
+                            PhotoImgSrc = "data:image/png;base64," + item.ImageBase64;
 
                         strHTML.Append("<tr>");
                         strHTML.Append("<td>" + item.Code + "</td>");
@@ -178,6 +207,10 @@ namespace ScampusCloud.Controllers
                         strHTML.Append("<td>" + item.StudentId + "</td>");
                         strHTML.Append("<td>" + (item.EmailId ?? "NA") + "</td>");
                         strHTML.Append("<td>" + (item.DepartmentName ?? "NA") + "</td>");
+
+                        strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
+                            "<div class='ml-4'></td>");
+
                         strHTML.Append("<td class='hide'>" + (item.JobTitleName ?? "NA") + "</td>");
                         strHTML.Append("<td>");
                         strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3' href= '/Student/AddEditStudent?ID=" + item.Id + "'><i class='flaticon-edit'></i></a>");
@@ -257,6 +290,54 @@ namespace ScampusCloud.Controllers
         //    }
         //    return base64OfThumbImg;
         //}
+
+        public ActionResult PreviewSelectedImage()
+        {
+            string imagePath = string.Empty;
+            string base64OfThumbImg = string.Empty;
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i]; //Uploaded file
+                                                            //Use the following properties to get file's name, size and MIMEType
+
+                
+
+                int fileSize = file.ContentLength;
+                string fileName = file.FileName;
+                string mimeType = file.ContentType;
+                System.IO.Stream fileContent = file.InputStream;
+                //To save file, use SaveAs method
+                file.SaveAs(Server.MapPath("~/Images/" + fileName)); //File will be saved in application root
+                imagePath = Server.MapPath("~/Images/"+ fileName);
+
+
+                //base64OfThumbImg = ImageCompressor.GetBase64StringAsync(file, 300, 300).Result;
+
+                // Generate the base64 string for the image thumbnail
+                //base64OfThumbImg = GetBase64ImageThumbnail(imagePath);
+            }
+
+            // Replace this path with the actual path to your image file
+           
+
+            // Return the base64 string as JSON
+            return Json(new
+            {
+                base64OfThumbImg
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        private string GetBase64ImageThumbnail(string imagePath)
+        {
+            using (var image = Image.FromFile(imagePath))
+            using (var thumb = image.GetThumbnailImage(100, 100, () => false, IntPtr.Zero))
+            using (var memoryStream = new MemoryStream())
+            {
+                thumb.Save(memoryStream, ImageFormat.Jpeg); // Adjust the format as needed
+                byte[] bytes = memoryStream.ToArray();
+                return Convert.ToBase64String(bytes);
+            }
+        }
 
         [HttpGet]
         public FileResult Export(string searchtxt = "")
