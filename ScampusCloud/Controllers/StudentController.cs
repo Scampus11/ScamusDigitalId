@@ -178,9 +178,9 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<th class='datatable-cell'>Name</th>");
                     strHTML.Append("<th class='datatable-cell'>Student ID</th>");
                     strHTML.Append("<th class='datatable-cell'>Email</th>");
-                    strHTML.Append("<th class='datatable-cell'>Department</th>");
-                    strHTML.Append("<th class='datatable-cell'>Photo</th>");
-                    strHTML.Append("<th class='datatable-cell hide'>Job Title</th>");
+                    strHTML.Append("<th class='datatable-cell hide'>Campus</th>");
+                    //strHTML.Append("<th class='datatable-cell'>Photo</th>");
+                    strHTML.Append("<th class='datatable-cell hide'>Department</th>");
                     strHTML.Append("<th class='datatable-cell'>Action</th>");
                     strHTML.Append("</tr>");
                     strHTML.Append("</thead>");
@@ -201,18 +201,19 @@ namespace ScampusCloud.Controllers
 
                         strHTML.Append("<tr>");
                         strHTML.Append("<td>" + item.Code + "</td>");
-                        strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + ImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
+                        strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
                             "<div class='ml-4'>" +
                             "<a href='#' class='font-size-sm text-dark-50 text-hover-primary'>" + item.FirstName + "</a></div></div></span></td>");
                         strHTML.Append("<td>" + item.StudentId + "</td>");
                         strHTML.Append("<td>" + (item.EmailId ?? "NA") + "</td>");
-                        strHTML.Append("<td>" + (item.DepartmentName ?? "NA") + "</td>");
-                        strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
-                            "<div class='ml-4'></td>");
-                        strHTML.Append("<td class='hide'>" + (item.JobTitleName ?? "NA") + "</td>");
+                        strHTML.Append("<td class='hide'>" + (item.CampusName ?? "NA") + "</td>");
+                        //strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
+                        //    "<div class='ml-4'></td>");
+
+                        strHTML.Append("<td class='hide'>" + (item.DepartmentName ?? "NA") + "</td>");
                         strHTML.Append("<td>");
                         strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3' href= '/Student/AddEditStudent?ID=" + item.Id + "'><i class='flaticon-edit'></i></a>");
-                        strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3'  onclick=" + CardManagementEvent + "><i class='far fa-id-card'></i></a>");
+                        //strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3'  onclick=" + CardManagementEvent + "><i class='far fa-id-card'></i></a>");
                         strHTML.Append("<a id = 'del_" + item.Id + "' class='btn btn-sm btn-icon btn-lg-light btn-text-danger btn-hover-light-danger' onclick=" + DeleteConfirmationEvent + "><i class='flaticon-delete'></i></a>");
                         strHTML.Append("</td>");
                         strHTML.Append("</tr>");

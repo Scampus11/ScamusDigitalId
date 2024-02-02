@@ -59,6 +59,8 @@
                             @Html.HiddenFor(x => x.IsEdit)
                             @Html.HiddenFor(x => x.Id)
                             @Html.HiddenFor(x => x.Isactive, new { id = "hdnIsactive" })
+                            @Html.HiddenFor(x => x.IsDigitalStatus, new { id = "hdnIsDigitalStatus" })
+                            @Html.HiddenFor(x => x.IsEnableHostel, new { id = "hdnIsEnableHostel" })
                             @Html.HiddenFor(x => x.CreatedBy)
                             @Html.HiddenFor(x => x.ModifiedBy)
                             @Html.HiddenFor(x => x.CompanyId)
@@ -432,13 +434,27 @@
                                                 <!--end::Group-->
                                                 <!--begin::Group-->
                                                 <div class="form-group row">
+                                                    @*<label class="col-form-label col-3 text-lg-right text-left">
+                                                            <span style="display: inline-block; vertical-align: middle;">Digital Status</span>
+                                                        </label>*@
                                                     <label class="col-form-label col-3 text-lg-right text-left">
-                                                        <span style="display: inline-block; vertical-align: middle;">Digital Status</span>
+                                                        Digital Status
                                                     </label>
                                                     <div class="col-3">
-                                                        <div class="form-check" style="display: inline-block; vertical-align: middle;">
-                                                            @Html.CheckBoxFor(m => m.IsDigitalStatus, new { @class = "form-check-input" })
-                                                        </div>
+                                                        <span class='switch switch-icon'>
+                                                            <label>
+                                                                @if (Model.IsDigitalStatus)
+                                                                {
+                                                                    <input type='checkbox' id="chkIsDigitalStatus" checked="checked">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type='checkbox' id="chkIsDigitalStatus">
+                                                                }
+
+                                                                <span></span>
+                                                            </label>
+                                                        </span>
                                                     </div>
                                                     <div class="separator separator-dashed my-10"></div>
                                                 </div>
@@ -458,13 +474,32 @@
                                             <div class="my-2">
                                                 <!--begin::Group-->
                                                 <div class="form-group row">
+                                                    @*<label class="col-form-label col-3 text-lg-right text-left">
+                                                            <span style="display: inline-block; vertical-align: middle;">Hostel Status</span>
+                                                        </label>
+                                                        <div class="col-3">
+                                                            <div class="form-check" style="display: inline-block; vertical-align: middle;">
+                                                                @Html.CheckBoxFor(m => m.IsEnableHostel, new { @class = "form-check-input" })
+                                                            </div>
+                                                        </div>*@
                                                     <label class="col-form-label col-3 text-lg-right text-left">
-                                                        <span style="display: inline-block; vertical-align: middle;">Hostel Status</span>
+                                                        Hostel Status
                                                     </label>
                                                     <div class="col-3">
-                                                        <div class="form-check" style="display: inline-block; vertical-align: middle;">
-                                                            @Html.CheckBoxFor(m => m.IsEnableHostel, new { @class = "form-check-input" })
-                                                        </div>
+                                                        <span class='switch switch-icon'>
+                                                            <label>
+                                                                @if (Model.IsEnableHostel)
+                                                                {
+                                                                    <input type='checkbox' id="chkIsEnableHostel" checked="checked">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type='checkbox' id="chkIsEnableHostel">
+                                                                }
+
+                                                                <span></span>
+                                                            </label>
+                                                        </span>
                                                     </div>
                                                     <div class="separator separator-dashed my-10"></div>
                                                 </div>
@@ -646,6 +681,13 @@
             $("#hdnIsactive").val($(this).is(':checked'));
         });
 
+        $("#chkIsDigitalStatus").change(function () {
+            $("#hdnIsDigitalStatus").val($(this).is(':checked'));
+        });
+        $("#chkIsEnableHostel").change(function () {
+            $("#hdnIsEnableHostel").val($(this).is(':checked'));
+        });
+        
         $('#ddlCampus').change(function () {
             $.ajax({
                 type: "post",

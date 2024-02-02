@@ -1,3 +1,10 @@
+USE [ScampusCloud]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_GetStudentData]    Script Date: 02/03/2024 12:36:06 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 ALTER PROCEDURE [dbo].[SP_GetStudentData]
 @Search nvarchar(max)=''
 ,@page INT=1
@@ -7,10 +14,11 @@ ALTER PROCEDURE [dbo].[SP_GetStudentData]
 AS
 
 BEGIN
-	SELECT C.Id,FirstName as FullName,C.EmailId,C.StudentId,ISNULL(c.IsDeleted,1) AS IsDeleted,ISNULL(c.IsActive,1) AS IsActive ,c.Code
-	,SD.Name As DepartmentName,'' As JobTitleName,C.ImagePath,c.ImageBase64,C.SignatureBase64,C.SignaturePath
+	SELECT C.Id,C.FirstName + ' '+ FatherName +' '+ GrandFatherName AS FirstName,C.EmailId,C.StudentId,ISNULL(c.IsDeleted,1) AS IsDeleted,ISNULL(c.IsActive,1) AS IsActive ,c.Code
+	,SD.Name As DepartmentName,J.Name As CampusName,C.ImagePath,c.ImageBase64,C.SignatureBase64,C.SignaturePath
 	from Tbl_Mstr_Student_Master c
 	Left Join Tbl_Mstr_Student_Department_Master SD on SD.Id=C.DepartmentId
+	lEFT JOIN Tbl_Mstr_Campus_Master J on C.CampusId=J.Id
 	WHERE (C.Id LIKE '%' + @Search + '%' or FirstName LIKE '%' + @Search + '%' or c.Code LIKE '%' + @Search + '%' or c.EmailId LIKE '%' + @Search + '%'
 	or c.StudentId LIKE '%' + @Search + '%') and C.CompanyId=@CompanyId
 	ORDER BY C.Id ASC

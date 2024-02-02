@@ -73,7 +73,7 @@ namespace ScampusCloud.Models
 		public bool? IsEdit { get; set; }
 
 		public string DepartmentName { get; set; }
-		public string JobTitleName { get; set; }
+		public string CampusName { get; set; }
 		public bool IsDigitalStatus { get; set; }
         public bool IsEnableHostel { get; set; }
 		public int HostelId { get; set; }
