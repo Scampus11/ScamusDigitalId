@@ -186,12 +186,12 @@
                                             <div class="form-group row">
                                                 <label class="col-form-label col-3 text-lg-right text-left">Web Site</label>
                                                 <div class="col-9">
-                                                    <div class="input-group input-group-lg input-group-solid">
-                                                        @Html.TextBoxFor(m => m.Website, new { @class = "form-control-lg form-control-solid", @required = "required", @placeholder = "Company Site", value = "loop" })
-                                                        <div class="input-group-append">
+                                                    @*<div class="input-group input-group-lg input-group-solid">*@
+                                                    @Html.TextBoxFor(m => m.Website, new { @class = "form-control form-control-lg form-control-solid", @required = "required" })
+                                                    @*<div class="input-group-append">
                                                             <span class="input-group-text">.com</span>
-                                                        </div>
-                                                    </div>
+                                                        </div>*@
+                                                    @*</div>*@
                                                     @Html.ValidationMessageFor(m => m.Website, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -305,9 +305,19 @@
                                                 <div class="form-group row">
                                                     <label class="col-form-label col-3 text-lg-right text-left">Admin User Password</label>
                                                     <div class="col-9">
-                                                        @Html.TextBoxFor(m => m.AdminUserPassword, new { @class = "form-control form-control-lg form-control-solid Password", @required = "required" })
-                                                        @Html.ValidationMessageFor(m => m.AdminUserPassword, "", new { @class = "text-danger" })
+                                                        <div class="input-group input-group-lg input-group-solid">
+                                                            @Html.TextBoxFor(m => m.AdminUserPassword, new { @class = "form-control form-control-lg form-control-solid Password Password", @required = "required", @Type = "password" })
+
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    <a href="javascript:;" onclick="Passwordshowhide(this)" class="psw-eyed psw-field"><i class="icon-xl fas fa-eye"></i></a>
+                                                                    <a href="javascript:;" onclick="Passwordshowhide(this)" class="psw-slash-eyed psw-field" style="display:none;"><i class="icon-xl fas fa-eye-slash"></i></a>
+                                                                </span>
+                                                            </div>
+                                                            @Html.ValidationMessageFor(m => m.AdminUserPassword, "", new { @class = "text-danger" })
+                                                        </div>
                                                     </div>
+                                                    
                                                 </div>
                                                 <!--end::Group-->
                                             </div>
@@ -411,8 +421,21 @@
             $('#dv_EmpImag').css('background-image', 'url(' + imageUrl + ')');
         }
         $("#chkIsactive").change(function () {
-            debugger;
             $("#hdnIsactive").val($(this).is(':checked'));
         });
+        function Passwordshowhide(el) {
+            if ($(el).find('i').hasClass('fas fa-eye')) {
+                var eye_slash_anchor = $(el).closest('div.form-group').find('.psw-slash-eyed');
+                $(el).hide();
+                $(eye_slash_anchor).show();
+                $(el).closest('div.form-group').find('.Password').attr('type', 'text');
+            }
+            else if ($(el).find('i').hasClass('fas fa-eye-slash')) {
+                var eye_anchor = $(el).closest('div.form-group').find('.psw-eyed');
+                $(el).hide();
+                $(eye_anchor).show();
+                $(el).closest('div.form-group').find('.Password').attr('type', 'password');
+            }
+        }
     </script>
 }

@@ -299,8 +299,17 @@
                                                 </div>
                                                 <label class="col-form-label col-3 text-lg-right text-left">PassWord</label>
                                                 <div class="col-3">
-                                                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control form-control-lg form-control-solid Password", @required = "required" })
-                                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                                    <div class="input-group input-group-lg input-group-solid">
+                                                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control form-control-lg form-control-solid Password", @required = "required", @Type = "password" })
+
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <a href="javascript:;" onclick="Passwordshowhide(this)" class="psw-eyed psw-field"><i class="icon-xl fas fa-eye"></i></a>
+                                                                <a href="javascript:;" onclick="Passwordshowhide(this)" class="psw-slash-eyed psw-field" style="display:none;"><i class="icon-xl fas fa-eye-slash"></i></a>
+                                                            </span>
+                                                        </div>
+                                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                                    </div>
                                                 </div>
                                             </div>
                                             <!--end::Group-->
@@ -579,5 +588,19 @@
             debugger;
             $("#hdnIsactive").val($(this).is(':checked'));
         });
+        function Passwordshowhide(el) {
+            if ($(el).find('i').hasClass('fas fa-eye')) {
+                var eye_slash_anchor = $(el).closest('div.form-group').find('.psw-slash-eyed');
+                $(el).hide();
+                $(eye_slash_anchor).show();
+                $(el).closest('div.form-group').find('.Password').attr('type', 'text');
+            }
+            else if ($(el).find('i').hasClass('fas fa-eye-slash')) {
+                var eye_anchor = $(el).closest('div.form-group').find('.psw-eyed');
+                $(el).hide();
+                $(eye_anchor).show();
+                $(el).closest('div.form-group').find('.Password').attr('type', 'password');
+            }
+        }
     </script>
 }
