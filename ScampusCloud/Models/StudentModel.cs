@@ -23,7 +23,7 @@ namespace ScampusCloud.Models
 		public string GrandFatherName { get;set; }
 
 		[Required(ErrorMessage = "Code is required")]
-		[Remote(action: "IsStudentCodeExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Code is already in use.")]
+		//[Remote(action: "IsStudentCodeExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Code is already in use.")]
 		public string Code { get; set; }
 		public string FullNameAmharic { get; set; }
 

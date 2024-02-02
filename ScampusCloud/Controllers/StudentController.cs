@@ -197,7 +197,7 @@ namespace ScampusCloud.Controllers
                         //    ImgSrc = "data:image/jpg;base64," + Constant.DefaultPersonIconBase64String;
 
                         if (!string.IsNullOrEmpty(item.ImageBase64))
-                            PhotoImgSrc = "data:image/png;base64," + item.ImageBase64;
+                            PhotoImgSrc = "data:image/jpg;base64," + item.ImageBase64;
 
                         strHTML.Append("<tr>");
                         strHTML.Append("<td>" + item.Code + "</td>");
@@ -207,10 +207,8 @@ namespace ScampusCloud.Controllers
                         strHTML.Append("<td>" + item.StudentId + "</td>");
                         strHTML.Append("<td>" + (item.EmailId ?? "NA") + "</td>");
                         strHTML.Append("<td>" + (item.DepartmentName ?? "NA") + "</td>");
-
                         strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
                             "<div class='ml-4'></td>");
-
                         strHTML.Append("<td class='hide'>" + (item.JobTitleName ?? "NA") + "</td>");
                         strHTML.Append("<td>");
                         strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3' href= '/Student/AddEditStudent?ID=" + item.Id + "'><i class='flaticon-edit'></i></a>");

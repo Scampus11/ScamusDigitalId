@@ -508,10 +508,11 @@
             $('.empSignatureimage').css('background-image', 'url(data:image/png;base64,' + '@Model.SignatureBase64' + ')')
             $('.#ImagePath').val('@Model.ImagePath')
             $('.#SignaturePath').val('@Model.SignaturePath')
+
             $.ajax({
                 type: "post",
                 url: "/Student/GetColleageByCampus",
-                data: { ScampusId: $('#ddlCampus').val() },
+                data: { ScampusId: '@Model.CampusId' },
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
@@ -522,7 +523,6 @@
                     }
                     colleage = colleage + '</select>';
                     $('#ddlColleage').html(colleage);
-
                     $('#ddlColleage').val('@Model.CollageId');
 
                 }
@@ -707,13 +707,12 @@
             let base64String = "";
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-
                 reader.onload = function (e) {
                     base64String = reader.result.replace("data:", "")
                         .replace(/^.+,/, "");
                     $("#ImageBase64").val(base64String);
                     $('#dv_EmpImag').css('background-image', 'url()');
-                    $('.empimage').css('background-image', 'url(data:image/png;base64,' + base64String + ')');
+                    $('.empimage').css('background-image', 'url(data:image/jpg;base64,' + base64String + ')');
                     $('#RemoveEmplImg').show();
                 }
                 reader.readAsDataURL(input.files[0]);
@@ -730,7 +729,7 @@
                         .replace(/^.+,/, "");
                     $("#SignatureBase64").val(base64String);
                     $('#dv_EmpSignatureImag').css('background-image', 'url()');
-                    $('.empSignatureimage').css('background-image', 'url(data:image/png;base64,' + base64String + ')');
+                    $('.empSignatureimage').css('background-image', 'url(data:image/jpg;base64,' + base64String + ')');
                     $('#RemoveEmplImg').show();
                 }
                 reader.readAsDataURL(input.files[0]);
