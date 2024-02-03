@@ -132,7 +132,7 @@ namespace ScampusCloud.Controllers
                     string fileName = file.FileName;
                     string mimeType = file.ContentType;
                     System.IO.Stream fileContent = file.InputStream;
-                    file.SaveAs(Server.MapPath("~/Images/Student/" + fileName)); //File will be saved in application root
+                    file.SaveAs(Server.MapPath("~/Images/" + fileName)); //File will be saved in application root
                     if (Request.Files.AllKeys[i].Equals("uploadPhotoFile"))
                     {
                         _StaffModel.ImagePath = "~/Images/" + fileName;
