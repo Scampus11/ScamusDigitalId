@@ -13,6 +13,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using static ScampusCloud.RouteConfig;
+using ScampusCloud.Repository.Student;
 
 namespace ScampusCloud.Controllers
 {
@@ -121,6 +122,29 @@ namespace ScampusCloud.Controllers
             {
                 _StaffModel.ActionType = "Insert";
             }
+
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i];
+                if (file.ContentLength > 0)
+                {
+                    int fileSize = file.ContentLength;
+                    string fileName = file.FileName;
+                    string mimeType = file.ContentType;
+                    System.IO.Stream fileContent = file.InputStream;
+                    file.SaveAs(Server.MapPath("~/Images/Student/" + fileName)); //File will be saved in application root
+                    if (Request.Files.AllKeys[i].Equals("uploadPhotoFile"))
+                    {
+                        _StaffModel.ImagePath = "~/Images/" + fileName;
+                    }
+                    else
+                    {
+                        _StaffModel.SignaturePath = "~/Images/" + fileName;
+                    }
+                }
+
+            }
+
             var officemaster = _StaffRepository.AddEdit_Staff(_StaffModel);
             if (!string.IsNullOrEmpty(saveAndExit))
             {
@@ -167,25 +191,26 @@ namespace ScampusCloud.Controllers
                     foreach (var item in lstStaff)
                     {
                         string ImgSrc = string.Empty;
+                        string PhotoImgSrc = string.Empty;
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StaffId + "','Staff','Staff','Delete')";
                         string CardManagementEvent = "CardManagement('" + item.Id + "')";
-                        //if (!string.IsNullOrEmpty(item.Image64byte))
-                        //    ImgSrc = "data:image/jpg;base64," + item.Image64byte;
-                        //else
-                        //    ImgSrc = "data:image/jpg;base64," + Constant.DefaultPersonIconBase64String;
+                        string fileExtension = Path.GetExtension(item.ImagePath);
+
+                        if (!string.IsNullOrEmpty(item.ImageBase64))
+                            PhotoImgSrc = "data:image/" + fileExtension.TrimStart('.') + ";base64," + item.ImageBase64;
 
                         strHTML.Append("<tr>");
                         strHTML.Append("<td>" + item.Code + "</td>");
-                        strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + ImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
-                            "<div class='ml-4'>" +
-                            "<a href='#' class='font-size-sm text-dark-50 text-hover-primary'>" + item.FullName + "</a></div></div></span></td>");
+                        strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
+                             "<div class='ml-4'>" +
+                             "<a href='#' class='font-size-sm text-dark-50 text-hover-primary'>" + item.FullName + "</a></div></div></span></td>");
                         strHTML.Append("<td>" + item.StaffId + "</td>");
                         strHTML.Append("<td>" + (item.EmailId ?? "NA") + "</td>");
                         strHTML.Append("<td>" + (item.DepartmentName ?? "NA") + "</td>");
                         strHTML.Append("<td class='hide'>" + (item.JobTitleName ?? "NA") + "</td>");
                         strHTML.Append("<td>");
                         strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3' href= '/Staff/AddEditStaff?ID=" + item.Id + "'><i class='flaticon-edit'></i></a>");
-                        strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3'  onclick=" + CardManagementEvent + "><i class='far fa-id-card'></i></a>");
+                       // strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3'  onclick=" + CardManagementEvent + "><i class='far fa-id-card'></i></a>");
                         strHTML.Append("<a id = 'del_" + item.Id + "' class='btn btn-sm btn-icon btn-lg-light btn-text-danger btn-hover-light-danger' onclick=" + DeleteConfirmationEvent + "><i class='flaticon-delete'></i></a>");
                         strHTML.Append("</td>");
                         strHTML.Append("</tr>");
@@ -242,6 +267,25 @@ namespace ScampusCloud.Controllers
                 var response = _StaffRepository.AddEdit_Staff(_StaffModel);
 
                 return RedirectToAction("Staff", "Staff");
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult RemovePhotoSignature(string Id, string PhotoType)
+        {
+            try
+            {
+                _StaffModel.ActionType = PhotoType;
+                _StaffModel.Id = Convert.ToInt32(Id);
+                _StaffModel.CompanyId = SessionManager.CompanyId;
+                var response = _StaffRepository.AddEdit_Staff(_StaffModel);
+
+                return RedirectToAction("Student", "Student");
             }
             catch (Exception ex)
             {

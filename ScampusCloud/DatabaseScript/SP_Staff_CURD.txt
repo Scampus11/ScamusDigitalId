@@ -1,0 +1,163 @@
+ALTER   PROCEDURE [dbo].[SP_Staff_CURD]
+@Id int = null,
+@StaffId nvarchar(100)=null,
+@FullName nvarchar(500)=null,
+@CompanyId uniqueidentifier = null,
+@Code nvarchar(50)='',
+@FullNameAmharic nvarchar(100)=null,
+@BirthDate nvarchar(50)=null,
+@Gender nvarchar(100)=null,
+@BloodGroup nvarchar(100)=null,
+@PersonalPhone nvarchar(100)=null,
+@EmailId nvarchar(100)=null,
+@Password nvarchar(500)=null,
+@Address nvarchar(500)=null,
+@CountryId int=null,
+@DepartmentId int=null,
+@JobTitleId int=null,
+@CompanyMstrId int=null,
+@FacilityId int=null,
+@CanteenId int=null,
+@CardStatusId int=null,
+@IssueDate nvarchar(50)=null,
+@UID nvarchar(100)=null,
+@VehicleNumber nvarchar(100)=null,
+@CardNumber nvarchar(100)=null,
+@Woreda nvarchar(100)=null,
+@SubCity nvarchar(100)=null,
+@HouseNumber nvarchar(100)=null,
+@ImagePath nvarchar(500)=null,
+@SignaturePath nvarchar(500)=null,
+@ImageBase64 varchar(max)=null,
+@SignatureBase64 varchar(max)=null,
+@Isactive bit = 0,
+@CreatedBy uniqueidentifier=null,
+@ModifiedBy uniqueidentifier=null,
+@ActionType nvarchar(20) = ''
+
+AS
+
+BEGIN
+	IF @ActionType = 'Insert'  
+	BEGIN  
+		
+		--Start Staff
+	    Insert into Tbl_Mstr_Staff_Master
+		(
+			CompanyId,StaffId,FullName,Code,FullNameAmharic,BirthDate,Gender,BloodGroup,PersonalPhone
+			,EmailId,Password,Address,CountryId,DepartmentId,JobTitleId,CompanyMstrId,FacilityId
+			,CanteenId,CardStatusId,IssueDate,UID,VehicleNumber,CardNumber,Woreda,SubCity,HouseNumber
+			,ImagePath,SignaturePath,ImageBase64,SignatureBase64,IsDeleted,Isactive,CreatedDate
+			,ModifiedDate,CreatedBy,ModifiedBy
+		) 
+		values
+		(
+			@CompanyId,@StaffId,@FullName,@Code,@FullNameAmharic,@BirthDate,@Gender,@BloodGroup,@PersonalPhone
+			,@EmailId,@Password,@Address,@CountryId,@DepartmentId,@JobTitleId,@CompanyMstrId,@FacilityId
+			,@CanteenId,@CardStatusId,@IssueDate,@UID,@VehicleNumber,@CardNumber,@Woreda,@SubCity,@HouseNumber
+			,@ImagePath,@SignaturePath,@ImageBase64,@SignatureBase64,0,@Isactive,GETDATE()
+			,GETDATE(),@CreatedBy,@ModifiedBy
+		)
+		--End Staff
+		select @CompanyId=CompanyId from Tbl_Mstr_Customer where EmailId=@EmailId
+
+		--Start Users
+	    Insert into Tbl_Mstr_Users
+		(
+			UserId,StaffId, Name, EmailId,PhoneNumber,Password,ParentUserId,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy
+		) 
+		values
+		(
+			NEWID(),@StaffId, @FullName,@EmailId,@PersonalPhone,@Password,@CompanyId,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy
+		)
+		--End Users
+		
+	END  
+	IF @ActionType = 'Edit' OR @ActionType='Remote'
+	BEGIN  
+		select Id,CompanyId,StaffId,FullName,Code,FullNameAmharic,CONVERT(varchar,BirthDate,1) As BirthDate,Gender,BloodGroup,PersonalPhone
+			,EmailId,Password,Address,CountryId,DepartmentId,JobTitleId,CompanyMstrId,FacilityId
+			,CanteenId,CardStatusId,IssueDate,UID,VehicleNumber,CardNumber,Woreda,SubCity,HouseNumber
+			,ImagePath,SignaturePath,ImageBase64,SignatureBase64,IsDeleted,Isactive,CreatedDate
+			,ModifiedDate,CreatedBy,ModifiedBy
+		
+		from Tbl_Mstr_Staff_Master C 
+		WHERE (C.Id=@Id or C.StaffId=@StaffId or C.EmailId=@EmailId or C.Code=@Code) and CompanyId=@CompanyId
+	END  
+	IF @ActionType = 'Update'  
+	BEGIN  
+	--Start Staff
+		UPDATE Tbl_Mstr_Staff_Master SET  
+		StaffId = ISNULL(@StaffId,StaffId)
+		,FullName=ISNULL(@FullName,FullName)
+		,Code=ISNULL(@Code,Code)
+		,FullNameAmharic=ISNULL(@FullNameAmharic,FullNameAmharic)
+		,BirthDate=ISNULL(@BirthDate,BirthDate)
+		,Gender=ISNULL(@Gender,Gender)
+		,BloodGroup=ISNULL(@BloodGroup,BloodGroup)
+		,PersonalPhone=ISNULL(@PersonalPhone,PersonalPhone)
+		,EmailId=ISNULL(@EmailId,EmailId)
+		,Password=ISNULL(@Password,Password)
+		,Address=ISNULL(@Address,Address)
+		,CountryId=ISNULL(@CountryId,CountryId)
+		,DepartmentId=ISNULL(@DepartmentId,DepartmentId)
+		,JobTitleId=ISNULL(@JobTitleId,JobTitleId)
+		,CompanyMstrId=ISNULL(@CompanyMstrId,CompanyMstrId)
+		,FacilityId=ISNULL(@FacilityId,FacilityId)
+		,CanteenId=ISNULL(@CanteenId,CanteenId)
+		,CardStatusId=ISNULL(@CardStatusId,CardStatusId)
+		,IssueDate=ISNULL(@IssueDate,IssueDate)
+		,UID=ISNULL(@UID,UID)
+		,VehicleNumber=ISNULL(@VehicleNumber,VehicleNumber)
+		,CardNumber=ISNULL(@CardNumber,CardNumber)
+		,Woreda=ISNULL(@Woreda,Woreda)
+		,SubCity=ISNULL(@SubCity,SubCity)
+		,HouseNumber=ISNULL(@HouseNumber,HouseNumber)
+		,ImagePath=ISNULL(@ImagePath,ImagePath)
+		,SignaturePath=ISNULL(@SignaturePath,SignaturePath)
+		,ImageBase64=ISNULL(@ImageBase64,ImageBase64)
+		,SignatureBase64=ISNULL(@SignatureBase64,SignatureBase64)
+		,Isactive=ISNULL(@Isactive,Isactive)
+		,ModifiedDate=GETDATE()
+		,ModifiedBy=ISNULL(@ModifiedBy,ModifiedBy)
+		WHERE CompanyId = @CompanyId and Id=@Id
+	--End Staff
+
+	--Start Users
+		UPDATE Tbl_Mstr_Users SET  
+			Name = IsNull(@FullName,Name), 
+			EmailId = IsNull(@EmailId,EmailId), 
+			PhoneNumber = IsNull(@PersonalPhone,PhoneNumber),  
+			Password = IsNull(@Password,Password), 
+			ModifiedDate = GETDATE(),
+			ModifiedBy=@ModifiedBy
+		WHERE StaffId=@StaffId  
+	--Start Users
+	
+	END  
+	IF @ActionType = 'Delete'  
+	BEGIN  
+		Delete from Tbl_Mstr_Staff_Master Where Id = @Id
+		select @StaffId=StaffId from Tbl_Mstr_Staff_Master where Id = @Id
+		Delete from Tbl_Mstr_Users where StaffId=@StaffId
+	END  
+	IF @ActionType = 'RemovePhoto'  
+	BEGIN
+	   UPDATE Tbl_Mstr_Staff_Master SET  
+            [ImagePath] = NULL
+           ,[ImageBase64] = NULL
+           ,[ModifiedDate] = GETDATE()
+           ,[ModifiedBy] = @ModifiedBy
+		WHERE CompanyId = @CompanyId and Id=@Id
+	END
+
+	IF @ActionType = 'RemoveSignature'  
+	BEGIN
+	   UPDATE Tbl_Mstr_Staff_Master SET  
+            [SignaturePath] = Null
+           ,[SignatureBase64] = Null
+           ,[ModifiedDate] = GETDATE()
+           ,[ModifiedBy] = @ModifiedBy
+		WHERE CompanyId = @CompanyId and Id=@Id
+	END
+END
