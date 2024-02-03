@@ -305,10 +305,14 @@
     <Content Include="Connection\ConnectionString.txt" />
     <Content Include="Content\Site.css" />
     <Content Include="css\site.css" />
+    <Content Include="DatabaseScript\AddTwoNewColumnInCustomer.txt" />
     <Content Include="DatabaseScript\AdmissionTypeshort Dropdown.txt" />
     <Content Include="DatabaseScript\College Dropdown.txt" />
+    <Content Include="DatabaseScript\SP_Customer_CURD.txt" />
     <Content Include="DatabaseScript\SP_DownloadStudentData_Export.txt" />
+    <Content Include="DatabaseScript\SP_GetStaffData.txt" />
     <Content Include="DatabaseScript\SP_GetStudentData.txt" />
+    <Content Include="DatabaseScript\SP_Staff_CURD.txt" />
     <Content Include="DatabaseScript\SP_Student_CURD.txt" />
     <Content Include="DatabaseScript\Student Department Dropdown.txt" />
     <Content Include="favicon.ico" />

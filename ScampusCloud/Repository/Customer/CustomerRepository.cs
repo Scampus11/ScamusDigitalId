@@ -26,6 +26,7 @@ namespace ScampusCloud.Repository.Customer
 				};
 				if (_CustomerModel.ActionType == "Edit" || _CustomerModel.ActionType == "Remote")
 				{
+					objQueryBuilder.AddFieldValue("@Id", _CustomerModel.Id, DataTypes.Numeric, false);
 					objQueryBuilder.AddFieldValue("@EmailId", _CustomerModel.EmailId, DataTypes.Text, false);
 					objQueryBuilder.AddFieldValue("@CompanyId", _CustomerModel.CompanyId, DataTypes.Text, false);
 				}
