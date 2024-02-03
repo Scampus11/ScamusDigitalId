@@ -191,13 +191,11 @@ namespace ScampusCloud.Controllers
                         string PhotoImgSrc = string.Empty;
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StudentId + "','Student','Student','Delete')";
                         string CardManagementEvent = "CardManagement('" + item.Id + "')";
-                        //if (!string.IsNullOrEmpty(item.Image64byte))
-                        //    ImgSrc = "data:image/jpg;base64," + item.Image64byte;
-                        //else
-                        //    ImgSrc = "data:image/jpg;base64," + Constant.DefaultPersonIconBase64String;
+
+                        string fileExtension = Path.GetExtension(item.ImagePath);
 
                         if (!string.IsNullOrEmpty(item.ImageBase64))
-                            PhotoImgSrc = "data:image/jpg;base64," + item.ImageBase64;
+                            PhotoImgSrc = "data:image/"+ fileExtension.TrimStart('.') + ";base64," + item.ImageBase64;
 
                         strHTML.Append("<tr>");
                         strHTML.Append("<td>" + item.Code + "</td>");

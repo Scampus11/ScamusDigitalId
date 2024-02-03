@@ -554,41 +554,41 @@
                      $('#ddlColleage').val('@Model.CollageId');
      }
  });
- $.ajax({
-     type: "post",
-     url: "/Student/GetDepartmentByColleage",
-     data: { ColleageId: '@Model.CollageId' },
-     datatype: "json",
-     traditional: true,
-     success: function (data) {
-         var department = "<select id='ddlDepartment'>";
-         department = department + '<option value="">Select Department</option>';
-         for (var i = 0; i < data.length; i++) {
-             department = department + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
-         }
-         department = department + '</select>';
-         $('#ddlDepartment').html(department);
-         $('#ddlDepartment').val('@Model.DepartmentId');
-     }
- });
+             $.ajax({
+                 type: "post",
+                 url: "/Student/GetDepartmentByColleage",
+                 data: { ColleageId: '@Model.CollageId' },
+                 datatype: "json",
+                 traditional: true,
+                 success: function (data) {
+                     var department = "<select id='ddlDepartment'>";
+                     department = department + '<option value="">Select Department</option>';
+                     for (var i = 0; i < data.length; i++) {
+                         department = department + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                     }
+                     department = department + '</select>';
+                     $('#ddlDepartment').html(department);
+                     $('#ddlDepartment').val('@Model.DepartmentId');
+                 }
+             });
 
- $.ajax({
-     type: "post",
-     url: "/Student/GetAdmissionTypeShort",
-     data: { AdmissionTypeId: '@Model.AdmissionTypeId' },
-     datatype: "json",
-     traditional: true,
-     success: function (data) {
-         var admissionTypeShort = "<select id='ddlAdminssionTypeShort'>";
-         admissionTypeShort = admissionTypeShort + '<option value="">Select Admission Type Short</option>';
-         for (var i = 0; i < data.length; i++) {
-             admissionTypeShort = admissionTypeShort + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
-         }
-         admissionTypeShort = admissionTypeShort + '</select>';
-         $('#ddlAdminssionTypeShort').html(admissionTypeShort);
-         $('#ddlAdminssionTypeShort').val('@Model.AdmissionTypeShortId')
-     }
- });
+             $.ajax({
+                 type: "post",
+                 url: "/Student/GetAdmissionTypeShort",
+                 data: { AdmissionTypeId: '@Model.AdmissionTypeId' },
+                 datatype: "json",
+                 traditional: true,
+                 success: function (data) {
+                     var admissionTypeShort = "<select id='ddlAdminssionTypeShort'>";
+                     admissionTypeShort = admissionTypeShort + '<option value="">Select Admission Type Short</option>';
+                     for (var i = 0; i < data.length; i++) {
+                         admissionTypeShort = admissionTypeShort + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                     }
+                     admissionTypeShort = admissionTypeShort + '</select>';
+                     $('#ddlAdminssionTypeShort').html(admissionTypeShort);
+                     $('#ddlAdminssionTypeShort').val('@Model.AdmissionTypeShortId')
+                 }
+             });
     $('.empimage').css('background-image', 'url(data:image/png;base64,' + '@Model.ImageBase64' + ')')
     $('.empSignatureimage').css('background-image', 'url(data:image/png;base64,' + '@Model.SignatureBase64' + ')')
     $('.#ImagePath').val('@Model.ImagePath')
@@ -765,35 +765,61 @@
         });
 
         function readPhotofile(input) {
-            let base64String = "";
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    base64String = reader.result.replace("data:", "")
-                        .replace(/^.+,/, "");
-                    $("#ImageBase64").val(base64String);
-                    $('#dv_EmpImag').css('background-image', 'url()');
-                    $('.empimage').css('background-image', 'url(data:image/jpg;base64,' + base64String + ')');
-                    $('#RemoveEmplImg').show();
+
+            var formData = new FormData();
+            var File = input.files[0];
+            var extnType = input.files[0].type;
+            var extn = extnType.split("/");
+
+            if (extn[1] == "png" || extn[1] == "jpg" || extn[1] == "jpeg") {
+                let base64String = "";
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        base64String = reader.result.replace("data:", "")
+                            .replace(/^.+,/, "");
+                        $("#ImageBase64").val(base64String);
+                        $('#dv_EmpImag').css('background-image', 'url()');
+                        $('.empimage').css('background-image', 'url(data:image/' + extn[1] +';base64,' + base64String + ')');
+                        $('#RemoveEmplImg').show();
+                    }
+                    reader.readAsDataURL(input.files[0]);
                 }
-                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                var $el = $('#externalEmpImgId');
+                $el.wrap('<form>').closest('form').get(0).reset();
+                $el.unwrap();
+                toastr.error("Please select only images!");
             }
         }
-
         function readSignaturefile(input) {
-            let base64String = "";
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+            var formData = new FormData();
+            var File = input.files[0];
+            var extnType = input.files[0].type;
+            var extn = extnType.split("/");
 
-                reader.onload = function (e) {
-                    base64String = reader.result.replace("data:", "")
-                        .replace(/^.+,/, "");
-                    $("#SignatureBase64").val(base64String);
-                    $('#dv_EmpSignatureImag').css('background-image', 'url()');
-                    $('.empSignatureimage').css('background-image', 'url(data:image/jpg;base64,' + base64String + ')');
-                    $('#RemoveEmplImg').show();
+            if (extn[1] == "png" || extn[1] == "jpg" || extn[1] == "jpeg") {
+                let base64String = "";
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        base64String = reader.result.replace("data:", "")
+                            .replace(/^.+,/, "");
+                        $("#SignatureBase64").val(base64String);
+                        $('#dv_EmpSignatureImag').css('background-image', 'url()');
+                        $('.empSignatureimage').css('background-image', 'url(data:image/' + extn[1] +';base64,' + base64String + ')');
+                        $('#RemoveEmplImg').show();
+                    }
+                    reader.readAsDataURL(input.files[0]);
                 }
-                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                var $el = $('#externalEmpImgId');
+                $el.wrap('<form>').closest('form').get(0).reset();
+                $el.unwrap();
+                toastr.error("Please select only images!");
             }
         }
     </script>
