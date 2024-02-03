@@ -278,6 +278,25 @@ namespace ScampusCloud.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult RemovePhotoSignature(string Id,string PhotoType)
+        {
+            try
+            {
+                _StudentModel.ActionType = PhotoType;
+                _StudentModel.Id = Convert.ToInt32(Id);
+                _StudentModel.CompanyId = SessionManager.CompanyId;
+                var response = _StudentRepository.AddEdit_Student(_StudentModel);
+
+                return RedirectToAction("Student", "Student");
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
+
         //[HttpPost]
         //public string PreviewSelectedImage(IFormFile file)
         //{

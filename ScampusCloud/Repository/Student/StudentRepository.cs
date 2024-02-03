@@ -25,7 +25,7 @@ namespace ScampusCloud.Repository.Student
 					StoredProcedureName = @"SP_Student_CURD",
 					SetQueryType = QueryBuilder.QueryType.SELECT
 				};
-				if (_StudentModel.ActionType == "Edit" || _StudentModel.ActionType == "Delete")
+				if (_StudentModel.ActionType == "Edit" || _StudentModel.ActionType == "Delete" || _StudentModel.ActionType == "RemovePhoto" || _StudentModel.ActionType == "RemoveSignature")
 				{
 					objQueryBuilder.AddFieldValue("@Id", _StudentModel.Id, DataTypes.Numeric, false);
 					objQueryBuilder.AddFieldValue("@CompanyId", _StudentModel.CompanyId, DataTypes.Text, false);

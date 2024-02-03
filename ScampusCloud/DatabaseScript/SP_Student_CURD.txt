@@ -191,12 +191,29 @@ BEGIN
            ,[ModifiedBy] = @ModifiedBy
 		WHERE CompanyId = @CompanyId and Id=@Id
 	--End Campus
-
-
-	
 	END  
    IF @ActionType = 'Delete'  
 	BEGIN  
 		Delete from Tbl_Mstr_Student_Master Where Id = @Id
 	END 
+
+    IF @ActionType = 'RemovePhoto'  
+	BEGIN
+	   UPDATE Tbl_Mstr_Student_Master SET  
+            [ImagePath] = NULL
+           ,[ImageBase64] = NULL
+           ,[ModifiedDate] = GETDATE()
+           ,[ModifiedBy] = @ModifiedBy
+		WHERE CompanyId = @CompanyId and Id=@Id
+	END
+
+	IF @ActionType = 'RemoveSignature'  
+	BEGIN
+	   UPDATE Tbl_Mstr_Student_Master SET  
+            [SignaturePath] = Null
+           ,[SignatureBase64] = Null
+           ,[ModifiedDate] = GETDATE()
+           ,[ModifiedBy] = @ModifiedBy
+		WHERE CompanyId = @CompanyId and Id=@Id
+	END
 END
