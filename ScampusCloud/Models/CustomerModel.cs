@@ -54,5 +54,7 @@ namespace ScampusCloud.Models
 		//[RegularExpression(@"(?=.*\d)(?=.*[A-Za-z]).{8,}",
 		//    ErrorMessage = "Your password must be at least 8 characters long and contain at least 1 letter and 1 number")]
 		public string AdminUserPassword { get; set; }
-	}
+        public string ImagePath { get; set; }
+        public string ImageBase64 { get; set; }
+    }
 }

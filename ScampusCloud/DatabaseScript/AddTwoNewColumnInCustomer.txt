@@ -1,0 +1,5 @@
+ALTER TABLE Tbl_Mstr_Customer
+ADD ImagePath NVARCHAR(500) NULL
+
+ALTER TABLE Tbl_Mstr_Customer
+ADD ImageBase64 VARCHAR(MAX) NULL

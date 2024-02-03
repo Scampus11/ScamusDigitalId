@@ -2,6 +2,7 @@
 using ScampusCloud.Models;
 using ScampusCloud.Repository.Customer;
 using ScampusCloud.Repository.Login;
+using ScampusCloud.Repository.Staff;
 using ScampusCloud.Utility;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,6 @@ namespace ScampusCloud.Controllers
         {
             try
             {
-
                 _CustomerModel.CreatedBy = SessionManager.UserId;
                 _CustomerModel.ModifiedBy = SessionManager.UserId;
                 _CustomerModel.CompanyId = SessionManager.CompanyId;
@@ -104,6 +104,22 @@ namespace ScampusCloud.Controllers
             {
                 _CustomerModel.ActionType = "Insert";
             }
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i];
+                if (file.ContentLength > 0)
+                {
+                    int fileSize = file.ContentLength;
+                    string fileName = file.FileName;
+                    string mimeType = file.ContentType;
+                    System.IO.Stream fileContent = file.InputStream;
+                    file.SaveAs(Server.MapPath("~/Images/" + fileName)); //File will be saved in application root
+                    if (Request.Files.AllKeys[i].Equals("uploadPhotoFile"))
+                    {
+                        _CustomerModel.ImagePath = "~/Images/" + fileName;
+                    }
+                }
+            }
             var officemaster = _customerRepository.AddEdit_Customer(_CustomerModel);
             if (!string.IsNullOrEmpty(saveAndExit))
             {
@@ -148,10 +164,20 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
                     foreach (var item in lstAccessGroup)
                     {
+                        string ImgSrc = string.Empty;
+                        string PhotoImgSrc = string.Empty;
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.Id + "','Customer','Customer','Delete')";
+                        string fileExtension = Path.GetExtension(item.ImagePath);
+
+                        if (!string.IsNullOrEmpty(item.ImageBase64))
+                            PhotoImgSrc = "data:image/" + fileExtension.TrimStart('.') + ";base64," + item.ImageBase64;
+
                         strHTML.Append("<tr>");
                         strHTML.Append("<td>" + item.Id + "</td>");
-                        strHTML.Append("<td>" + item.Name + "</td>");
+                        //strHTML.Append("<td>" + item.Name + "</td>");
+                        strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
+                             "<div class='ml-4'>" +
+                             "<a href='#' class='font-size-sm text-dark-50 text-hover-primary'>" + item.Name + "</a></div></div></span></td>");
                         strHTML.Append("<td>" + item.EmailId + "</td>");
                         strHTML.Append("<td>" + item.PhoneNumber + "</td>");
                         if (item.Isactive)
@@ -224,7 +250,24 @@ namespace ScampusCloud.Controllers
                 throw;
             }
         }
+        [HttpPost]
+        public ActionResult RemovePhotoSignature(string Id, string PhotoType)
+        {
+            try
+            {
+                _CustomerModel.ActionType = PhotoType;
+                _CustomerModel.Id = Convert.ToInt32(Id);
+                _CustomerModel.CompanyId = SessionManager.CompanyId;
+                var response = _customerRepository.AddEdit_Customer(_CustomerModel);
 
+                return RedirectToAction("Customer", "Customer");
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
         //[HttpPost]
         //public string PreviewSelectedImage(IFormFile file)
         //{

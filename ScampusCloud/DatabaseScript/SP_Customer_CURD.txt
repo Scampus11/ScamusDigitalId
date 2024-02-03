@@ -1,0 +1,129 @@
+ALTER   PROCEDURE [dbo].[SP_Customer_CURD]
+@Id int = null,
+@CompanyId uniqueidentifier = null,
+@Name nvarchar(50)=null,
+@Address nvarchar(100)=null,
+@Website nvarchar(100)=null,
+@EmailId nvarchar(100)=null,
+@PhoneNumber nvarchar(20)=null,
+@CreatedBy uniqueidentifier=null,
+@ModifiedBy uniqueidentifier=null,
+@ActionType nvarchar(20) = '',
+@AdminUserEmailId nvarchar(50)='',
+@AdminUserPhoneNumber nvarchar(50)='',
+@AdminUserPassword nvarchar(max)=null,
+@Isactive bit = 0,
+@ImagePath NVARCHAR(500) = null,
+@ImageBase64 VARCHAR(MAX) = null
+AS
+
+BEGIN
+	IF @ActionType = 'Insert'  
+	BEGIN  
+		
+		--Start Customer
+	    Insert into Tbl_Mstr_Customer
+		(
+			CompanyId, Name, Address, Website, EmailId,PhoneNumber,Isactive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy,ImagePath,ImageBase64
+		) 
+		values
+		(
+			NEWID(), @Name, @Address, @Website, @EmailId,@PhoneNumber,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy,@ImagePath,@ImageBase64
+		)
+		--End Customer
+
+		select @CompanyId=CompanyId from Tbl_Mstr_Customer where EmailId=@EmailId
+
+		--Start Customer Details
+	    Insert into Tbl_Mstr_Customer_Admin
+		(
+			CompanyId, CompanyAdminId, AdminUserEmailId, AdminUserPhoneNumber, AdminUserPassword
+			,AdminUserStatus,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy
+		) 
+		values
+		(
+			@CompanyId, NEWID(), @AdminUserEmailId, @AdminUserPhoneNumber, @AdminUserPassword
+			,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy
+		)
+		--End Customer Details
+
+		--Start Users
+	    Insert into Tbl_Mstr_Users
+		(
+			UserId, Name, EmailId,PhoneNumber,Password,ParentUserId,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy
+		) 
+		values
+		(
+			NEWID(), @Name,@EmailId,@PhoneNumber,@AdminUserPassword,@CompanyId,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy
+		)
+		--End Users
+
+	END  
+	IF @ActionType = 'Edit' OR @ActionType='Remote'
+	BEGIN  
+		select C.Id,C.CompanyId,C.Name,C.Address,C.Website,C.EmailId,C.PhoneNumber
+		,C.CreatedBy,C.ModifiedBy,CA.AdminUserEmailId,CA.AdminUserPhoneNumber,AdminUserPassword
+		,C.Isactive,ImagePath,ImageBase64
+		from Tbl_Mstr_Customer C 
+		INNER JOIN Tbl_Mstr_Customer_Admin CA ON C.CompanyId = CA.CompanyId
+		INNER JOIN Tbl_Mstr_Users U ON U.ParentUserId=C.CompanyId
+		WHERE (C.Id=@Id or C.EmailId=@EmailId) and C.CompanyId=@CompanyId
+	END  
+	IF @ActionType = 'Update'  
+	BEGIN  
+	--Start Customer
+		UPDATE Tbl_Mstr_Customer SET  
+			Name = IsNull(@Name,Name), 
+			Address = IsNull(@Address,Address), 
+			Website = IsNull(@Website,Website),  
+			EmailId = IsNull(@EmailId,EmailId), 
+			PhoneNumber = IsNull(@PhoneNumber,PhoneNumber),	
+			Isactive=@Isactive,
+			ModifiedDate = GETDATE() ,
+			ImagePath = @ImagePath,
+			ImageBase64 = @ImageBase64
+		WHERE CompanyId = @CompanyId
+	--End Customer
+
+	--Start Customer Admin
+		UPDATE Tbl_Mstr_Customer_Admin SET  
+			AdminUserEmailId = IsNull(@AdminUserEmailId,AdminUserEmailId), 
+			AdminUserPhoneNumber = IsNull(@AdminUserPhoneNumber,AdminUserPhoneNumber), 
+			AdminUserPassword = IsNull(@AdminUserPassword,AdminUserPassword), 
+			AdminUserStatus=@Isactive,
+			ModifiedDate = GETDATE(),
+			ModifiedBy=@ModifiedBy
+		WHERE CompanyId = @CompanyId  
+	--Start Customer Admin
+	
+	--Start Users
+		UPDATE Tbl_Mstr_Users SET  
+			Name = IsNull(@Name,Name), 
+			EmailId = IsNull(@EmailId,EmailId), 
+			PhoneNumber = IsNull(@PhoneNumber,PhoneNumber),  
+			Password = IsNull(@AdminUserPassword,Password), 
+			ModifiedDate = GETDATE(),
+			ModifiedBy=@ModifiedBy
+		WHERE ParentUserId = @CompanyId  
+	--Start Users
+	
+	
+	END  
+	IF @ActionType = 'Delete'  
+	BEGIN  
+		Delete from Tbl_Mstr_Customer Where Id = @Id
+		select @CompanyId=CompanyId from Tbl_Mstr_Customer where EmailId=@EmailId
+		Delete from Tbl_Mstr_Customer_Admin where CompanyId=@CompanyId
+		Delete from Tbl_Mstr_Users where ParentUserId=@CompanyId
+	END  
+	IF @ActionType = 'RemovePhoto'  
+	BEGIN
+	   UPDATE Tbl_Mstr_Customer SET  
+            [ImagePath] = NULL
+           ,[ImageBase64] = NULL
+           ,[ModifiedDate] = GETDATE()
+           ,[ModifiedBy] = @ModifiedBy
+		WHERE CompanyId = @CompanyId and Id=@Id
+	END
+END
+

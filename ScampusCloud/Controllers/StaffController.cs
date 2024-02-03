@@ -109,7 +109,6 @@ namespace ScampusCloud.Controllers
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
                 throw;
             }
-
         }
         [HttpPost]
         public ActionResult AddEditStaff(StaffModel _StaffModel, string saveAndExit = "")

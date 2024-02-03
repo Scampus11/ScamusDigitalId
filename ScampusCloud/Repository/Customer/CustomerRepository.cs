@@ -24,7 +24,7 @@ namespace ScampusCloud.Repository.Customer
 					StoredProcedureName = @"SP_Customer_CURD",
 					SetQueryType = QueryBuilder.QueryType.SELECT
 				};
-				if (_CustomerModel.ActionType == "Remote")
+				if (_CustomerModel.ActionType == "Edit" || _CustomerModel.ActionType == "Remote")
 				{
 					objQueryBuilder.AddFieldValue("@EmailId", _CustomerModel.EmailId, DataTypes.Text, false);
 					objQueryBuilder.AddFieldValue("@CompanyId", _CustomerModel.CompanyId, DataTypes.Text, false);
@@ -45,7 +45,9 @@ namespace ScampusCloud.Repository.Customer
 					objQueryBuilder.AddFieldValue("@AdminUserPhoneNumber", _CustomerModel.AdminUserPhoneNumber, DataTypes.Text, false);
 					objQueryBuilder.AddFieldValue("@AdminUserPassword", EncryptionDecryption.GetEncrypt(_CustomerModel.AdminUserPassword), DataTypes.Text, false);
 					objQueryBuilder.AddFieldValue("@Isactive", _CustomerModel.Isactive, DataTypes.Boolean, false);
-				}
+                    objQueryBuilder.AddFieldValue("@ImagePath", _CustomerModel.ImagePath, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@ImageBase64", _CustomerModel.ImageBase64, DataTypes.Text, false);
+                }
 				objQueryBuilder.AddFieldValue("@ActionType", _CustomerModel.ActionType, DataTypes.Text, false);
 
 				return objgm.ExecuteObjectUsingSp<CustomerModel>(objQueryBuilder);
