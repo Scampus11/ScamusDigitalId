@@ -359,6 +359,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashboadController.cs" />
     <Compile Include="Controllers\DegreeTypeController.cs" />
+    <Compile Include="Controllers\DoorGroupController.cs" />
     <Compile Include="Controllers\JobTitleController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProgramController.cs" />
@@ -391,6 +392,7 @@
     <Compile Include="Models\CountryModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\DegreeTypeModel.cs" />
+    <Compile Include="Models\DoorGroupModel.cs" />
     <Compile Include="Models\JobTitleModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProgramModel.cs" />
@@ -560,6 +562,9 @@
     <Content Include="Views\Student\AddEditStudent.cshtml" />
     <Content Include="Views\SessionMaster\SessionMaster.cshtml" />
     <Content Include="Views\SessionMaster\AddEditSessionMaster.cshtml" />
+    <Content Include="Views\DoorGroup\AddEditReader.cshtml" />
+    <Content Include="Views\DoorGroup\AddEditDoorGroup.cshtml" />
+    <Content Include="Views\DoorGroup\DoorGroup.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
