@@ -164,6 +164,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\bootstrap-multiselect.css" />
     <Content Include="assets\css\intlTelInput.css" />
     <Content Include="assets\css\intlTelInput.min.css" />
     <Content Include="assets\css\pages\error\error-6.css" />
@@ -188,6 +189,7 @@
     <Content Include="assets\img\flags.png" />
     <Content Include="assets\img\nodata.png" />
     <Content Include="assets\js\bootstrap-datepicker.js" />
+    <Content Include="assets\js\bootstrap-multiselect.js" />
     <Content Include="assets\js\Dymo\dymo.connect.framework.js" />
     <Content Include="assets\js\Dymo\dymo.connect.framework_old.js" />
     <Content Include="assets\js\Dymo\LabelPreviewPrint.js" />
@@ -419,6 +421,7 @@
     <Compile Include="Repository\Country\CountryRepository.cs" />
     <Compile Include="Repository\Customer\CustomerRepository.cs" />
     <Compile Include="Repository\DegreeType\DegreeTypeRepository.cs" />
+    <Compile Include="Repository\DoorGroup\DoorGroupRepository.cs" />
     <Compile Include="Repository\JobTitle\JobTitleRepository.cs" />
     <Compile Include="Repository\Login\LoginRepository.cs" />
     <Compile Include="Repository\Program\ProgramRepository.cs" />

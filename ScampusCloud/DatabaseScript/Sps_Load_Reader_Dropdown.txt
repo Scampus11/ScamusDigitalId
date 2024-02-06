@@ -1,0 +1,7 @@
+CREATE PROCEDURE [dbo].[Sps_Load_Reader_Dropdown]
+@CompanyId nvarchar(100)=''	
+AS
+BEGIN
+	SELECT CONVERT(NVARCHAR(10),Id) as [Value],[Name] AS [Text],CompanyId FROM Tbl_Mstr_Reader_Master 
+	WHERE IsActive=1 And CompanyId=@CompanyId
+END

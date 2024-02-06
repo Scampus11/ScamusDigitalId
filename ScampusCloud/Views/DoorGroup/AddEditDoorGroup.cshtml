@@ -4,13 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     if (Model.IsEdit == false)
     {
-        ViewData["Title"] = "Add Door Grouup";
+        ViewData["Title"] = "Add Door Group";
     }
     else
     {
-        ViewData["Title"] = "Edit Door Grouup";
+        ViewData["Title"] = "Edit Door Group";
     }
 }
+
 <!--begin::Form-->
 <form id="frmManageReader" asp-action="AddEditReader" asp-controller="Reader" method="post">
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -26,7 +27,6 @@
                 <!--end::Page Heading-->
             </div>
             <!--end::Info-->
-
         </div>
     </div>
     <div class="d-flex flex-column-fluid flex-center">
@@ -118,12 +118,8 @@
                                                 </label>
                                             </div>
                                             <div class="col-8">
-                                                @Html.DropDownListFor(m => m.ReaderId, new List<SelectListItem>
-                                                        {
-                                                        new SelectListItem { Text = "Entry", Value = "Entry"},
-                                                        new SelectListItem { Text = "Exit", Value = "Exit"}
-                                                        }, "Select Reader Type", new { @class = "form-control form-control-solid" })
-                                                    @Html.ValidationMessageFor(m => m.ReaderId, "", new { @class = "text-danger" })
+                                                @Html.DropDownListFor(model => model.ReaderId, new SelectList(Model.lstReader, "Value", "Text")
+, new { @class = "form-control", @id = "ddlReader", @multiple = "multiple", onchange="test()" })
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -133,21 +129,12 @@
                                             <div class="col-8">
                                                 <span class='switch switch-icon'>
                                                     <label>
-                                                        @if (Model.IsActive)
-                                                        {
-                                                            <input type='checkbox' id="chkIsActive" checked="checked">
-                                                        }
-                                                        else
-                                                        {
-                                                            <input type='checkbox' id="chkIsActive">
-                                                        }
-
+                                                        <input type='checkbox' id="chkIsActive" checked="@(Model.IsActive ? "checked" : "")">
                                                         <span></span>
                                                     </label>
                                                 </span>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -155,23 +142,47 @@
                     </div>
                     <!--end::Card-->
                 </div>
-
             </div>
         </div>
     </div>
 </form>
 
 @section Scripts{
-    <script>
-    $(function () {
-         @if(TempData.ContainsKey("Message"))
-        {
-            @:toastr.success('@TempData["Message"]');
-        }
-    });
+    
+    <link href="~/assets/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <script src="~/assets/js/bootstrap-multiselect.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#ddlReader').multiselect({
+                includeSelectAllOption: true
+            });
+        });
+        $("#chkIsActive").change(function () {
+            $("#hdnIsActive").val($(this).is(':checked'));
+        });
 
-    $("#chkIsActive").change(function () {
-        $("#hdnIsActive").val($(this).is(':checked'));
-    });
+        function test() {
+            var selected = $("#ddlReader option:selected"); 
+            var message = "";
+            var arrSelected = [];      /*Array to store multiple values in stack*/
+            selected.each(function () {
+                arrSelected.push($(this).val());    /*Stack the Value*/
+                message += $(this).text() + " " + $(this).val() + "\n";
+            });
+            console.log(arrSelected.join(','));
+        }
+
+
+        $("#btnmyCountries").click(function () {
+            var selected = $("#myCountries option:selected");    /*Current Selected Value*/
+            var message = "";
+            var arrSelected = [];      /*Array to store multiple values in stack*/
+            selected.each(function () {
+                arrSelected.push($(this).val());    /*Stack the Value*/
+                message += $(this).text() + " " + $(this).val() + "\n";
+            });
+            alert(message);
+        });  
     </script>
+
 }

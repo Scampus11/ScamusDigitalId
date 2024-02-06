@@ -1,5 +1,7 @@
 ﻿using ScampusCloud.Models;
+using ScampusCloud.Repository.DoorGroup;
 using ScampusCloud.Repository.Reader;
+using ScampusCloud.Repository.Staff;
 using ScampusCloud.Utility;
 using System;
 using System.Collections.Generic;
@@ -14,10 +16,11 @@ namespace ScampusCloud.Controllers
     public class DoorGroupController : Controller
     {
         DoorGroupModel _DoorGroupModel = new DoorGroupModel();
+        private readonly DoorGroupRepository _DoorGroupRepository;
 
         public DoorGroupController()
         {
-                
+            _DoorGroupRepository = new DoorGroupRepository();
         }
 
         // GET: DoorGroup
@@ -71,6 +74,7 @@ namespace ScampusCloud.Controllers
                     _DoorGroupModel.IsActive = true;
                     SessionManager.Code = null;
                 }
+                _DoorGroupModel.lstReader = BindReaderDropDown(SessionManager.CompanyId.ToString());
                 return View(_DoorGroupModel);
             }
             catch (Exception ex)
@@ -79,6 +83,13 @@ namespace ScampusCloud.Controllers
                 throw;
             }
 
+        }
+
+        private List<SelectListItem> BindReaderDropDown(string CompanyId)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _DoorGroupRepository.BindReaderDropDown(CompanyId);
+            return drpList;
         }
     }
 }
