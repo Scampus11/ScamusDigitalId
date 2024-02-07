@@ -1,18 +1,18 @@
-﻿@model ScampusCloud.Models.ReaderModel
+﻿@model ScampusCloud.Models.VisitorCardModel
 @using ScampusCloud.Utility
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     if (Model.IsEdit == false)
     {
-        ViewData["Title"] = "Add Reader";
+        ViewData["Title"] = "Add Visitor Card";
     }
     else
     {
-        ViewData["Title"] = "Edit Reader";
+        ViewData["Title"] = "Edit Visitor Card";
     }
 }
 <!--begin::Form-->
-<form id="frmManageReader" asp-action="AddEditReader" asp-controller="Reader" method="post">
+<form id="frmManageVisitorCard" asp-action="AddEditVisitorCard" asp-controller="VisitorCard" method="post">
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
@@ -50,17 +50,17 @@
                                 @Html.HiddenFor(x => x.ModifiedBy)
                                 @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
                                 <div class="card-toolbar">
-                                    <a href="/Reader/Reader" class="btn btn-danger font-weight-bolder mr-2">
+                                    <a href="/VisitorCard/VisitorCard" class="btn btn-danger font-weight-bolder mr-2">
                                         <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
                                     </a>
                                     @{
                                         if (ViewBag.NoRecordExist == null)
                                         {
-                                            <button type="submit" asp-action="AddEditReader" class="btn btn-primary font-weight-bolder mr-2">
+                                            <button type="submit" asp-action="AddEditVisitorCard" class="btn btn-primary font-weight-bolder mr-2">
                                                 <i class="flaticon-interface-5"></i>
                                                 <span class="nav-text">@(Model.IsEdit == false ? "Save & Add New" : "Update & continue")</span>
                                             </button>
-                                            <button type="submit" form="frmManageReader" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
+                                            <button type="submit" form="frmManageVisitorCard" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
                                                 <i class="flaticon-logout"></i>
                                                 <span class="nav-text">@(Model.IsEdit == false ? "Save & Exit" : "Update & Exit")</span>
                                             </button>
@@ -72,6 +72,18 @@
                                 <div class="col-md-6">
                                     <div class="card-body">
                                         @Html.Partial("_NotificationAlert", new ScampusCloud.Models.ResponseMessage() { IsSuccess = Model.IsSuccess, Response_Message = Model.Response_Message })
+                                        <div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">
+                                                    Card Id:
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                @Html.TextBoxFor(m => m.CardId, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.CardId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
                                         <div class="form-group row">
                                             <div class="col-4 text-right">
                                                 <label class="col-form-label">
@@ -100,19 +112,23 @@
                                         <div class="form-group row">
                                             <div class="col-4 text-right">
                                                 <label class="col-form-label">
-                                                    Reader Type:
+                                                    Number:
                                                     <span class="text-danger">*</span>
                                                 </label>
                                             </div>
                                             <div class="col-8">
-                                                @Html.DropDownListFor(m => m.ReaderType, new List<SelectListItem>
-                                                    {
-                                                    new SelectListItem { Text = "Entry", Value = "Entry"},
-                                                    new SelectListItem { Text = "Exit", Value = "Exit"}
-                                                    }, "Select Reader Type", new { @class = "form-control form-control-solid" })
-                                                @Html.ValidationMessageFor(m => m.ReaderType, "", new { @class = "text-danger" })
+                                                @Html.TextBoxFor(m => m.Number, new { @class = "form-control", @required = "required" })
                                             </div>
                                         </div>
+                                        <!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-4 text-lg-right text-left">Card Status</label>
+                                            <div class="col-8">
+                                                @Html.DropDownListFor(model => model.CardStatusId, new SelectList(Model.lstCardStatus, "Value", "Text"), "Select Card Status"
+                                       , new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
                                         <div class="form-group row">
                                             <div class="col-4 text-right">
                                                 <label class="col-form-label">Is Active: </label>

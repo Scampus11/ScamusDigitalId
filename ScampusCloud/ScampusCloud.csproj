@@ -372,6 +372,7 @@
     <Compile Include="Controllers\StudentDepartmentController.cs" />
     <Compile Include="Controllers\StudentFacilityController.cs" />
     <Compile Include="Controllers\VisitorAccessLevelController.cs" />
+    <Compile Include="Controllers\VisitorCardController.cs" />
     <Compile Include="Controllers\VisitorReasonController.cs" />
     <Compile Include="Controllers\VisitorStatusController.cs" />
     <Compile Include="Controllers\VisitorTypeController.cs" />
@@ -405,6 +406,7 @@
     <Compile Include="Models\StudentModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\VisitorAccessLevelModel.cs" />
+    <Compile Include="Models\VisitorCardModel.cs" />
     <Compile Include="Models\VisitorReasonModel.cs" />
     <Compile Include="Models\VisitorStatusModel.cs" />
     <Compile Include="Models\VisitorTypeModel.cs" />
@@ -429,6 +431,7 @@
     <Compile Include="Repository\StudentFacility\StudentFacilityRepository.cs" />
     <Compile Include="Repository\Student\StudentRepository.cs" />
     <Compile Include="Repository\VisitorAccessLevel\VisitorAccessLevelRepository.cs" />
+    <Compile Include="Repository\VisitorCard\VisitorCardRepository.cs" />
     <Compile Include="Repository\VisitorReason\VisitorReasonRepository.cs" />
     <Compile Include="Repository\VisitorStatus\VisitorStatusRepository.cs" />
     <Compile Include="Repository\VisitorType\VisitorTypeRepository.cs" />
@@ -560,6 +563,8 @@
     <Content Include="Views\Student\AddEditStudent.cshtml" />
     <Content Include="Views\SessionMaster\SessionMaster.cshtml" />
     <Content Include="Views\SessionMaster\AddEditSessionMaster.cshtml" />
+    <Content Include="Views\VisitorCard\VisitorCard.cshtml" />
+    <Content Include="Views\VisitorCard\AddEditVisitorCard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
