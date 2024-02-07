@@ -56,11 +56,11 @@
                                     @{
                                         if (ViewBag.NoRecordExist == null)
                                         {
-                                            <button type="submit" asp-action="AddEditReader" class="btn btn-primary font-weight-bolder mr-2">
+                                            <button type="submit" asp-action="AddEditDoorGroup" class="btn btn-primary font-weight-bolder mr-2">
                                                 <i class="flaticon-interface-5"></i>
                                                 <span class="nav-text">@(Model.IsEdit == false ? "Save & Add New" : "Update & continue")</span>
                                             </button>
-                                            <button type="submit" form="frmManageReader" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
+                                            <button type="submit" form="frmManageDoorGroup" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
                                                 <i class="flaticon-logout"></i>
                                                 <span class="nav-text">@(Model.IsEdit == false ? "Save & Exit" : "Update & Exit")</span>
                                             </button>
