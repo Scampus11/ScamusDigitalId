@@ -119,8 +119,20 @@
                                             </div>
                                             <div class="col-8">
                                                 @Html.HiddenFor(Model => Model.ReaderId)
-                                                @Html.DropDownListFor(model => model.ReaderId, new SelectList(Model.lstReader, "Value", "Text")
-, new { @class = "form-control", @id = "ddlReader", @multiple = "multiple", onchange="test()" })
+                                                <select id="ddlReader" multiple="multiple" required=required name="ddlReader" onchange="SelectReaderType()">
+                                                    @if (Model.lstReader != null)
+                                                    {
+                                                        foreach (var item in Model.lstReader)
+                                                        {
+                                                            if (item.Text != null)
+                                                            {
+                                                                <option value="@item.Value">
+                                                                    @item.Text
+                                                                </option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -155,8 +167,7 @@
 
     <script>
         $(document).ready(function () {
-            var result = '@Model.ReaderId'.split(',');// Array of SelectedValues
-            debugger;
+            var result = '@Model.ReaderId'.split(',');
             $("#ddlReader").val(result);
         })
     </script>
@@ -165,23 +176,27 @@
     <script type="text/javascript">
         $(function () {
             $('#ddlReader').multiselect({
-                includeSelectAllOption: true
-            });
+                includeSelectAllOption: true,         
+                selectAllValue: 'multiselect-all',    
+                enableFiltering: true,  
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: '300',
+                buttonWidth: '235',
+            });  
         });
         $("#chkIsActive").change(function () {
             $("#hdnIsActive").val($(this).is(':checked'));
         });
 
-        function test() {
+        function SelectReaderType() {
             var selected = $("#ddlReader option:selected"); 
             var message = "";
-            var arrSelected = [];      /*Array to store multiple values in stack*/
+            var arrSelected = [];      
             selected.each(function () {
-                arrSelected.push($(this).val());    /*Stack the Value*/
+                arrSelected.push($(this).val());   
                 message += $(this).text() + " " + $(this).val() + "\n";
             });
             $("#ReaderId").val(arrSelected.join(','));
-            debugger;
         }
     </script>
 
