@@ -1,0 +1,56 @@
+CREATE PROCEDURE [dbo].[SP_DoorGroup_CURD]
+@Id int = null,
+@Name nvarchar(50)=null,
+@CompanyId uniqueidentifier = null,
+@Code nvarchar(50)='',
+@Description nvarchar(500)='',
+@ReaderId nvarchar(max) = '',
+@Isactive bit = 0,
+@CreatedBy uniqueidentifier=null,
+@ModifiedBy uniqueidentifier=null,
+@ActionType nvarchar(20) = ''
+AS
+
+BEGIN
+	IF @ActionType = 'Insert'  
+	BEGIN  
+		
+		--Start DoorGroup
+	    Insert into Tbl_Mstr_DoorGroup_Master
+		(
+			Name, CompanyId, Code,[Description],ReaderId,IsDeleted,IsActive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy
+		) 
+		values
+		(
+			@Name,@CompanyId, @Code,@Description,@ReaderId,0,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy
+		)
+		--End DoorGroup
+	END  
+	IF @ActionType = 'Edit' OR @ActionType='Remote'
+	BEGIN  
+		select C.Id,C.CompanyId,C.Name,C.Code,C.Description,C.ReaderId,
+		C.CreatedBy,C.ModifiedBy,C.Isactive
+		from Tbl_Mstr_DoorGroup_Master C 
+		WHERE (C.Id=@Id or C.Code=@Code) and CompanyId=@CompanyId
+	END  
+	IF @ActionType = 'Update'  
+	BEGIN  
+	--Start DoorGroup
+		UPDATE Tbl_Mstr_DoorGroup_Master SET  
+			Name = IsNull(@Name,Name), 
+			Code = IsNull(@Code,Code), 
+			[Description] = ISNULL(@Description,[Description]),
+			ReaderId = ISNULL(@ReaderId,ReaderId),
+			Isactive=@Isactive,
+			ModifiedDate = GETDATE() 
+		WHERE CompanyId = @CompanyId and Id=@Id
+	--End DoorGroup
+
+	
+	END  
+	IF @ActionType = 'Delete'  
+	BEGIN  
+		Delete from Tbl_Mstr_DoorGroup_Master Where Id = @Id
+	END  
+END
+

@@ -1,0 +1,22 @@
+CREATE PROCEDURE [dbo].[SP_GetDoorGroupData]
+@Search nvarchar(max)=''
+,@page INT=1
+,@pagesize INT=10
+,@CompanyId nvarchar(100)=''
+
+AS
+
+BEGIN
+	SELECT C.Id,C.Name,C.Code,C.Description,C.ReaderId,ISNULL(c.IsDeleted,1) AS IsDeleted,ISNULL(c.IsActive,1) AS IsActive ,
+	STRING_AGG(R.Name, ',') AS ReaderTypes
+	from Tbl_Mstr_DoorGroup_Master c
+	INNER JOIN Tbl_Mstr_Reader_Master R ON CHARINDEX(',' + CONVERT(NVARCHAR, R.Id) + ',', ',' + c.readerid + ',') > 0
+	WHERE CHARINDEX(',' + CONVERT(NVARCHAR, R.Id) + ',', ',' + c.readerid + ',') > 0 
+	AND 
+	(C.Id LIKE '%' + @Search + '%' or C.Code LIKE '%' + @Search + '%' or c.Description LIKE '%' + @Search + '%')
+	and c.CompanyId=@CompanyId
+	GROUP BY C.Id,C.Name,C.Code,C.Description,C.ReaderId,c.IsDeleted,c.IsActive
+	ORDER BY Id ASC
+	OFFSET 	(@Page -1) * @pageSize ROWS
+	FETCH NEXT @pageSize ROWS ONLY
+END

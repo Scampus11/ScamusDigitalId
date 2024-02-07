@@ -164,6 +164,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\bootstrap-multiselect.css" />
     <Content Include="assets\css\intlTelInput.css" />
     <Content Include="assets\css\intlTelInput.min.css" />
     <Content Include="assets\css\pages\error\error-6.css" />
@@ -188,6 +189,7 @@
     <Content Include="assets\img\flags.png" />
     <Content Include="assets\img\nodata.png" />
     <Content Include="assets\js\bootstrap-datepicker.js" />
+    <Content Include="assets\js\bootstrap-multiselect.js" />
     <Content Include="assets\js\Dymo\dymo.connect.framework.js" />
     <Content Include="assets\js\Dymo\dymo.connect.framework_old.js" />
     <Content Include="assets\js\Dymo\LabelPreviewPrint.js" />
@@ -359,6 +361,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashboadController.cs" />
     <Compile Include="Controllers\DegreeTypeController.cs" />
+    <Compile Include="Controllers\DoorGroupController.cs" />
     <Compile Include="Controllers\JobTitleController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProgramController.cs" />
@@ -392,6 +395,7 @@
     <Compile Include="Models\CountryModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\DegreeTypeModel.cs" />
+    <Compile Include="Models\DoorGroupModel.cs" />
     <Compile Include="Models\JobTitleModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProgramModel.cs" />
@@ -419,6 +423,7 @@
     <Compile Include="Repository\Country\CountryRepository.cs" />
     <Compile Include="Repository\Customer\CustomerRepository.cs" />
     <Compile Include="Repository\DegreeType\DegreeTypeRepository.cs" />
+    <Compile Include="Repository\DoorGroup\DoorGroupRepository.cs" />
     <Compile Include="Repository\JobTitle\JobTitleRepository.cs" />
     <Compile Include="Repository\Login\LoginRepository.cs" />
     <Compile Include="Repository\Program\ProgramRepository.cs" />
@@ -563,6 +568,9 @@
     <Content Include="Views\Student\AddEditStudent.cshtml" />
     <Content Include="Views\SessionMaster\SessionMaster.cshtml" />
     <Content Include="Views\SessionMaster\AddEditSessionMaster.cshtml" />
+    <Content Include="Views\DoorGroup\AddEditReader.cshtml" />
+    <Content Include="Views\DoorGroup\AddEditDoorGroup.cshtml" />
+    <Content Include="Views\DoorGroup\DoorGroup.cshtml" />
     <Content Include="Views\VisitorCard\VisitorCard.cshtml" />
     <Content Include="Views\VisitorCard\AddEditVisitorCard.cshtml" />
     <None Include="Web.Debug.config">
