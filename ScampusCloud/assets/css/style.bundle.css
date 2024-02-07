@@ -3311,11 +3311,13 @@ input[type="button"].btn-block {
 
 .btn-group,
 .btn-group-vertical {
-  position: relative;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  vertical-align: middle; }
+    position: relative;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    width: 100% !important;
+    vertical-align: middle;
+}
   .btn-group > .btn,
   .btn-group-vertical > .btn {
     position: relative;

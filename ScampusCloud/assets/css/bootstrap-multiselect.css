@@ -72,6 +72,7 @@ span.multiselect-native-select {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    width: -webkit-fill-available !important;
 }
 
     .multiselect-container .multiselect-reset .input-group {
