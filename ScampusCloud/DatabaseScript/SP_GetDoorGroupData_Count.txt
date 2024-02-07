@@ -1,0 +1,10 @@
+CREATE PROCEDURE [dbo].[SP_GetDoorGroupData_Count]
+@Search nvarchar(max)='',
+@CompanyId nvarchar(100)=''
+AS
+BEGIN
+	SET NOCOUNT OFF;
+	SELECT COUNT(Id) from Tbl_Mstr_DoorGroup_Master 
+	WHERE (Id LIKE '%' + @Search + '%' or Name LIKE '%' + @Search + '%')
+	and CompanyId=@CompanyId
+END

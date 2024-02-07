@@ -1,0 +1,12 @@
+CREATE PROCEDURE [dbo].[SP_DownloadDoorGroupData_Export]
+@Search nvarchar(max)='',
+@CompanyId nvarchar(100)=''
+
+AS
+BEGIN
+		Select C.Name,C.Code,C.Description
+		from Tbl_Mstr_DoorGroup_Master C
+		where (C.Name LIKE '%' + @Search + '%' or C.Code LIKE '%' + @Search + '%' or  C.Description LIKE '%' + @Search + '%' ) 
+		and C.CompanyId=@CompanyId
+		order by C.Id Asc
+END

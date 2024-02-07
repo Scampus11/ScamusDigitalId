@@ -1,0 +1,16 @@
+CREATE PROCEDURE [dbo].[SP_GetDoorGroupData]
+@Search nvarchar(max)=''
+,@page INT=1
+,@pagesize INT=10
+,@CompanyId nvarchar(100)=''
+
+AS
+
+BEGIN
+	SELECT C.Id,C.Name,C.Code,C.Description,C.ReaderId,ISNULL(c.IsDeleted,1) AS IsDeleted,ISNULL(c.IsActive,1) AS IsActive from Tbl_Mstr_DoorGroup_Master c
+	WHERE (C.Id LIKE '%' + @Search + '%' or C.Code LIKE '%' + @Search + '%' or c.Description LIKE '%' + @Search + '%')
+	and c.CompanyId=@CompanyId
+	ORDER BY Id ASC
+	OFFSET 	(@Page -1) * @pageSize ROWS
+	FETCH NEXT @pageSize ROWS ONLY
+END
