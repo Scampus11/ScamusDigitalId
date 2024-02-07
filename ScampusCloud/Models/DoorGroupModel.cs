@@ -27,6 +27,7 @@ namespace ScampusCloud.Models
         public Guid? ModifiedBy { get; set; }
         public string ActionType { get; set; }
         public List<SelectListItem> lstReader { get; set; }
+        public string ReaderTypes { get; set; }
 
     }
 }

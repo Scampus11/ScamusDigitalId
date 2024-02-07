@@ -1,12 +1,15 @@
-CREATE PROCEDURE [dbo].[SP_DownloadDoorGroupData_Export]
+ALTER PROCEDURE [dbo].[SP_DownloadDoorGroupData_Export]
 @Search nvarchar(max)='',
 @CompanyId nvarchar(100)=''
 
 AS
 BEGIN
-		Select C.Name,C.Code,C.Description
-		from Tbl_Mstr_DoorGroup_Master C
-		where (C.Name LIKE '%' + @Search + '%' or C.Code LIKE '%' + @Search + '%' or  C.Description LIKE '%' + @Search + '%' ) 
-		and C.CompanyId=@CompanyId
-		order by C.Id Asc
+	SELECT C.Name,C.Code,C.Description,STRING_AGG(R.Name, ',') AS ReaderTypes
+	from Tbl_Mstr_DoorGroup_Master c
+	INNER JOIN Tbl_Mstr_Reader_Master R ON CHARINDEX(',' + CONVERT(NVARCHAR, R.Id) + ',', ',' + c.readerid + ',') > 0
+	WHERE CHARINDEX(',' + CONVERT(NVARCHAR, R.Id) + ',', ',' + c.readerid + ',') > 0 
+	AND (C.Code LIKE '%' + @Search + '%' or c.Description LIKE '%' + @Search + '%')
+	and c.CompanyId=@CompanyId
+	GROUP BY C.Name,C.Code,C.Description
+	--ORDER BY C.Id ASC
 END

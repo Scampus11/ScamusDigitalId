@@ -142,6 +142,8 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<th class='datatable-cell'>Code</th>");
                     strHTML.Append("<th class='datatable-cell'>Name</th>");
                     strHTML.Append("<th class='datatable-cell'>Description</th>");
+                    strHTML.Append("<th class='datatable-cell'>Reader Type</th>");
+                    
                     strHTML.Append("<th class='datatable-cell'>Status</th>");
                     strHTML.Append("<th class='datatable-cell'>Action</th>");
                     strHTML.Append("</tr>");
@@ -154,6 +156,7 @@ namespace ScampusCloud.Controllers
                         strHTML.Append("<td>" + item.Code + "</td>");
                         strHTML.Append("<td>" + item.Name + "</td>");
                         strHTML.Append("<td>" + item.Description + "</td>");
+                        strHTML.Append("<td>" + item.ReaderTypes + "</td>");
                         if (item.IsActive)
                             strHTML.Append("<td><span><span class='label font-weight-bold label-lg label-light-primary label-inline'>Active</span></span></td>");
                         else
