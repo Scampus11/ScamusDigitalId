@@ -18,6 +18,7 @@ using ScampusCloud.Repository.StudentCompany;
 using ScampusCloud.Repository.StudentDepartment;
 using ScampusCloud.Repository.StudentFacility;
 using ScampusCloud.Repository.VisitorAccessLevel;
+using ScampusCloud.Repository.VisitorCard;
 using ScampusCloud.Repository.VisitorReason;
 using ScampusCloud.Repository.VisitorStatus;
 using ScampusCloud.Repository.VisitorType;
@@ -57,7 +58,7 @@ namespace ScampusCloud.Controllers
         SessionMasterModel SessionMaster = new SessionMasterModel();
         StudentModel StudentModel = new StudentModel();
         DoorGroupModel DoorGroup = new DoorGroupModel();
-
+        VisitorCardModel VisitorCard = new VisitorCardModel();
         public RemoteValidationController()
         {
         }
@@ -990,6 +991,41 @@ namespace ScampusCloud.Controllers
             if (DoorGroup == null)
                 return Json(true);
             else if (DoorGroup.Code == null)
+                return Json(true);
+            else
+                return Json(false);
+
+        }
+        #endregion
+
+        #region Visitor Card
+        [HttpPost]
+        public ActionResult IsVisitorCardCodeExist(string Code = "")
+        {
+            VisitorCardRepository _Repository = new VisitorCardRepository();
+            string Original_Code = SessionManager.Code;
+            bool IsEditMode = !string.IsNullOrEmpty(Original_Code) ? true : false;
+            string returnMsg = "";
+
+            if (IsEditMode && !string.Equals(Original_Code, Code))
+            {
+                VisitorCard.ActionType = "Remote";
+                VisitorCard.Code = Code;
+                VisitorCard.CompanyId = SessionManager.CompanyId;
+                VisitorCard = _Repository.AddEdit_VisitorCard(VisitorCard);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            else if (!IsEditMode)
+            {
+                VisitorCard.ActionType = "Remote";
+                VisitorCard.Code = Code;
+                VisitorCard.CompanyId = SessionManager.CompanyId;
+                VisitorCard = _Repository.AddEdit_VisitorCard(VisitorCard);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            if (VisitorCard == null)
+                return Json(true);
+            else if (VisitorCard.Code == null)
                 return Json(true);
             else
                 return Json(false);

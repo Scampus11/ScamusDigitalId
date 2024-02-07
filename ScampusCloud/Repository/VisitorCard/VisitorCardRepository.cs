@@ -34,8 +34,11 @@ namespace ScampusCloud.Repository.VisitorCard
 					objQueryBuilder.AddFieldValue("@Id", _VisitorCardModel.Id, DataTypes.Numeric, false);
 					objQueryBuilder.AddFieldValue("@Name", _VisitorCardModel.Name, DataTypes.Text, false);
 					objQueryBuilder.AddFieldValue("@CompanyId", _VisitorCardModel.CompanyId, DataTypes.Text, false);
-					objQueryBuilder.AddFieldValue("@Number", _VisitorCardModel.Number, DataTypes.Numeric, false);
+					objQueryBuilder.AddFieldValue("@CardId", _VisitorCardModel.CardId, DataTypes.Numeric, false);
 					objQueryBuilder.AddFieldValue("@Code", _VisitorCardModel.Code, DataTypes.Text, false);
+					objQueryBuilder.AddFieldValue("@Description", _VisitorCardModel.Description, DataTypes.Numeric, false);
+					objQueryBuilder.AddFieldValue("@Number", _VisitorCardModel.Number, DataTypes.Numeric, false);
+					objQueryBuilder.AddFieldValue("@CardStatusId", _VisitorCardModel.CardStatusId, DataTypes.Text, false);
 					objQueryBuilder.AddFieldValue("@Isactive", _VisitorCardModel.IsActive, DataTypes.Boolean, false);
 					objQueryBuilder.AddFieldValue("@CreatedBy", _VisitorCardModel.CreatedBy, DataTypes.Text, false);
 					objQueryBuilder.AddFieldValue("@ModifiedBy", _VisitorCardModel.ModifiedBy, DataTypes.Text, false);

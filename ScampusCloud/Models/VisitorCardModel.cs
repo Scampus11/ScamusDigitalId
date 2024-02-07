@@ -15,7 +15,7 @@ namespace ScampusCloud.Models
 
         [Required(ErrorMessage = "Please enter name")]
         public string Name { get; set; }
-
+        [Required(ErrorMessage = "Please enter card id")]
         public string CardId { get; set; }
         public string Description { get; set; }
         public string Number { get; set; }
