@@ -6,6 +6,7 @@ using ScampusCloud.Repository.College;
 using ScampusCloud.Repository.Country;
 using ScampusCloud.Repository.Customer;
 using ScampusCloud.Repository.DegreeType;
+using ScampusCloud.Repository.DoorGroup;
 using ScampusCloud.Repository.JobTitle;
 using ScampusCloud.Repository.Program;
 using ScampusCloud.Repository.Reader;
@@ -55,6 +56,7 @@ namespace ScampusCloud.Controllers
         ReaderModel Reader = new ReaderModel();
         SessionMasterModel SessionMaster = new SessionMasterModel();
         StudentModel StudentModel = new StudentModel();
+        DoorGroupModel DoorGroup = new DoorGroupModel();
 
         public RemoteValidationController()
         {
@@ -953,6 +955,41 @@ namespace ScampusCloud.Controllers
             if (StudentModel == null)
                 return Json(true);
             else if (StudentModel.Code == null)
+                return Json(true);
+            else
+                return Json(false);
+
+        }
+        #endregion
+
+        #region DoorGroup
+        [HttpPost]
+        public ActionResult IsDoorGroupCodeExist(string Code = "")
+        {
+            DoorGroupRepository _Repository = new DoorGroupRepository();
+            string Original_Code = SessionManager.Code;
+            bool IsEditMode = !string.IsNullOrEmpty(Original_Code) ? true : false;
+            string returnMsg = "";
+
+            if (IsEditMode && !string.Equals(Original_Code, Code))
+            {
+                DoorGroup.ActionType = "Remote";
+                DoorGroup.Code = Code;
+                DoorGroup.CompanyId = SessionManager.CompanyId;
+                DoorGroup = _Repository.AddEdit_DoorGroup(DoorGroup);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            else if (!IsEditMode)
+            {
+                DoorGroup.ActionType = "Remote";
+                DoorGroup.Code = Code;
+                DoorGroup.CompanyId = SessionManager.CompanyId;
+                DoorGroup = _Repository.AddEdit_DoorGroup(DoorGroup);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            if (DoorGroup == null)
+                return Json(true);
+            else if (DoorGroup.Code == null)
                 return Json(true);
             else
                 return Json(false);

@@ -1,7 +1,7 @@
 ﻿@using ScampusCloud.Utility
 @model ScampusCloud.Models.DoorGroupModel
 @{
-    ViewData["Title"] = "Manage Reader";
+    ViewData["Title"] = "Manage Door Group";
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -39,18 +39,17 @@
                             @*<i class="flaticon2-left-arrow-1 icon-sm-nm"></i>*@ <span class="svg-icon svg-icon-md">Export</span>
                         </a>
                         <a href="/DoorGroup/AddEditDoorGroup" class="btn btn-primary font-weight-bolder">
-                            <i class="fas fa-plus icon-sm-nm"></i>Add DoorGroup
+                            <i class="fas fa-plus icon-sm-nm"></i>Add Door Group
                         </a>
                         <!--end::Button-->
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="card-body pt-0">
             <div class="mb-7">
             </div>
-            <div id="ReaderList" class="custom-paging">
+            <div id="DoorGroupList" class="custom-paging">
                 @Html.Partial("_CustomPaging")
             </div>
             <div class="datatable datatable-default datatable-primary datatable-loaded">
@@ -85,8 +84,8 @@
 
     });
     function LoadGridData() {
-        var _url = '/Reader/ReaderList';
-        getpaging("ReaderList", _url, 1, $('#txt_search_query').val());
+        var _url = '/DoorGroup/DoorGroupList';
+        getpaging("DoorGroupList", _url, 1, $('#txt_search_query').val());
     }
 
     $(document).on('keypress', '#txt_search_query',function (e) {
@@ -99,7 +98,7 @@
         LoadGridData();
     });
     function DownloadExcel() {
-        window.location.href = '/Reader/Export?searchtxt=' + $('#txt_search_query').val();
+        window.location.href = '/DoorGroup/Export?searchtxt=' + $('#txt_search_query').val();
         $(".loading").hide();
     }
     </script>

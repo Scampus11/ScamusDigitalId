@@ -13,7 +13,7 @@
 }
 
 <!--begin::Form-->
-<form id="frmManageReader" asp-action="AddEditReader" asp-controller="Reader" method="post">
+<form id="frmManageDoorGroup" asp-action="AddEditDoorGroup" asp-controller="DoorGroup" method="post">
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
@@ -50,7 +50,7 @@
                                 @Html.HiddenFor(x => x.ModifiedBy)
                                 @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
                                 <div class="card-toolbar">
-                                    <a href="/Reader/Reader" class="btn btn-danger font-weight-bolder mr-2">
+                                    <a href="/DoorGroup/DoorGroup" class="btn btn-danger font-weight-bolder mr-2">
                                         <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
                                     </a>
                                     @{
@@ -118,6 +118,7 @@
                                                 </label>
                                             </div>
                                             <div class="col-8">
+                                                @Html.HiddenFor(Model => Model.ReaderId)
                                                 @Html.DropDownListFor(model => model.ReaderId, new SelectList(Model.lstReader, "Value", "Text")
 , new { @class = "form-control", @id = "ddlReader", @multiple = "multiple", onchange="test()" })
                                             </div>
@@ -151,6 +152,16 @@
     
     <link href="~/assets/css/bootstrap-multiselect.css" rel="stylesheet" />
     <script src="~/assets/js/bootstrap-multiselect.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var result = '@Model.ReaderId'.split(',');// Array of SelectedValues
+            debugger;
+            $("#ddlReader").val(result);
+        })
+    </script>
+    
+
     <script type="text/javascript">
         $(function () {
             $('#ddlReader').multiselect({
@@ -169,20 +180,9 @@
                 arrSelected.push($(this).val());    /*Stack the Value*/
                 message += $(this).text() + " " + $(this).val() + "\n";
             });
-            console.log(arrSelected.join(','));
+            $("#ReaderId").val(arrSelected.join(','));
+            debugger;
         }
-
-
-        $("#btnmyCountries").click(function () {
-            var selected = $("#myCountries option:selected");    /*Current Selected Value*/
-            var message = "";
-            var arrSelected = [];      /*Array to store multiple values in stack*/
-            selected.each(function () {
-                arrSelected.push($(this).val());    /*Stack the Value*/
-                message += $(this).text() + " " + $(this).val() + "\n";
-            });
-            alert(message);
-        });  
     </script>
 
 }

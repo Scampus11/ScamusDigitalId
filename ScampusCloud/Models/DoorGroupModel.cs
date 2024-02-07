@@ -13,6 +13,8 @@ namespace ScampusCloud.Models
         public Guid? CompanyId { get; set; }
         [Required(ErrorMessage = "Please enter name")]
         public string Name { get; set; }
+
+        [Remote(action: "IsDoorGroupCodeExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Code is already in use.")]
         public string Code { get; set; }
         public string Description { get; set; }
         public string ReaderId { get; set; }

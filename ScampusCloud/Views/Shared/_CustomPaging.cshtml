@@ -124,7 +124,6 @@
             },
             success: function (data) {
                 $(".loading").removeClass('show');
-                debugger;
                 $('#' + divID).html('');
                 $('#' + divID).html(data);
                 if ($('#' + divID).html(data)[0].innerText == "No records found") {
