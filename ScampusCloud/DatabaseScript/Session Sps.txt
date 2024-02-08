@@ -1,0 +1,176 @@
+USE [ScampusCloud]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_DownloadSessionMasterData_Export]    Script Date: 02/08/2024 9:50:25 PM ******/
+DROP PROCEDURE [dbo].[SP_DownloadSessionMasterData_Export]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_SessionMaster_CURD]    Script Date: 02/08/2024 9:50:25 PM ******/
+DROP PROCEDURE [dbo].[SP_SessionMaster_CURD]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_GetSessionMasterData]    Script Date: 02/08/2024 9:50:25 PM ******/
+DROP PROCEDURE [dbo].[SP_GetSessionMasterData]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_GetSessionMasterData_Count]    Script Date: 02/08/2024 9:50:25 PM ******/
+DROP PROCEDURE [dbo].[SP_GetSessionMasterData_Count]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_GetSessionMasterData_Count]    Script Date: 02/08/2024 9:50:25 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+
+CREATE PROCEDURE [dbo].[SP_GetSessionMasterData_Count]
+@Search nvarchar(max)='',
+@CompanyId nvarchar(100)=''
+AS
+BEGIN
+	
+	SET NOCOUNT OFF;
+	SELECT COUNT(Id) from Tbl_Mstr_Session_Master 
+	WHERE (Id LIKE '%' + @Search + '%' or Name LIKE '%' + @Search + '%'
+	or Description LIKE '%' + @Search + '%' or StartTime LIKE '%' + @Search + '%' or EndTime LIKE '%' + @Search + '%')
+	and CompanyId=@CompanyId
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_GetSessionMasterData]    Script Date: 02/08/2024 9:50:25 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+CREATE PROCEDURE [dbo].[SP_GetSessionMasterData]
+@Search nvarchar(max)=''
+,@page INT=1
+,@pagesize INT=10
+,@CompanyId nvarchar(100)=''
+
+AS
+
+BEGIN
+	SELECT Id,[Name],Description,StartTime,EndTime,ISNULL(c.IsDeleted,1) AS IsDeleted,ISNULL(c.IsActive,1) AS IsActive ,c.Code from Tbl_Mstr_Session_Master c
+	WHERE (Id LIKE '%' + @Search + '%' or Name LIKE '%' + @Search + '%' or c.Code LIKE '%' + @Search + '%'
+	or c.Description LIKE '%' + @Search + '%' or c.StartTime LIKE '%' + @Search + '%' or c.EndTime LIKE '%' + @Search + '%')
+	and c.CompanyId=@CompanyId
+	ORDER BY Id ASC
+	OFFSET 	(@Page -1) * @pageSize ROWS
+	FETCH NEXT @pageSize ROWS ONLY
+END
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_SessionMaster_CURD]    Script Date: 02/08/2024 9:50:25 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+CREATE   PROCEDURE [dbo].[SP_SessionMaster_CURD]
+@Id int = null,
+@Name nvarchar(50)=null,
+@CompanyId uniqueidentifier = null,
+@Code nvarchar(50)='',
+@Description nvarchar(500)=null,
+@StartTime nvarchar(50)=null,
+@EndTime nvarchar(50)=null,
+@Isactive bit = 0,
+@CreatedBy uniqueidentifier=null,
+@ModifiedBy uniqueidentifier=null,
+@ActionType nvarchar(20) = ''
+
+AS
+
+BEGIN
+	IF @ActionType = 'Insert'  
+	BEGIN  
+		
+		--Start SessionMaster
+	    Insert into Tbl_Mstr_Session_Master
+		(
+			Name, CompanyId, Code,Description,StartTime,EndTime,IsDeleted,IsActive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy
+		) 
+		values
+		(
+			@Name, @CompanyId, @Code,@Description,@StartTime,@EndTime,0,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy
+		)
+		--End SessionMaster
+
+		
+	END  
+	IF @ActionType = 'Edit' OR @ActionType='Remote'
+	BEGIN  
+		select C.Id,C.CompanyId,C.Name,C.Code,Description,StartTime,EndTime,
+		C.CreatedBy,C.ModifiedBy,C.Isactive
+		from Tbl_Mstr_Session_Master C 
+		WHERE (C.Id=@Id or C.Code=@Code) and CompanyId=@CompanyId
+	END  
+	IF @ActionType = 'Update'  
+	BEGIN  
+	--Start SessionMaster
+		UPDATE Tbl_Mstr_Session_Master SET  
+			Name = IsNull(@Name,Name), 
+			Code = IsNull(@Code,Code), 
+			Description= IsNull(@Description,Description),
+			StartTime= IsNull(@StartTime,StartTime),
+			EndTime= IsNull(@EndTime,EndTime),
+			Isactive=@Isactive,
+			ModifiedDate = GETDATE() 
+		WHERE CompanyId = @CompanyId and Id=@Id
+	--End SessionMaster
+
+	
+	END  
+	IF @ActionType = 'Delete'  
+	BEGIN  
+		Delete from Tbl_Mstr_Session_Master Where Id = @Id
+		
+	END  
+END
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_DownloadSessionMasterData_Export]    Script Date: 02/08/2024 9:50:25 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+CREATE PROCEDURE [dbo].[SP_DownloadSessionMasterData_Export]
+@Search nvarchar(max)='',
+@CompanyId nvarchar(100)=''
+
+AS
+BEGIN
+		Select Name,Code,Description,StartTime,EndTime
+		from Tbl_Mstr_Session_Master  
+		where (Name LIKE '%' + @Search + '%' or Code LIKE '%' + @Search + '%' ) and CompanyId=@CompanyId
+		order by Id Asc
+END
+
+
+GO
+
+

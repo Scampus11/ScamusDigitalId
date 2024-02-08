@@ -1,0 +1,2 @@
+Alter table Tbl_Mstr_AccessGroup_Master
+Add  Is_Canteen Bit
