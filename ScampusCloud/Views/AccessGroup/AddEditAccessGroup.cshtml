@@ -1,0 +1,275 @@
+﻿@model ScampusCloud.Models.AccessGroupModel
+@using ScampusCloud.Utility
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.IsEdit == false)
+    {
+        ViewData["Title"] = "Add Access Group";
+    }
+    else
+    {
+        ViewData["Title"] = "Edit Access Group";
+    }
+}
+
+<!--begin::Form-->
+<form id="frmManageAccessGroup" asp-action="AddEditAccessGroup" asp-controller="AccessGroup" method="post">
+    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">@ViewData["Title"]</h5>
+                    <!--end::Page Title-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid flex-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b example-compact">
+                        <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                            <div class="card-header" style="">
+                                <div class="card-title">
+                                    <h3 class="card-label">
+                                        <i class="mr-2"></i>
+                                        <small class=""></small>
+                                    </h3>
+                                </div>
+                                @Html.HiddenFor(x => x.IsEdit)
+                                @Html.HiddenFor(x => x.Id)
+                                @Html.HiddenFor(x => x.CompanyId)
+                                @Html.HiddenFor(x => x.CreatedBy)
+                                @Html.HiddenFor(x => x.ModifiedBy)
+                                @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
+                                <div class="card-toolbar">
+                                    <a href="/DoorGroup/DoorGroup" class="btn btn-danger font-weight-bolder mr-2">
+                                        <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
+                                    </a>
+                                    @{
+                                        if (ViewBag.NoRecordExist == null)
+                                        {
+                                            <button type="submit" asp-action="AddEditDoorGroup" class="btn btn-primary font-weight-bolder mr-2">
+                                                <i class="flaticon-interface-5"></i>
+                                                <span class="nav-text">@(Model.IsEdit == false ? "Save & Add New" : "Update & continue")</span>
+                                            </button>
+                                            <button type="submit" form="frmManageDoorGroup" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
+                                                <i class="flaticon-logout"></i>
+                                                <span class="nav-text">@(Model.IsEdit == false ? "Save & Exit" : "Update & Exit")</span>
+                                            </button>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="row h-100 justify-content-center align-items-center">
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        @Html.Partial("_NotificationAlert", new ScampusCloud.Models.ResponseMessage() { IsSuccess = Model.IsSuccess, Response_Message = Model.Response_Message })
+                                        <div class="form-group row">
+                                            <div class="col-3 text-right">
+                                                <label class="col-form-label">
+                                                    Name:
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                            </div>
+
+
+
+                                            <div class="col-1 text-right">
+                                                <label class="col-form-label">
+                                                    Description:
+                                                </label>
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @required = "required" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-3 text-right">
+                                                <label class="col-form-label">
+                                                    Code:
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="col-1">
+                                                <label class="col-form-label">
+                                                    Canteen Type:
+                                                </label>
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.DropDownListFor(model => model.AccessGroupTypeId, new SelectList(Model.lstAccessGroupDropdown, "Value", "Text"), "Select Canteen Type"
+, new { @class = "form-control", @id = "ddlCanteenType" })
+                                                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-3 text-right">
+                                                <label class="col-form-label">Is SAG: </label>
+                                            </div>
+                                            <div class="col-8">
+                                                <span class='switch switch-icon'>
+                                                    <label>
+                                                        <input type='checkbox' id="chkIsActive" checked="@(Model.IsSAG ? "checked" : "")">
+                                                        <span></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-3 text-right">
+                                                <label class="col-form-label">Is Active: </label>
+                                            </div>
+                                            <div class="col-8">
+                                                <span class='switch switch-icon'>
+                                                    <label>
+                                                        <input type='checkbox' id="chkIsActive" checked="@(Model.IsActive ? "checked" : "")">
+                                                        <span></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                            <div class="col-3 text-right">
+                                                <label class="col-form-label">
+                                                    Door Group:
+                                                </label>
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.DropDownListFor(model => model.DoorGroupId, new SelectList(Model.lstDoorGroupDropdown, "Value", "Text"), "Select Door Group"
+, new { @class = "form-control", @id = "ddlDoorGroup" })
+                                            </div>
+                                            <div class="col-1 text-right">
+                                                <label class="col-form-label">
+                                                    Session:
+                                                </label>
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.DropDownListFor(model => model.DoorGroupId, new SelectList(Model.lstDoorGroupDropdown, "Value", "Text"), "Select Door Group"
+, new { @class = "form-control", @id = "ddlDoorGroup" })
+                                            </div>
+
+                                            <div class="col-2">
+                                                <button type="button" class="btn btn-success font-weight-bolder mr-2" id="btnAdd">
+                                                    <i class="flaticon-logout"></i>
+                                                    <span class="nav-text">Add</span>
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group row" id="myPartialContainer">
+                                            @*@if (Model.lstAccessGroupLevel != null &&  Model.lstAccessGroupLevel.Count > 0)
+                                            {
+                                                @Html.Partial("_AccessGroupLevel", Model)
+                                            }*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    <link href="~/assets/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <script src="~/assets/js/bootstrap-multiselect.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            @*var result = '@Model.ReaderId'.split(',');
+            $("#ddlReader").val(result);*@
+        })
+    </script>
+
+
+    <script type="text/javascript">
+
+        var lstAccessGroupLevel = [
+            {
+                DoorGroupId: 1
+            },
+            {
+                DoorGroupId: 2
+            },
+        ];
+       
+        $("#btnAdd").click(function () {
+           
+            var jsonData = JSON.stringify(cars);
+            
+            
+
+            //$.ajax({
+            //    url: '/AccessGroup/AccessGroupLevel',
+            //    type: 'POST',
+            //    contentType: 'application/json',
+            //    data: JSON.stringify(lstAccessGroupLevel),
+            //    success: function (response) {
+            //        $('#myPartialContainer').html(response);
+            //    },
+            //    error: function (xhr, status, error) {
+            //        // Handle error response
+            //        console.error("Error:", error);
+            //    }
+            //});
+
+
+        })
+
+
+        $(function () {
+            $('#ddlReader').multiselect({
+                includeSelectAllOption: true,
+                selectAllValue: 'multiselect-all',
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: '300',
+                buttonWidth: '235',
+            });
+        });
+        $("#chkIsActive").change(function () {
+            $("#hdnIsActive").val($(this).is(':checked'));
+        });
+
+        function SelectReaderType() {
+            var selected = $("#ddlReader option:selected");
+            var message = "";
+            var arrSelected = [];
+            selected.each(function () {
+                arrSelected.push($(this).val());
+                message += $(this).text() + " " + $(this).val() + "\n";
+            });
+            $("#ReaderId").val(arrSelected.join(','));
+        }
+    </script>
+
+}

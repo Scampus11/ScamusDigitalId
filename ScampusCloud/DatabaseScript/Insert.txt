@@ -1,0 +1,50 @@
+USE [ScampusCloud]
+GO
+
+INSERT INTO [dbo].[Tbl_Mstr_AccessGroup_Type_Master]
+           ([Name]
+           ,[CompanyId]
+           ,[Code]
+           ,[IsDeleted]
+           ,[IsActive]
+           ,[CreatedDate]
+           ,[ModifiedDate]
+           ,[CreatedBy]
+           ,[ModifiedBy])
+     VALUES
+           (
+		     'In Kind',
+			 'A1B42BAF-8C3D-43DA-A5EB-47334EF958D2',
+			 'Code 1',
+			 0,
+			 1,
+			 GETDATE(),
+			 GETDATE(),
+			 '18353B3E-136F-4967-9A81-70ED790EF434',
+			 '18353B3E-136F-4967-9A81-70ED790EF434'
+		   )
+
+
+INSERT INTO [dbo].[Tbl_Mstr_AccessGroup_Type_Master]
+           ([Name]
+           ,[CompanyId]
+           ,[Code]
+           ,[IsDeleted]
+           ,[IsActive]
+           ,[CreatedDate]
+           ,[ModifiedDate]
+           ,[CreatedBy]
+           ,[ModifiedBy])
+     VALUES
+           (
+		     'In Cash',
+			 'A1B42BAF-8C3D-43DA-A5EB-47334EF958D2',
+			 'Code 2',
+			 0,
+			 1,
+			 GETDATE(),
+			 GETDATE(),
+			 '18353B3E-136F-4967-9A81-70ED790EF434',
+			 '18353B3E-136F-4967-9A81-70ED790EF434'
+		   )
+GO
