@@ -362,6 +362,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccessGroupController.cs" />
     <Compile Include="Controllers\AdmissionController.cs" />
     <Compile Include="Controllers\CampusController.cs" />
     <Compile Include="Controllers\CardStatusController.cs" />
@@ -397,6 +398,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccessGroupModel.cs" />
     <Compile Include="Models\AdmissionModel.cs" />
     <Compile Include="Models\CampusModel.cs" />
     <Compile Include="Models\CardStatusModel.cs" />
@@ -425,6 +427,7 @@
     <Compile Include="Models\VisitorTypeModel.cs" />
     <Compile Include="Models\YearModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AccessGroup\AccessGroupRepository.cs" />
     <Compile Include="Repository\Admission\AdmissionRepository.cs" />
     <Compile Include="Repository\Campus\CampusRepository.cs" />
     <Compile Include="Repository\CardStatus\CardStatusRepository.cs" />
@@ -582,6 +585,9 @@
     <Content Include="Views\DoorGroup\DoorGroup.cshtml" />
     <Content Include="Views\VisitorCard\VisitorCard.cshtml" />
     <Content Include="Views\VisitorCard\AddEditVisitorCard.cshtml" />
+    <Content Include="Views\AccessGroup\AccessGroup.cshtml" />
+    <Content Include="Views\AccessGroup\AddEditAccessGroup.cshtml" />
+    <Content Include="Views\AccessGroup\_AccessGroupLevel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

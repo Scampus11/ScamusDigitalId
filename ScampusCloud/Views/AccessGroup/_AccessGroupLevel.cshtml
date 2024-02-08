@@ -1,0 +1,23 @@
+﻿@model List<ScampusCloud.Models.AccessGroupLevelModel>
+<div class="d-flex flex-column-fluid flex-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <tr>
+                        <th>Door Group</th>
+                        <th>Session</th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.DoorGroupId</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
