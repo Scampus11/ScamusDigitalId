@@ -7,11 +7,14 @@
                     <tr>
                         <th>Door Group</th>
                         <th>Session</th>
+                        <th>Delete</th>
                     </tr>
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.DoorGroupId</td>
+                            <td>@item.DoorGroup</td>
+                            <td>@item.Session</td>
+                            <td><i class='flaticon-delete' onclick="RemoveItem('@item.DoorGroup')"></i></td>
                         </tr>
                     }
                 </table>
@@ -19,5 +22,22 @@
         </div>
     </div>
 </div>
+<script>
+    function RemoveItem(doorgroup){
+        $.ajax({
+            url: '/AccessGroup/RemoveAccessGroupLevel?DoorGroup=' + doorgroup,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ DoorGroup: doorgroup }),
+            success: function (response) {
+                $('#myPartialContainer').html(response);
+            },
+            error: function (xhr, status, error) {
+                // Handle error response
+                console.error("Error:", error);
+            }
+        });
+    }
+</script>
 
 

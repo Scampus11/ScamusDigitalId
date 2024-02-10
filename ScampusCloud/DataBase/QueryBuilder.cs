@@ -52,9 +52,9 @@ namespace ScampusCloud.DataBase
         /// <param name="columnName">Name of the column</param>
         /// <param name="columnValue">Value of that column</param>
         /// <param name="columnType">Data type of the column</param>
-        public void AddFieldValue(string columnName, object columnValue, DataTypes columnType, bool isIdentity)
+        public void AddFieldValue(string columnName, object columnValue, DataTypes columnType, bool isIdentity,string typeName = "")
         {
-            FieldValue field = new FieldValue(columnName, columnValue, columnType, isIdentity);
+            FieldValue field = new FieldValue(columnName, columnValue, columnType, isIdentity,typeName);
             FieldValueCollection.Add(field);
         }
 

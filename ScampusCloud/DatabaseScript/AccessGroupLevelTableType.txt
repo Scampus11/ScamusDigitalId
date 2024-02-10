@@ -1,0 +1,1 @@
+CREATE TYPE AccessGroupLevelTableType AS TABLE ( DoorGroupId INT,SessionId INT );

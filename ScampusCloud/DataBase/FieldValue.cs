@@ -10,7 +10,8 @@ namespace ScampusCloud.DataBase
         Text,
         Numeric,
         Date,
-        Boolean
+        Boolean,
+        Structured
     }
     public class FieldValue
     {
@@ -19,6 +20,7 @@ namespace ScampusCloud.DataBase
         private object _columnValue;
         private bool _isIDentity;
         private DataTypes _columnType;
+        private string _typeName;
         #endregion
 
         #region properties
@@ -45,6 +47,11 @@ namespace ScampusCloud.DataBase
             get { return _columnName; }
             set { _columnName = value; }
         }
+        public string TypeName
+        {
+            get { return _typeName; }
+            set { _typeName = value; }
+        }
         #endregion
 
         #region Constructors
@@ -52,12 +59,13 @@ namespace ScampusCloud.DataBase
         {
         }
 
-        public FieldValue(string columnName, object columnValue, DataTypes columnType, bool isIdentity)
+        public FieldValue(string columnName, object columnValue, DataTypes columnType, bool isIdentity,string typeName)
         {
             _columnName = columnName;
             _columnValue = columnValue;
             _columnType = columnType;
             _isIDentity = isIdentity;
+            _typeName = typeName;
         }
         #endregion
     }

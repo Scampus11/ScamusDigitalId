@@ -49,6 +49,7 @@
                                 @Html.HiddenFor(x => x.CreatedBy)
                                 @Html.HiddenFor(x => x.ModifiedBy)
                                 @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
+                                @Html.HiddenFor(x => x.IsCanteen, new {id = "hdnIsCanteen"})
                                 <div class="card-toolbar">
                                     <a href="/DoorGroup/DoorGroup" class="btn btn-danger font-weight-bolder mr-2">
                                         <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
@@ -83,9 +84,6 @@
                                                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @required = "required" })
                                                 @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                                             </div>
-
-
-
                                             <div class="col-1 text-right">
                                                 <label class="col-form-label">
                                                     Description:
@@ -108,7 +106,7 @@
                                                 @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
                                             </div>
 
-                                            <div class="col-1">
+                                            <div class="col-1" id="CanteenType">
                                                 <label class="col-form-label">
                                                     Canteen Type:
                                                 </label>
@@ -127,7 +125,7 @@
                                             <div class="col-8">
                                                 <span class='switch switch-icon'>
                                                     <label>
-                                                        <input type='checkbox' id="chkIsActive" checked="@(Model.IsSAG ? "checked" : "")">
+                                                        <input type='checkbox' id="chkIsCanteen" checked="@(Model.IsCanteen ? "checked" : "")">
                                                         <span></span>
                                                     </label>
                                                 </span>
@@ -166,26 +164,22 @@
                                                 </label>
                                             </div>
                                             <div class="col-3">
-                                                @Html.DropDownListFor(model => model.DoorGroupId, new SelectList(Model.lstDoorGroupDropdown, "Value", "Text"), "Select Door Group"
-, new { @class = "form-control", @id = "ddlDoorGroup" })
+                                                @Html.DropDownListFor(model => model.DoorGroupId, new SelectList(Model.lstSessionDropdown, "Value", "Text"), "Select Session"
+, new { @class = "form-control", @id = "ddlSession" })
                                             </div>
-
                                             <div class="col-2">
                                                 <button type="button" class="btn btn-success font-weight-bolder mr-2" id="btnAdd">
                                                     <i class="flaticon-logout"></i>
                                                     <span class="nav-text">Add</span>
                                                 </button>
                                             </div>
-
                                         </div>
-
                                         <div class="form-group row" id="myPartialContainer">
-                                            @*@if (Model.lstAccessGroupLevel != null &&  Model.lstAccessGroupLevel.Count > 0)
+                                            @if (Model.lstAccessGroupLevel != null && Model.lstAccessGroupLevel.Count > 0)
                                             {
-                                                @Html.Partial("_AccessGroupLevel", Model)
-                                            }*@
+                                                @Html.Partial("_AccessGroupLevel", Model.lstAccessGroupLevel)
+                                            }
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -213,38 +207,34 @@
 
     <script type="text/javascript">
 
-        var lstAccessGroupLevel = [
-            {
-                DoorGroupId: 1
-            },
-            {
-                DoorGroupId: 2
-            },
-        ];
+        $('#chkIsCanteen').click(function () {
+            if ($(this).is(':checked')) {
+                $('#CanteenType').show();
+                $("#ddlCanteenType").show();
+            } else {
+                $('#CanteenType').hide();
+                $("#ddlCanteenType").hide();
+            }
+        });
        
         $("#btnAdd").click(function () {
-           
-            var jsonData = JSON.stringify(cars);
-            
-            
-
-            //$.ajax({
-            //    url: '/AccessGroup/AccessGroupLevel',
-            //    type: 'POST',
-            //    contentType: 'application/json',
-            //    data: JSON.stringify(lstAccessGroupLevel),
-            //    success: function (response) {
-            //        $('#myPartialContainer').html(response);
-            //    },
-            //    error: function (xhr, status, error) {
-            //        // Handle error response
-            //        console.error("Error:", error);
-            //    }
-            //});
-
-
+            var lstAccessGroupLevel = [];
+            debugger;
+            lstAccessGroupLevel.push({DoorGroup: $("#ddlDoorGroup option:selected").text(), DoorGroupId: $("#ddlDoorGroup").val(), Session: $("#ddlSession option:selected").text(), SessionId: $("#ddlSession").val() })
+            $.ajax({
+                url: '/AccessGroup/AccessGroupLevel',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(lstAccessGroupLevel),
+                success: function (response) {
+                    $('#myPartialContainer').html(response);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    console.error("Error:", error);
+                }
+            });
         })
-
 
         $(function () {
             $('#ddlReader').multiselect({
@@ -258,6 +248,10 @@
         });
         $("#chkIsActive").change(function () {
             $("#hdnIsActive").val($(this).is(':checked'));
+        });
+
+        $("#chkIsCanteen").change(function () {
+            $("#hdnIsCanteen").val($(this).is(':checked'));
         });
 
         function SelectReaderType() {
