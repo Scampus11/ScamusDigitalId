@@ -16,7 +16,7 @@ namespace ScampusCloud.Models
         [Column(TypeName = "varchar")]
         public string Name { get; set; }
         public Guid? CompanyId { get; set; }
-        [Remote(action: "IsDoorGroupCodeExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Code is already in use.")]
+        [Remote(action: "IsAccessGroupCodeExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Code is already in use.")]
         [Column(TypeName = "varchar")]
         public string Code { get; set; }
         public bool IsDeleted { get; set; }
@@ -35,7 +35,7 @@ namespace ScampusCloud.Models
         [Column(TypeName = "varchar")]
         public string Name { get; set; }
         public Guid? CompanyId { get; set; }
-        //  [Remote(action: "IsDoorGroupCodeExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Code is already in use.")]
+        [Remote(action: "IsAccessGroupCodeExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Code is already in use.")]
         [Column(TypeName = "varchar")]
         public string Code { get; set; }
         [Column(TypeName = "varchar")]

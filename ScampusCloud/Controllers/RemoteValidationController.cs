@@ -1,4 +1,5 @@
 ﻿using ScampusCloud.Models;
+using ScampusCloud.Repository.AccessGroup;
 using ScampusCloud.Repository.Admission;
 using ScampusCloud.Repository.Campus;
 using ScampusCloud.Repository.CardStatus;
@@ -59,6 +60,7 @@ namespace ScampusCloud.Controllers
         StudentModel StudentModel = new StudentModel();
         DoorGroupModel DoorGroup = new DoorGroupModel();
         VisitorCardModel VisitorCard = new VisitorCardModel();
+        AccessGroupModel AccessGroup = new AccessGroupModel();
         public RemoteValidationController()
         {
         }
@@ -1032,5 +1034,41 @@ namespace ScampusCloud.Controllers
 
         }
         #endregion
+
+        #region AccessGroup
+        [HttpPost]
+        public ActionResult IsAccessGroupCodeExist(string Code = "")
+        {
+            AccessGroupRepository _Repository = new AccessGroupRepository();
+            string Original_Code = SessionManager.Code;
+            bool IsEditMode = !string.IsNullOrEmpty(Original_Code) ? true : false;
+            string returnMsg = "";
+
+            if (IsEditMode && !string.Equals(Original_Code, Code))
+            {
+                AccessGroup.ActionType = "Remote";
+                AccessGroup.Code = Code;
+                AccessGroup.CompanyId = SessionManager.CompanyId;
+                AccessGroup = _Repository.AddEdit_AccessGroup(AccessGroup);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            else if (!IsEditMode)
+            {
+                AccessGroup.ActionType = "Remote";
+                AccessGroup.Code = Code;
+                AccessGroup.CompanyId = SessionManager.CompanyId;
+                AccessGroup = _Repository.AddEdit_AccessGroup(AccessGroup);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            if (AccessGroup == null)
+                return Json(true);
+            else if (AccessGroup.Code == null)
+                return Json(true);
+            else
+                return Json(false);
+
+        }
+        #endregion
+
     }
 }

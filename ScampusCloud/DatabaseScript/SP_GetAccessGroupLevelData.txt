@@ -1,0 +1,11 @@
+CREATE PROCEDURE [dbo].[SP_GetAccessGroupLevelData]
+@AccessGroupId INT
+,@CompanyId nvarchar(100)=''
+AS
+BEGIN
+	SELECT AT.DoorGroupId,AT.SessionId,DGM.Name as DoorGroup,SM.Name AS Session from Tbl_Mstr_AccessGroup_level_Master as AT
+	INNER JOIN Tbl_Mstr_DoorGroup_Master DGM ON AT.DoorGroupId = DGM.Id
+	INNER JOIN Tbl_Mstr_Session_Master SM ON AT.SessionId = SM.Id
+	WHERE AT.AccessGroupId = @AccessGroupId
+	and AT.CompanyId=@CompanyId
+END

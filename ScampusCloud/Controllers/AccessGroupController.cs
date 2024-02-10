@@ -1,11 +1,15 @@
-﻿using DocumentFormat.OpenXml.EMMA;
+﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Wordprocessing;
 using ScampusCloud.Models;
 using ScampusCloud.Repository.AccessGroup;
 using ScampusCloud.Repository.DoorGroup;
+using ScampusCloud.Repository.Reader;
 using ScampusCloud.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -266,6 +270,29 @@ namespace ScampusCloud.Controllers
                 result = "{\"noofpages\":" + noofpages + ",\"NoOfTotalRecords\":" + totals + "}";
 
                 return Content((result));
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
+        [HttpGet]
+        public FileResult Export(string searchtxt = "")
+        {
+            DataTable dt = new DataTable("Reader");
+            try
+            {
+                dt = _AccessGroupRepository.GetAccessGroupData_Export(searchtxt, SessionManager.CompanyId.ToString());
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(dt);
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        wb.SaveAs(stream);
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "AccessGroup.xlsx");
+                    }
+                }
             }
             catch (Exception ex)
             {
