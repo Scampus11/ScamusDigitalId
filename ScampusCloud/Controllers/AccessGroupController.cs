@@ -18,6 +18,7 @@ using System.Web.Mvc;
 
 namespace ScampusCloud.Controllers
 {
+    [SessionTimeoutAttribute]
     public class AccessGroupController : Controller
     {
         AccessGroupModel _AccessGroupModel = new AccessGroupModel();
