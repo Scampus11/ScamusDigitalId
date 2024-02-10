@@ -1,29 +1,63 @@
 ﻿@model List<ScampusCloud.Models.AccessGroupLevelModel>
-<div class="d-flex flex-column-fluid flex-center container">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table">
-                    <tr>
-                        <th>Door Group</th>
-                        <th>Session</th>
-                        <th>Delete</th>
-                    </tr>
-                    @foreach (var item in Model)
-                    {
+@*<div class="d-flex flex-column-fluid flex-center container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
                         <tr>
-                            <td>@item.DoorGroup</td>
-                            <td>@item.Session</td>
-                            <td><i class='flaticon-delete' onclick="RemoveItem('@item.DoorGroup')"></i></td>
+                            <th>Door Group</th>
+                            <th>Session</th>
+                            <th>Delete</th>
                         </tr>
-                    }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.DoorGroup</td>
+                                <td>@item.Session</td>
+                                <td><i class='flaticon-delete' onclick="RemoveItem('@item.DoorGroup')"></i></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<div class="d-flex flex-column-fluid flex-center container">
+    <div class="card-body pt-0">
+        <div class="mb-12">
+        </div>
+        <div id="AccessGroupLevelList" class="custom-paging">
+            <div class="datatable datatable-default datatable-primary datatable-loaded">
+                <table class="datatable-bordered datatable-head-custom datatable-table" id="kt_datatable" style="display: block;">
+                    <thead class="datatable-head rounded" style="background-color: rgb(54, 153, 255);">
+                        <tr class="datatable-row" style="left: 0px;">
+                            <th class="datatable-cell datatable-toggle-detail"><span></span></th>
+                            <th data-field="Code" class="datatable-cell datatable-cell-sort"><span style="color: rgb(255, 255, 255);">Door Group</span></th>
+                            <th data-field="Name" data-autohide-disabled="false" class="datatable-cell-center datatable-cell datatable-cell-sort"><span style="color: rgb(255, 255, 255);">Session</span></th>
+                            <th data-field="Action" data-autohide-disabled="false" class="datatable-cell-center datatable-cell datatable-cell-sort"><span style="color: rgb(255, 255, 255);">Action</span></th>
+                        </tr>
+                    </thead>
+                    <tbody style="" class="datatable-body">
+                        @foreach (var item in Model)
+                        {
+                            <tr data-row="0" class="datatable-row" style="left: 0px;">
+                                <td class="datatable-cell datatable-toggle-detail"><span></span></td>
+                                <td class="datatable-cell"><span>@item.DoorGroup</span></td>
+                                <td class="datatable-cell-center datatable-cell"><span>@item.Session</span></td>
+                                <td class="datatable-cell-center datatable-cell">
+                                    <a class='btn btn-sm btn-icon btn-lg-light btn-text-danger btn-hover-light-danger' onclick="RemoveItem('@item.DoorGroup')"><i class='flaticon-delete'></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 <script>
-    function RemoveItem(doorgroup){
+    function RemoveItem(doorgroup) {
         $.ajax({
             url: '/AccessGroup/RemoveAccessGroupLevel?DoorGroup=' + doorgroup,
             type: 'POST',
