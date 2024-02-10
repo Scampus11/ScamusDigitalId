@@ -112,7 +112,7 @@ namespace ScampusCloud.Controllers
             var officemaster = _AccessGroupRepository.AddEdit_AccessGroup(_AccessGroupModel);
             if (!string.IsNullOrEmpty(saveAndExit))
             {
-                return RedirectToAction("DoorGroup", "DoorGroup");
+                return RedirectToAction("AccessGroup", "AccessGroup");
             }
             else if (_AccessGroupModel.IsEdit == true)
             {
@@ -124,49 +124,29 @@ namespace ScampusCloud.Controllers
             }
         }
 
-        private List<SelectListItem> BindAccessGroupTypeDropDown(string CompanyId)
-        {
-            List<SelectListItem> drpList = new List<SelectListItem>();
-            drpList = _AccessGroupRepository.BindAccessGroupTypeDropDown(CompanyId);
-            return drpList;
-        }
-        private List<SelectListItem> BindDoorGroupDropDown(string CompanyId)
-        {
-            List<SelectListItem> drpList = new List<SelectListItem>();
-            drpList = _AccessGroupRepository.BindDoorGroupDropDown(CompanyId);
-            return drpList;
-        }
-
-        private List<SelectListItem> BindSessionDropDown(string CompanyId)
-        {
-            List<SelectListItem> drpList = new List<SelectListItem>();
-            drpList = _AccessGroupRepository.BindSessionDropDown(CompanyId);
-            return drpList;
-        }
+       
 
         [HttpPost]
         public PartialViewResult AccessGroupLevel(List<AccessGroupLevelModel> lstAccessGroupLevel)
         {
             List<AccessGroupLevelModel> ListName;
-
             if (Session["data"] != null)
             {
                 ListName = (List<AccessGroupLevelModel>)Session["data"];
-                // Add new items to the existing list
                 foreach (var item in lstAccessGroupLevel)
                 {
-                    ListName.Add(item);
+                    bool IsExistsAccessGroupLevel = ListName.Any(x => x.DoorGroup.Equals(item.DoorGroup) && x.Session.Equals(item.Session));
+                    if (!IsExistsAccessGroupLevel)
+                    {
+                        ListName.Add(item);
+                    }
                 }
             }
             else
             {
-                // Initialize the list if it doesn't exist in the session
                 ListName = lstAccessGroupLevel;
             }
-
-            // Update the session with the modified list
             Session["data"] = ListName;
-
             return PartialView("_AccessGroupLevel", ListName);
         }
 
@@ -205,13 +185,13 @@ namespace ScampusCloud.Controllers
             {
                 searchtxt = string.IsNullOrEmpty(searchtxt) ? "" : searchtxt;
                 int totals = Convert.ToInt32(_AccessGroupRepository.GetAllCount(searchtxt, SessionManager.CompanyId.ToString()));
-                var lstCountries = _AccessGroupRepository.GetAccessGroupList(searchtxt, page, pagesize, SessionManager.CompanyId.ToString());
+                var lstAccessGroup = _AccessGroupRepository.GetAccessGroupList(searchtxt, page, pagesize, SessionManager.CompanyId.ToString());
                 Session["totalrecords"] = Convert.ToString(totals);
                 Session["paging_size"] = Convert.ToString(pagesize);
                 ViewData["totalrecords"] = totals;
                 ViewData["paging_size"] = pagesize;
                 StringBuilder strHTML = new StringBuilder();
-                if (lstCountries.Count > 0)
+                if (lstAccessGroup.Count > 0)
                 {
                     strHTML.Append("<table class='datatable-bordered datatable-head-custom datatable-table' id='kt_datatable'>");
                     strHTML.Append("<thead class='datatable-head'>");
@@ -223,7 +203,7 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("</tr>");
                     strHTML.Append("</thead>");
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
-                    foreach (var item in lstCountries)
+                    foreach (var item in lstAccessGroup)
                     {
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.Id + "','AccessGroup','AccessGroup','Delete')";
                         strHTML.Append("<tr>");
@@ -250,9 +230,6 @@ namespace ScampusCloud.Controllers
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
                 throw;
             }
-
-
-            //return Json(Reader, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AccessGroupListCount()
@@ -300,5 +277,27 @@ namespace ScampusCloud.Controllers
                 throw;
             }
         }
+
+        #region Private method
+        private List<SelectListItem> BindAccessGroupTypeDropDown(string CompanyId)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _AccessGroupRepository.BindAccessGroupTypeDropDown(CompanyId);
+            return drpList;
+        }
+        private List<SelectListItem> BindDoorGroupDropDown(string CompanyId)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _AccessGroupRepository.BindDoorGroupDropDown(CompanyId);
+            return drpList;
+        }
+
+        private List<SelectListItem> BindSessionDropDown(string CompanyId)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _AccessGroupRepository.BindSessionDropDown(CompanyId);
+            return drpList;
+        }
+        #endregion
     }
 }
