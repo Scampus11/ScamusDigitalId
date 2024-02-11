@@ -166,7 +166,7 @@
                                             </div>
                                             <div class="col-2">
                                                 <button type="button" class="btn btn-success font-weight-bolder mr-2" id="btnAdd">
-                                                    <i class="flaticon-logout"></i>
+                                                    <i class="flaticon-add"></i>
                                                     <span class="nav-text">Add</span>
                                                 </button>
                                             </div>
@@ -213,10 +213,9 @@
                 $("#ddlCanteenType").hide();
             }
         });
-       
+
         $("#btnAdd").click(function () {
             var lstAccessGroupLevel = [];
-            debugger;
             if ($("#ddlDoorGroup").val() != '' && $("#ddlSession").val() != '') {
                 lstAccessGroupLevel.push({ DoorGroup: $("#ddlDoorGroup option:selected").text(), DoorGroupId: $("#ddlDoorGroup").val(), Session: $("#ddlSession option:selected").text(), SessionId: $("#ddlSession").val() })
                 $.ajax({

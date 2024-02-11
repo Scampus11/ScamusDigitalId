@@ -131,12 +131,13 @@ namespace ScampusCloud.Controllers
         public PartialViewResult AccessGroupLevel(List<AccessGroupLevelModel> lstAccessGroupLevel)
         {
             List<AccessGroupLevelModel> ListName;
+            bool IsExistsAccessGroupLevel = false;
             if (Session["data"] != null)
             {
                 ListName = (List<AccessGroupLevelModel>)Session["data"];
                 foreach (var item in lstAccessGroupLevel)
                 {
-                    bool IsExistsAccessGroupLevel = ListName.Any(x => x.DoorGroup.Equals(item.DoorGroup) && x.Session.Equals(item.Session));
+                    IsExistsAccessGroupLevel = ListName.Any(x => x.DoorGroup.Equals(item.DoorGroup) && x.Session.Equals(item.Session));
                     if (!IsExistsAccessGroupLevel)
                     {
                         ListName.Add(item);
@@ -271,6 +272,24 @@ namespace ScampusCloud.Controllers
                         return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "AccessGroup.xlsx");
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Delete(string Id)
+        {
+            try
+            {
+                _AccessGroupModel.ActionType = "Delete";
+                _AccessGroupModel.Id = Convert.ToInt32(Id);
+                var response = _AccessGroupRepository.AddEdit_AccessGroup(_AccessGroupModel);
+
+                return RedirectToAction("AccessGroup", "AccessGroup");
             }
             catch (Exception ex)
             {

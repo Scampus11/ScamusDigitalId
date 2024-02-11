@@ -65,5 +65,6 @@ BEGIN
 	IF @ActionType = 'Delete'  
 	BEGIN  
 		Delete from Tbl_Mstr_AccessGroup_Master Where Id = @Id
+                Delete from Tbl_Mstr_AccessGroup_level_Master Where AccessGroupId = @Id
 	END  
 END
