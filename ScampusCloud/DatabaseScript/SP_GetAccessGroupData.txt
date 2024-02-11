@@ -1,11 +1,11 @@
-CREATE PROCEDURE [dbo].[SP_GetAccessGroupData]
+ALTER PROCEDURE [dbo].[SP_GetAccessGroupData]
 @Search nvarchar(max)=''
 ,@page INT=1
 ,@pagesize INT=10
 ,@CompanyId nvarchar(100)=''
 AS
 BEGIN
-	SELECT C.Id,C.Name,AT.Name,C.Description from Tbl_Mstr_AccessGroup_Master c
+	SELECT C.Id,C.Name,AT.Name as CanteenType,C.Description,C.Code from Tbl_Mstr_AccessGroup_Master c
 	INNER JOIN Tbl_Mstr_AccessGroup_Type_Master AT ON C.AccessGroupTypeId = AT.Id
 	WHERE (C.Id LIKE '%' + @Search + '%' or C.Name LIKE '%' + @Search + '%')
 	and C.CompanyId=@CompanyId
