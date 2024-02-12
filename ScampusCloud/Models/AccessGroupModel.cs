@@ -16,6 +16,8 @@ namespace ScampusCloud.Models
         [Column(TypeName = "varchar")]
         public string Name { get; set; }
         public Guid? CompanyId { get; set; }
+
+        [Required(ErrorMessage = "Please enter code")]
         [Remote(action: "IsAccessGroupCodeExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Code is already in use.")]
         [Column(TypeName = "varchar")]
         public string Code { get; set; }

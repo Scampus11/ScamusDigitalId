@@ -200,6 +200,7 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<table class='datatable-bordered datatable-head-custom datatable-table' id='kt_datatable'>");
                     strHTML.Append("<thead class='datatable-head'>");
                     strHTML.Append("<tr class='datatable-row'>");
+                    strHTML.Append("<th class='datatable-cell'>Code</th>");
                     strHTML.Append("<th class='datatable-cell'>Name</th>");
                     strHTML.Append("<th class='datatable-cell'>Canteen Type</th>");
                     strHTML.Append("<th class='datatable-cell'>Description</th>");
@@ -211,6 +212,7 @@ namespace ScampusCloud.Controllers
                     {
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.Id + "','AccessGroup','AccessGroup','Delete')";
                         strHTML.Append("<tr>");
+                        strHTML.Append("<td>" + item.Code + "</td>");
                         strHTML.Append("<td>" + item.Name + "</td>");
                         strHTML.Append("<td>" + item.CanteenType + "</td>");
                         strHTML.Append("<td>" + item.Description + "</td>");
