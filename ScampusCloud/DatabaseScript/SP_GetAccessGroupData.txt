@@ -5,11 +5,12 @@ ALTER PROCEDURE [dbo].[SP_GetAccessGroupData]
 ,@CompanyId nvarchar(100)=''
 AS
 BEGIN
-	SELECT C.Id,C.Name,AT.Name as CanteenType,C.Description,C.Code from Tbl_Mstr_AccessGroup_Master c
-	INNER JOIN Tbl_Mstr_AccessGroup_Type_Master AT ON C.AccessGroupTypeId = AT.Id
-	WHERE (C.Id LIKE '%' + @Search + '%' or C.Name LIKE '%' + @Search + '%')
+	SELECT C.Id,C.Name,ISNULL(AT.Name,'N/A') as CanteenType,C.Description,C.Code from Tbl_Mstr_AccessGroup_Master c
+	LEFT JOIN Tbl_Mstr_AccessGroup_Type_Master AT ON C.AccessGroupTypeId = AT.Id
+	WHERE (C.Id LIKE '%' + @Search + '%' or C.Name LIKE '%' + @Search + '%' or AT.Name LIKE '%' + @Search + '%')
 	and C.CompanyId=@CompanyId
 	ORDER BY Id ASC
 	OFFSET 	(@Page -1) * @pageSize ROWS
 	FETCH NEXT @pageSize ROWS ONLY
 END
+SELECT * FROM Tbl_Mstr_AccessGroup_Master

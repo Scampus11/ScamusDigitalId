@@ -49,7 +49,8 @@
                                 @Html.HiddenFor(x => x.CreatedBy)
                                 @Html.HiddenFor(x => x.ModifiedBy)
                                 @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
-                                @Html.HiddenFor(x => x.IsCanteen, new {id = "hdnIsCanteen"})
+                                @Html.HiddenFor(x => x.Is_Canteen, new { id = "hdnIsCanteen" })
+                                @Html.HiddenFor(x => x.DoorGroupIds, new { id = "DoorGroupIds" })
                                 <div class="card-toolbar">
                                     <a href="/AccessGroup/AccessGroup" class="btn btn-danger font-weight-bolder mr-2">
                                         <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
@@ -124,7 +125,7 @@
                                             <div class="col-3">
                                                 <span class='switch switch-icon'>
                                                     <label>
-                                                        <input type='checkbox' id="chkIsCanteen" checked="@(Model.IsCanteen ? "checked" : "")">
+                                                        <input type='checkbox' id="chkIsCanteen" checked="@(Model.Is_Canteen == true ? "checked" : "")">
                                                         <span></span>
                                                     </label>
                                                 </span>
@@ -152,8 +153,24 @@
                                                 </label>
                                             </div>
                                             <div class="col-3">
-                                                @Html.DropDownListFor(model => model.DoorGroupId, new SelectList(Model.lstDoorGroupDropdown, "Value", "Text"), "Select Door Group"
-, new { @class = "form-control", @id = "ddlDoorGroup" })
+                                                @Html.HiddenFor(Model => Model.DoorGroupIds)
+                                                @Html.HiddenFor(Model => Model.DoorGroupId)
+                                                <select id="ddlDoorGroup" multiple="multiple" required=required name="ddlDoorGroup" onchange="SelectDoorGroup()">
+                                                    @if (Model.lstDoorGroupDropdown != null)
+                                                    {
+                                                        foreach (var item in Model.lstDoorGroupDropdown)
+                                                        {
+                                                            if (item.Text != null)
+                                                            {
+                                                                <option value="@item.Value">
+                                                                    @item.Text
+                                                                </option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                                @*@Html.DropDownListFor(model => model.DoorGroupId, new SelectList(Model.lstDoorGroupDropdown, "Value", "Text"), "Select Door Group"
+                                                    , new { @class = "form-control", @id = "ddlDoorGroup" })*@
                                             </div>
                                             <div class="col-1 text-right">
                                                 <label class="col-form-label">
@@ -161,8 +178,24 @@
                                                 </label>
                                             </div>
                                             <div class="col-3">
-                                                @Html.DropDownListFor(model => model.DoorGroupId, new SelectList(Model.lstSessionDropdown, "Value", "Text"), "Select Session"
-, new { @class = "form-control", @id = "ddlSession" })
+                                                @Html.HiddenFor(Model => Model.SessionIds)
+                                                @Html.HiddenFor(Model => Model.SessionId)
+                                                <select id="ddlSession" multiple="multiple" required=required name="ddlSession" onchange="SelectSession()">
+                                                    @if (Model.lstSessionDropdown != null)
+                                                    {
+                                                        foreach (var item in Model.lstSessionDropdown)
+                                                        {
+                                                            if (item.Text != null)
+                                                            {
+                                                                <option value="@item.Value">
+                                                                    @item.Text
+                                                                </option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                                @*@Html.DropDownListFor(model => model.DoorGroupId, new SelectList(Model.lstSessionDropdown, "Value", "Text"), "Select Session"
+                                                    , new { @class = "form-control", @id = "ddlSession" })*@
                                             </div>
                                             <div class="col-2">
                                                 <button type="button" class="btn btn-success font-weight-bolder mr-2" id="btnAdd">
@@ -196,14 +229,46 @@
 
     <script>
         $(document).ready(function () {
-            @*var result = '@Model.ReaderId'.split(',');
-            $("#ddlReader").val(result);*@
+            var result = '@Model.DoorGroupIds'.replace(' ', '').split(',');
+            var result1 = '@Model.SessionIds'.replace(' ','').split(',');
+            $("#ddlDoorGroup").val(result);
+            $("#ddlSession").val(result1);
+            if ('@Model.Is_Canteen' == 'True') {
+                $('#chkIsCanteen').prop('checked', true);
+                $('#CanteenType').show();
+                $("#ddlCanteenType").show();
+            }
+            else {
+                $('#chkIsCanteen').prop('checked', false);
+                $('#CanteenType').hide();
+                $("#ddlCanteenType").hide();
+            }
         })
+        $(function () {
+            $('#ddlDoorGroup').multiselect({
+                includeSelectAllOption: true,
+                selectAllValue: 'multiselect-all',
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: '300',
+                buttonWidth: '235',
+            });
+            $('#ddlSession').multiselect({
+                includeSelectAllOption: true,
+                selectAllValue: 'multiselect-all',
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: '300',
+                buttonWidth: '235',
+            });
+        });
     </script>
-
-
     <script type="text/javascript">
-
+        var arrDoorGroupSelected = [];
+        var arrSessionSelected = [];
+        let DoorGroup = null;
+        let Session = null;
+        var lstAccessGroupLevel = [];
         $('#chkIsCanteen').click(function () {
             if ($(this).is(':checked')) {
                 $('#CanteenType').show();
@@ -213,54 +278,126 @@
                 $("#ddlCanteenType").hide();
             }
         });
-
         $("#btnAdd").click(function () {
-            var lstAccessGroupLevel = [];
-            if ($("#ddlDoorGroup").val() != '' && $("#ddlSession").val() != '') {
-                lstAccessGroupLevel.push({ DoorGroup: $("#ddlDoorGroup option:selected").text(), DoorGroupId: $("#ddlDoorGroup").val(), Session: $("#ddlSession option:selected").text(), SessionId: $("#ddlSession").val() })
-                $.ajax({
-                    url: '/AccessGroup/AccessGroupLevel',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(lstAccessGroupLevel),
-                    success: function (response) {
-                        $('#myPartialContainer').html(response);
-                    },
-                    error: function (xhr, status, error) {
-                        // Handle error response
-                        console.error("Error:", error);
+            // Define isCombinationExists function within the click event handler scope
+            function isCombinationExists(lstAccessGroupLevel, combination) {
+                // Iterate through lstAccessGroupLevel to check for existence of exact combination
+                for (let i = 0; i < lstAccessGroupLevel.length; i++) {
+                    // Compare each combination in lstAccessGroupLevel with the given combination
+                    if (lstAccessGroupLevel[i].DoorgroupId === combination.DoorgroupId &&
+                        lstAccessGroupLevel[i].SessionId === combination.SessionId) {
+                        // Exact combination already exists
+                        return true;
                     }
-                });
+                }
+                // Exact combination does not exist
+                return false;
             }
-        })
 
-        $(function () {
-            $('#ddlReader').multiselect({
-                includeSelectAllOption: true,
-                selectAllValue: 'multiselect-all',
-                enableFiltering: true,
-                enableCaseInsensitiveFiltering: true,
-                maxHeight: '300',
-                buttonWidth: '235',
-            });
+            if (arrDoorGroupSelected.length == 0) {
+                SelectDoorGroup();
+                DoorGroup = arrDoorGroupSelected;
+            } else {
+                DoorGroup = arrDoorGroupSelected;
+            }
+
+            if (arrSessionSelected.length == 0) {
+                SelectSession();
+                Session = arrSessionSelected;
+            } else {
+                Session = arrSessionSelected;
+            }
+            
+            //var lstAccessGroupLevel = [];
+            DoorGroup = removeDuplicates(DoorGroup);
+            Session = removeDuplicates(Session);
+            // Separate arrays to store existing and new combinations
+            var existingCombinations = [];
+            var newCombinations = [];
+            // Iterate through all combinations and separate existing and new ones
+            for (let i = 0; i < DoorGroup.length; i++) {
+                for (let j = 0; j < Session.length; j++) {
+                    let combination = {
+                        DoorgroupId: DoorGroup[i].split(',')[0],
+                        DoorGroup: DoorGroup[i].split(',')[1],
+                        SessionId: Session[j].split(',')[0],
+                        Session: Session[j].split(',')[1]
+                    };
+                    // Check if combination already exists in lstAccessGroupLevel
+                    if (isCombinationExists(lstAccessGroupLevel, combination)) {
+                        existingCombinations.push(combination);
+                    } else {
+                        newCombinations.push(combination);
+                        lstAccessGroupLevel.push(combination);
+                    }
+                }
+            }
+            // Display error message for existing combinations
+            if (existingCombinations.length > 0) {
+                Swal.fire({
+                    title: 'Duplicate',
+                    text: 'Duplicate combinations found!',
+                    icon: "error",
+                    showCancelButton: false,
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                // Display success message for new combinations only if no existing combinations found
+                if (newCombinations.length > 0) {
+                    var successMessage = 'New combinations added:\n';
+                    for (let i = 0; i < newCombinations.length; i++) {
+                        successMessage += 'DoorgroupId: ' + newCombinations[i].DoorgroupId + ', SessionId: ' + newCombinations[i].SessionId + '\n';
+                    }
+                    Swal.fire({
+                        title: 'Success',
+                        text: successMessage,
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+             $.ajax({
+                 url: '/AccessGroup/AccessGroupLevel',
+                 type: 'POST',
+                 contentType: 'application/json',
+                 data: JSON.stringify(newCombinations),
+                 success: function (response) {
+                     $('#myPartialContainer').html(response);
+                 },
+                 error: function (xhr, status, error) {
+                     console.error("Error:", error);
+                 }
+             });
         });
+        function removeDuplicates(arr) {
+            return arr.filter((item,
+                index) => arr.indexOf(item) === index);
+        }
         $("#chkIsActive").change(function () {
             $("#hdnIsActive").val($(this).is(':checked'));
         });
-
         $("#chkIsCanteen").change(function () {
             $("#hdnIsCanteen").val($(this).is(':checked'));
         });
-
-        function SelectReaderType() {
-            var selected = $("#ddlReader option:selected");
+        function SelectDoorGroup() {
+            arrDoorGroupSelected = [];
+            var selected = $("#ddlDoorGroup option:selected");
             var message = "";
-            var arrSelected = [];
             selected.each(function () {
-                arrSelected.push($(this).val());
+                arrDoorGroupSelected.push($(this).val() + ',' + $(this).text().trim());
                 message += $(this).text() + " " + $(this).val() + "\n";
             });
-            $("#ReaderId").val(arrSelected.join(','));
+            $("#DoorGroupId").val(arrDoorGroupSelected.join(','));
+        }
+        function SelectSession() {
+            var selected = $("#ddlSession option:selected");
+            var message = "";
+            selected.each(function () {
+                arrSessionSelected.push($(this).val() + ',' + $(this).text().trim());
+                message += $(this).text() + " " + $(this).val() + "\n";
+            });
+            $("#SessionId").val(arrSessionSelected.join(','));
         }
     </script>
 

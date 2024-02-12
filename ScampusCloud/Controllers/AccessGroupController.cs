@@ -132,42 +132,44 @@ namespace ScampusCloud.Controllers
         {
             List<AccessGroupLevelModel> ListName;
             bool IsExistsAccessGroupLevel = false;
-            if (Session["data"] != null)
+
+            if(lstAccessGroupLevel != null)
             {
-                ListName = (List<AccessGroupLevelModel>)Session["data"];
-                foreach (var item in lstAccessGroupLevel)
+                if (Session["data"] != null)
                 {
-                    IsExistsAccessGroupLevel = ListName.Any(x => x.DoorGroup.Equals(item.DoorGroup) && x.Session.Equals(item.Session));
-                    if (!IsExistsAccessGroupLevel)
+                    ListName = (List<AccessGroupLevelModel>)Session["data"];
+                    var matchedRecords = lstAccessGroupLevel.Where(item => ListName.Any(x => x.DoorGroup == item.DoorGroup && x.Session == item.Session));
+                    foreach (var item in lstAccessGroupLevel)
                     {
-                        ListName.Add(item);
+                        IsExistsAccessGroupLevel = ListName.Any(x => x.DoorGroup.Equals(item.DoorGroup) && x.Session.Equals(item.Session));
+                        if (!IsExistsAccessGroupLevel)
+                        {
+                            ListName.Add(item);
+                        }
                     }
                 }
+                else
+                {
+                    ListName = lstAccessGroupLevel;
+                }
+                Session["data"] = ListName;
+                Session["IsExistsAccessGroupLevel"] = IsExistsAccessGroupLevel;
             }
-            else
-            {
-                ListName = lstAccessGroupLevel;
-            }
-            Session["data"] = ListName;
+            ListName = (List<AccessGroupLevelModel>)Session["data"];
             return PartialView("_AccessGroupLevel", ListName);
         }
 
         [HttpPost]
-        public ActionResult RemoveAccessGroupLevel(string DoorGroup)
+        public ActionResult RemoveAccessGroupLevel(string DoorGroup,string SessionName)
         {
             List<AccessGroupLevelModel> ListName = new List<AccessGroupLevelModel>();
             if (Session["data"] != null)
             {
                 ListName = (List<AccessGroupLevelModel>)Session["data"];
-                // Add new items to the existing list
-                //foreach (var item in lstAccessGroupLevel)
-                //{
-                //    ListName.Add(item);
-                //}
             }
 
             // Find the item to remove
-            var itemToRemove = ListName.FirstOrDefault(item => item.DoorGroup == DoorGroup);
+            var itemToRemove = ListName.FirstOrDefault(item => item.DoorGroup == DoorGroup && item.Session == SessionName);
 
             // If item found, remove it from the list
             if (itemToRemove != null)

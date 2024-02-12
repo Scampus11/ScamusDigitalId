@@ -36,9 +36,12 @@ BEGIN
 	IF @ActionType = 'Edit' OR @ActionType='Remote'
 	BEGIN  
 		select C.Id,C.CompanyId,C.Name,C.Code,C.Description,C.AccessGroupTypeId,C.Is_Canteen,
-		C.CreatedBy,C.ModifiedBy,C.Isactive
+		C.CreatedBy,C.ModifiedBy,C.Isactive,STRING_AGG(AL.DoorGroupId, ', ') As DoorGroupIds,STRING_AGG(SessionId,',') As SessionIds
 		from Tbl_Mstr_AccessGroup_Master C 
-		WHERE (C.Id=@Id or C.Code=@Code) and CompanyId=@CompanyId
+		LEFT JOIN Tbl_Mstr_AccessGroup_level_Master AL ON C.Id = AL.AccessGroupId
+		WHERE (C.Id=@Id or C.Code=@Code) and C.CompanyId=@CompanyId
+		GROUP BY C.Id,C.CompanyId,C.Name,C.Code,C.Description,C.AccessGroupTypeId,C.Is_Canteen,
+		C.CreatedBy,C.ModifiedBy,C.Isactive
 
 		SELECT Id,CompanyId,DoorGroupId,SessionId FROM Tbl_Mstr_AccessGroup_level_Master WHere AccessGroupId = @Id
 	END  
@@ -49,7 +52,7 @@ BEGIN
 			Name = IsNull(@Name,Name), 
 			Code = IsNull(@Code,Code), 
 			[Description] = ISNULL(@Description,[Description]),
-			AccessGroupTypeId = ISNULL(@AccessGroupTypeId,AccessGroupTypeId),
+			AccessGroupTypeId = Case when @IsCanteen = 1 THEN ISNULL(@AccessGroupTypeId,AccessGroupTypeId) ELSE NULL END,
 			Is_Canteen =  @IsCanteen,
 			Isactive=@Isactive,
 			ModifiedDate = GETDATE() 
@@ -65,6 +68,6 @@ BEGIN
 	IF @ActionType = 'Delete'  
 	BEGIN  
 		Delete from Tbl_Mstr_AccessGroup_Master Where Id = @Id
-                Delete from Tbl_Mstr_AccessGroup_level_Master Where AccessGroupId = @Id
+		Delete from Tbl_Mstr_AccessGroup_level_Master Where AccessGroupId = @Id
 	END  
 END

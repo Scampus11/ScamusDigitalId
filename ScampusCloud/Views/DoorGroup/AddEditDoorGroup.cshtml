@@ -117,6 +117,7 @@
                                                     <span class="text-danger">*</span>
                                                 </label>
                                             </div>
+                                          
                                             <div class="col-8">
                                                 @Html.HiddenFor(Model => Model.ReaderId)
                                                 <select id="ddlReader" multiple="multiple" required=required name="ddlReader" onchange="SelectReaderType()">
@@ -161,18 +162,14 @@
 </form>
 
 @section Scripts{
-    
     <link href="~/assets/css/bootstrap-multiselect.css" rel="stylesheet" />
     <script src="~/assets/js/bootstrap-multiselect.js"></script>
-
     <script>
         $(document).ready(function () {
             var result = '@Model.ReaderId'.split(',');
             $("#ddlReader").val(result);
         })
     </script>
-    
-
     <script type="text/javascript">
         $(function () {
             $('#ddlReader').multiselect({
@@ -187,7 +184,6 @@
         $("#chkIsActive").change(function () {
             $("#hdnIsActive").val($(this).is(':checked'));
         });
-
         function SelectReaderType() {
             var selected = $("#ddlReader option:selected"); 
             var message = "";
@@ -199,5 +195,4 @@
             $("#ReaderId").val(arrSelected.join(','));
         }
     </script>
-
 }

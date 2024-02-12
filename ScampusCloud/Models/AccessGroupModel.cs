@@ -43,7 +43,7 @@ namespace ScampusCloud.Models
         public int AccessGroupTypeId { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsActive { get; set; }
-        public bool IsCanteen { get; set; }
+        public bool Is_Canteen { get; set; }
         public DateTime dtCreatedDate { get; set; }
         public DateTime dtModifiedDate { get; set; }
         public Guid? CreatedBy { get; set; }
@@ -57,6 +57,8 @@ namespace ScampusCloud.Models
         public int? DoorGroupId { get; set; }
         public int? SessionId { get; set; }
         public string CanteenType { get; set; }
+        public string DoorGroupIds { get; set; }
+        public string SessionIds { get; set; }
     }
     public class AccessGroupLevelModel
     {

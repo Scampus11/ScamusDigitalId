@@ -45,30 +45,32 @@ namespace ScampusCloud.Repository.AccessGroup
                 }
                 else
                 {
-                    DataTable dt = common.ToDataTable(_AccessGroupModel.lstAccessGroupLevel);
-                    dt.Columns.Remove("ID");
-                    dt.Columns.Remove("CompanyId");
-                    dt.Columns.Remove("AccessGroupId");
-                    dt.Columns.Remove("IsDeleted");
-                    dt.Columns.Remove("IsActive");
-                    dt.Columns.Remove("dtCreatedDate");
-                    dt.Columns.Remove("dtModifiedDate");
-                    dt.Columns.Remove("CreatedBy");
-                    dt.Columns.Remove("ModifiedBy");
-                    dt.Columns.Remove("DoorGroup");
-                    dt.Columns.Remove("Session");
-
                     objQueryBuilder.AddFieldValue("@Id", _AccessGroupModel.Id, DataTypes.Numeric, false);
                     objQueryBuilder.AddFieldValue("@Name", _AccessGroupModel.Name, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@CompanyId", _AccessGroupModel.CompanyId, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@Code", _AccessGroupModel.Code, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@Description", _AccessGroupModel.Description, DataTypes.Numeric, false);
                     objQueryBuilder.AddFieldValue("@AccessGroupTypeId", _AccessGroupModel.AccessGroupTypeId, DataTypes.Numeric, false);
-                    objQueryBuilder.AddFieldValue("@IsCanteen", _AccessGroupModel.IsCanteen, DataTypes.Boolean, false);
+                    objQueryBuilder.AddFieldValue("@IsCanteen", _AccessGroupModel.Is_Canteen, DataTypes.Boolean, false);
                     objQueryBuilder.AddFieldValue("@Isactive", _AccessGroupModel.IsActive, DataTypes.Boolean, false);
                     objQueryBuilder.AddFieldValue("@CreatedBy", _AccessGroupModel.CreatedBy, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@ModifiedBy", _AccessGroupModel.ModifiedBy, DataTypes.Text, false);
-                    objQueryBuilder.AddFieldValue("@TempTable", dt, DataTypes.Structured, false, "AccessGroupLevelTableType");
+                    if (_AccessGroupModel.lstAccessGroupLevel != null && _AccessGroupModel.lstAccessGroupLevel.Count > 0)
+                    {
+                        DataTable dt = common.ToDataTable(_AccessGroupModel.lstAccessGroupLevel);
+                        dt.Columns.Remove("ID");
+                        dt.Columns.Remove("CompanyId");
+                        dt.Columns.Remove("AccessGroupId");
+                        dt.Columns.Remove("IsDeleted");
+                        dt.Columns.Remove("IsActive");
+                        dt.Columns.Remove("dtCreatedDate");
+                        dt.Columns.Remove("dtModifiedDate");
+                        dt.Columns.Remove("CreatedBy");
+                        dt.Columns.Remove("ModifiedBy");
+                        dt.Columns.Remove("DoorGroup");
+                        dt.Columns.Remove("Session");
+                        objQueryBuilder.AddFieldValue("@TempTable", dt, DataTypes.Structured, false, "AccessGroupLevelTableType");
+                    }
                 }
                 objQueryBuilder.AddFieldValue("@ActionType", _AccessGroupModel.ActionType, DataTypes.Text, false);
                 return objgm.ExecuteObjectUsingSp<AccessGroupModel>(objQueryBuilder);

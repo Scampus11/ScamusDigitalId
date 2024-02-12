@@ -1,28 +1,4 @@
 ﻿@model List<ScampusCloud.Models.AccessGroupLevelModel>
-@*<div class="d-flex flex-column-fluid flex-center container">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <table class="table">
-                        <tr>
-                            <th>Door Group</th>
-                            <th>Session</th>
-                            <th>Delete</th>
-                        </tr>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.DoorGroup</td>
-                                <td>@item.Session</td>
-                                <td><i class='flaticon-delete' onclick="RemoveItem('@item.DoorGroup')"></i></td>
-                            </tr>
-                        }
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>*@
-
 <div class="d-flex flex-column-fluid flex-center container">
     <div class="card-body pt-0">
         <div class="mb-12">
@@ -46,7 +22,7 @@
                                 <td class="datatable-cell"><span>@item.DoorGroup</span></td>
                                 <td class="datatable-cell-center datatable-cell"><span>@item.Session</span></td>
                                 <td class="datatable-cell-center datatable-cell">
-                                    <a class='btn btn-sm btn-icon btn-lg-light btn-text-danger btn-hover-light-danger' onclick="RemoveItem('@item.DoorGroup')"><i class='flaticon-delete'></i></a>
+                                    <a class='btn btn-sm btn-icon btn-lg-light btn-text-danger btn-hover-light-danger' onclick="RemoveItem('@item.DoorGroup','@item.Session')"><i class='flaticon-delete'></i></a>
                                 </td>
                             </tr>
                         }
@@ -57,20 +33,39 @@
     </div>
 </div>
 <script>
-    function RemoveItem(doorgroup) {
-        $.ajax({
-            url: '/AccessGroup/RemoveAccessGroupLevel?DoorGroup=' + doorgroup,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ DoorGroup: doorgroup }),
-            success: function (response) {
-                $('#myPartialContainer').html(response);
-            },
-            error: function (xhr, status, error) {
-                // Handle error response
-                console.error("Error:", error);
-            }
-        });
+    function RemoveItem(doorgroup,session) {
+        var CommonTitle = "Are you sure want to delete this ";
+        var CommonTitle1 = "";
+        var CommonText = ""; //You won't be able to revert this!
+        var CommonCancelBtnText = "Cancel";
+        var CommonConfirmBtnText = "Yes, delete it!";
+        var toastrSuccessPostfixMessage = "Deleted Successfully!";
+
+        Swal.fire({
+            title: CommonTitle + CommonTitle1,
+            text: CommonText,
+            icon: "error",
+            showCancelButton: true,
+            cancelButtonText: CommonCancelBtnText,
+            confirmButtonText: CommonConfirmBtnText
+        }).then(
+            function (result) {
+                if (result.value) {
+                    $.ajax({
+                        url: '/AccessGroup/RemoveAccessGroupLevel?DoorGroup=' + doorgroup,
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ DoorGroup: doorgroup, SessionName: session }),
+                        success: function (response) {
+                            $('#myPartialContainer').html(response);
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error response
+                            console.error("Error:", error);
+                        }
+                    });
+                }
+            });
     }
 </script>
 
