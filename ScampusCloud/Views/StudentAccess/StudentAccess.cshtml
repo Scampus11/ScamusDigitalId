@@ -1,0 +1,184 @@
+﻿@model ScampusCloud.Models.StudentAccessGroupModel
+@{
+    ViewData["Title"] = "Manage Student Access";
+}
+
+<style>
+    /*.container nav {
+        background: rgb(54, 153, 255);
+        border-radius: 7px;
+    }*/
+
+    #accordionBtn {
+        /*background-color: unset !important;
+        border-color: unset !important;*/
+    }
+    .navbar-top-head{
+        width:100%;
+    }
+    .department_lable {
+        white-space: nowrap;
+    }
+
+    #accordionExample div{
+        border-radius:10px !important;
+    }
+</style>
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-2 mr-5">
+                    <span class="svg-icon menu-icon">
+                        <span class="fab fa-font-awesome-flag text-primary"></span>
+                    </span> @ViewData["Title"]
+                </h5>
+                <!--end::Page Title-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-nav datatable-primary navbar-top-head">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="col-3"> </div>
+                <div class="col-8"></div>
+                <div class="col-2"><button class="btn btn-primary my-2 my-lg-0" id="accordionBtn">Bulk AG</button></div>
+
+            </div>
+        </nav>
+    </div>
+    <div class="">
+        <div class="flex-wrap border-0 pt-6 pb-0 row">
+            <div class="col-md-12">
+                <div class="accordion pt-4" id="accordionExample" style="display: none;">
+                    <div class="card">
+                        <div class="card-body" id="headingOne">
+                            <div class="tab-content">
+                                <div class="row">
+                                    @*<div class="col-xl-2"></div>*@
+                                    <div class="col-xl-12">
+                                        <div class="my-10 pr-3 pl-3">
+                                            <!--begin::Group-->
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-1 text-left">Campus</label>
+                                                <div class="col-3">
+                                                    @Html.DropDownListFor(model => model.CampusId, new SelectList(Model.lstCampus, "Value", "Text"), "Select Campus"
+                                                        , new { @class = "form-control", @id = "ddlCampus" })
+                                                </div>
+                                                <label class="col-form-label col-1 text-left">College</label>
+                                                <div class="col-3" id="colleage">
+                                                    @Html.DropDownListFor(model => model.CollageId, new List<SelectListItem>(), "Select College"
+                                                        , new { @class = "form-control", @id = "ddlColleage" })
+                                                </div>
+                                                <label class="col-form-label col-1 text-left department_lable">Department</label>
+                                                <div class="col-3">
+                                                    @Html.DropDownListFor(model => model.DepartmentId, new List<SelectListItem>(), "Select Department"
+                                                        , new { @class = "form-control", @id = "ddlDepartment" })
+                                                </div>
+                                                
+                                            </div>
+                                            <!--end::Group-->
+                                            <!--begin::Group-->
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-1 text-left">Year</label>
+                                                <div class="col-3">
+                                                    @Html.DropDownListFor(model => model.YearId, new SelectList(Model.lstYear, "Value", "Text"), "Select Year"
+                , new { @class = "form-control" })
+                                                </div>
+
+                                                <label class="col-form-label col-1 text-left">Admission Type</label>
+                                                <div class="col-3">
+                                                    @Html.DropDownListFor(model => model.AdmissionTypeId, new SelectList(Model.lstAdmissionType, "Value", "Text"), "Select Admission Type"
+                                           , new { @class = "form-control", @id = "ddlAdminssionType" })
+                                                </div>
+
+                                                <label class="col-form-label col-1 text-left">Gender</label>
+                                                <div class="col-3">
+                                                    @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                                    {
+                                                    new SelectListItem { Text = "Male", Value = "Male"},
+                                                    new SelectListItem { Text = "Female", Value = "Female"}
+                                                    }, "Select Gender", new { @class = "form-control form-control-solid" })
+                                                </div>
+                                            </div>
+                                            <!--end::Group-->
+                                            <div class="form-group row">
+                                                
+                                            </div>
+
+                                            <div class="card-toolbar">
+                                                <button type="submit" class="btn btn-primary font-weight-bolder mr-2" name="saveAndContinue" value="saveAndContinue">
+                                                    <i class="flaticon-interface-5"></i>
+                                                    <span class="nav-text">Go Filter</span>
+                                                </button>
+
+                                                <button type="submit" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
+                                                    <i class="flaticon-logout"></i>
+                                                    <span class="nav-text">Clear Filter</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#accordionBtn').click(function () {
+            $('#accordionExample').slideToggle();
+        });
+    });
+    $('#ddlCampus').change(function () {
+        $.ajax({
+            type: "post",
+            url: "/Student/GetColleageByCampus",
+            data: { ScampusId: $('#ddlCampus').val() },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var colleage = "<select id='ddlColleage'>";
+                colleage = colleage + '<option value="">Select College</option>';
+                for (var i = 0; i < data.length; i++) {
+                    colleage = colleage + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                }
+                colleage = colleage + '</select>';
+                $('#ddlColleage').html(colleage);
+            }
+        });
+    });
+    $('#ddlColleage').change(function () {
+        $.ajax({
+            type: "post",
+            url: "/Student/GetDepartmentByColleage",
+            data: { ColleageId: $('#ddlColleage').val() },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var department = "<select id='ddlDepartment'>";
+                department = department + '<option value="">Select Department</option>';
+                for (var i = 0; i < data.length; i++) {
+                    department = department + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                }
+                department = department + '</select>';
+                $('#ddlDepartment').html(department);
+            }
+        });
+    });
+</script>

@@ -393,6 +393,7 @@
     <Compile Include="Controllers\SessionMasterController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\StaffDepartmentController.cs" />
+    <Compile Include="Controllers\StudentAccessController.cs" />
     <Compile Include="Controllers\StudentCompanyController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\StudentDepartmentController.cs" />
@@ -428,6 +429,7 @@
     <Compile Include="Models\StaffDepartmentModel.cs" />
     <Compile Include="Models\StaffModel.cs" />
     <Compile Include="Models\ResponseMessage.cs" />
+    <Compile Include="Models\StudentAccessGroupModel.cs" />
     <Compile Include="Models\StudentCompanyModel.cs" />
     <Compile Include="Models\StudentDepartmentModel.cs" />
     <Compile Include="Models\StudentFacilityModel.cs" />
@@ -601,6 +603,7 @@
     <Content Include="Views\AccessGroup\AccessGroup.cshtml" />
     <Content Include="Views\AccessGroup\AddEditAccessGroup.cshtml" />
     <Content Include="Views\AccessGroup\_AccessGroupLevel.cshtml" />
+    <Content Include="Views\StudentAccess\StudentAccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
