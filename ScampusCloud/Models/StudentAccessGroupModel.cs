@@ -38,5 +38,7 @@ namespace ScampusCloud.Models
         public int AdmissionTypeId { get; set; }
         public List<SelectListItem> lstAdmissionType { get; set; }
         public string Gender { get; set; }
+        public int AccessGroupTypeId { get; set; }
+        public List<SelectListItem> lstAccessGroupDropdown { get; set; }
     }
 }
