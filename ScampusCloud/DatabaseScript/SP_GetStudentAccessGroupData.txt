@@ -1,0 +1,55 @@
+CREATE PROCEDURE [dbo].[SP_GetStudentAccessGroupData]
+@Search nvarchar(max)='',
+@CampusId INT = 0,
+@CollegeId INT = 0,
+@DepartmentId INT = 0,
+@Year INT = 0,
+@AdmissionTypeId INT = 0,
+@page INT=1,
+@pagesize INT=10,
+@CompanyId nvarchar(100)=''
+AS
+BEGIN
+SET NOCOUNT ON  
+ DECLARE @FinalQuery NVARCHAR(MAX) = '', @SelectQuery NVARCHAR(MAX) = '',@TablesJoins NVARCHAR(MAX) = '', @WhereCaluse NVARCHAR(MAX) = '',@OrderByCaluse NVARCHAR(1000) = '',@GroupByCaluse NVARCHAR(1000) = ''
+	
+	SET @SelectQuery = @SelectQuery + ' SELECT SM.StudentId,SM.FirstName AS StudentName,TSCM.Name AS College,TSDM.Name as Department,TSAM.Name as AdmissionType,CM.Name AS Campus,TSYM.Name AS BatchYear,MAS.Name as AccessGroup'
+	SET @TablesJoins = ' FROM Tbl_Mstr_Student_Master SM WITH(NOLOCK) 
+						 LEFT JOIN Tbl_Mstr_Campus_Master CM WITH(NOLOCK) ON CM.Id = SM.CampusId 
+						 LEFT JOIN Tbl_Mstr_College_Master TSCM WITH(NOLOCK) ON TSCM.Id = SM.CollageId 
+						 LEFT JOIN Tbl_Mstr_Student_Department_Master TSDM WITH(NOLOCK) ON TSDM.Id = SM.DepartmentId 
+						 LEFT JOIN Tbl_Mstr_Year_Master TSYM WITH(NOLOCK) ON TSYM.Id = SM.YearId 
+						 LEFT JOIN Tbl_Mstr_Admission_Master TSAM WITH(NOLOCK) ON TSAM.Id = SM.AdmissionTypeId 
+						 LEFT JOIN Tbl_Mstr_Student_Access_Group_Control MSAG WITH(NOLOCK) ON MSAG.StudentId = SM.Id 
+						 LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS WITH(NOLOCK) ON MAS.Id = MSAG.AccessGroupId '
+
+	SET @WhereCaluse = @WhereCaluse + ' WHERE (SM.Id LIKE ''%'' + @Search + ''%'' or SM.FirstName LIKE ''%'' + @Search + ''%'' or TSCM.Name LIKE ''%'' + @Search + ''%'' or TSDM.Name LIKE ''%'' + @Search + ''%''
+	or TSAM.Name LIKE ''%''+ @Search + ''%'' or TSYM.Name LIKE ''%''+ @Search + ''%'' or CM.Name LIKE ''%''+ @Search + ''%'' or  SM.StudentId LIKE ''%'' + @Search + ''%'') and SM.CompanyId=@CompanyId'
+	IF @CampusId != 0 
+    BEGIN  
+	  SET @WhereCaluse += ' AND SM.CampusId=@CampusId '    
+    END 
+	IF @CollegeId != 0 
+    BEGIN  
+	  SET @WhereCaluse  += ' AND SM.CollageId=@CollegeId '
+    END 
+	IF @DepartmentId != 0 
+    BEGIN  
+	  SET @WhereCaluse  += ' AND SM.DepartmentId=@DepartmentId '   
+    END
+	IF @Year != 0 
+    BEGIN  
+	  SET @WhereCaluse  += ' AND SM.YearId=@Year '   
+    END
+	IF @AdmissionTypeId != 0 
+    BEGIN  
+	  SET @WhereCaluse  += ' AND SM.AdmissionTypeId=@AdmissionTypeId '   
+    END
+	
+	SET @OrderByCaluse += ' ORDER BY SM.Id ASC OFFSET 	(@Page -1) * @pageSize ROWS FETCH NEXT @pageSize ROWS ONLY'
+
+    SET @FinalQuery += @SelectQuery + @TablesJoins + @WhereCaluse + @OrderByCaluse
+	PRINT @FinalQuery
+    EXECUTE sp_executesql @FinalQuery, N'@CompanyId nvarchar(100), @CampusId INT, @CollegeId INT, @DepartmentId INT, @Year INT, @AdmissionTypeId INT, @Search nvarchar(max), @page INT, @pagesize INT', 
+        @CompanyId, @CampusId, @CollegeId, @DepartmentId, @Year, @AdmissionTypeId, @Search, @page, @pagesize
+END
