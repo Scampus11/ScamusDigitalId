@@ -102,7 +102,7 @@
                                                     <label class="col-form-label col-1 text-left">Year</label>
                                                     <div class="col-3">
                                                         @Html.DropDownListFor(model => model.YearId, new SelectList(Model.lstYear, "Value", "Text"), "Select Year"
-                    , new { @class = "form-control" })
+                    , new { @class = "form-control",@id="ddlYear" })
                                                     </div>
 
                                                     <label class="col-form-label col-1 text-left">Admission Type</label>
@@ -126,12 +126,12 @@
                                                 </div>
 
                                                 <div class="card-toolbar">
-                                                    <button type="submit" class="btn btn-primary font-weight-bolder mr-2" name="saveAndContinue" value="saveAndContinue">
+                                                    <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="SearchStudent()" name="saveAndContinue" value="saveAndContinue">
                                                         <i class="flaticon-interface-5"></i>
                                                         <span class="nav-text">Go Filter</span>
                                                     </button>
 
-                                                    <button type="submit" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
+                                                    <button type="button" name="saveAndExit" value="saveAndExit " onclick="ClearFilter()" class="btn btn-success font-weight-bolder mr-2">
                                                         <i class="flaticon-logout"></i>
                                                         <span class="nav-text">Clear Filter</span>
                                                     </button>
@@ -182,47 +182,17 @@
         $('#accordionBtn').click(function () {
             $('#accordionExample').slideToggle();
         });
-        LoadGridData();
+        //LoadGridData();
     });
     $('#ddlCampus').change(function () {
-        $.ajax({
-            type: "post",
-            url: "/Student/GetColleageByCampus",
-            data: { ScampusId: $('#ddlCampus').val() },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                var colleage = "<select id='ddlColleage'>";
-                colleage = colleage + '<option value="">Select College</option>';
-                for (var i = 0; i < data.length; i++) {
-                    colleage = colleage + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
-                }
-                colleage = colleage + '</select>';
-                $('#ddlColleage').html(colleage);
-            }
-        });
+        BindCollege($('#ddlCampus').val());
     });
     $('#ddlColleage').change(function () {
-        $.ajax({
-            type: "post",
-            url: "/Student/GetDepartmentByColleage",
-            data: { ColleageId: $('#ddlColleage').val() },
-            datatype: "json",
-            traditional: true,
-            success: function (data) {
-                var department = "<select id='ddlDepartment'>";
-                department = department + '<option value="">Select Department</option>';
-                for (var i = 0; i < data.length; i++) {
-                    department = department + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
-                }
-                department = department + '</select>';
-                $('#ddlDepartment').html(department);
-            }
-        });
+        BindDepartment($('#ddlColleage').val());
     });
     function LoadGridData() {
         var _url = '/StudentAccess/StudentAccessGroupList';
-        getpaging("StudentAccessGroupList", _url, 1, $('#txt_search_query').val());
+        getpaging("StudentAccessGroupList", _url, 1, $('#txt_search_query').val(), $('#ddlCampus').val(), $('#ddlColleage').val(), $('#ddlDepartment').val(), $('#ddlYear').val(), $('#ddlAdminssionType').val());
     }
 
     $(document).on('keypress', '#txt_search_query', function (e) {
@@ -237,5 +207,56 @@
     function DownloadExcel() {
         window.location.href = '/Reader/Export?searchtxt=' + $('#txt_search_query').val();
         $(".loading").hide();
+    }
+
+    function SearchStudent() {
+        LoadGridData();
+    }
+    function BindCollege(campusId) {
+        $.ajax({
+            type: "post",
+            url: "/Student/GetColleageByCampus",
+            data: { ScampusId: campusId },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var colleage = "<select id='ddlColleage'>";
+                colleage = colleage + '<option value="">Select College</option>';
+                for (var i = 0; i < data.length; i++) {
+                    colleage = colleage + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                }
+                colleage = colleage + '</select>';
+                $('#ddlColleage').html(colleage);
+            }
+        });
+    }
+    function BindDepartment(collegeId) {
+        $.ajax({
+            type: "post",
+            url: "/Student/GetDepartmentByColleage",
+            data: { ColleageId: collegeId },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+                var department = "<select id='ddlDepartment'>";
+                department = department + '<option value="">Select Department</option>';
+                for (var i = 0; i < data.length; i++) {
+                    department = department + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                }
+                department = department + '</select>';
+                $('#ddlDepartment').html(department);
+            }
+        });
+    }
+
+    function ClearFilter() {
+        $('#ddlCampus').val('');
+        $('#ddlColleage').val('');
+        $('#ddlDepartment').val('');
+        $('#ddlYear').val('');
+        $('#ddlAdmissionType').val('');
+        BindCollege($('#ddlCampus').val());
+        BindDepartment($('#ddlColleage').val());
+        LoadGridData();
     }
 </script>

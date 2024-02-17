@@ -47,9 +47,9 @@
     var totalpages = 0;
     var cardTypes = '';
 
-    function getpaging(divID, url, page, searchText, chr_status, _FromDate, _ToDate, _apikey) {
-        $(".loading").addClass('show');
+    function getpaging(divID, url, page, searchText, campusId,collegeId,departmentId,yearId,admissionTypeId, chr_status, _FromDate, _ToDate, _apikey) {
         debugger;
+        $(".loading").addClass('show');
         totalrecords = parseInt(@ViewData["totalrecords"]);
         var pagenumber = parseInt(page);
         pagesize = parseInt($("#pagesize").val());
@@ -111,6 +111,22 @@
         }
         if (ToDate != '') {
             actionUrl = actionUrl + '&ToDate=' + ToDate;
+        }
+        debugger;
+        if (campusId != undefined && campusId != null && campusId != '') {
+            actionUrl = actionUrl + '&CampusId=' + campusId;
+        }
+        if (collegeId != undefined && collegeId != null && collegeId != '') {
+            actionUrl = actionUrl + '&CollegeId=' + collegeId;
+        }
+        if (departmentId != undefined && departmentId != null && departmentId != '') {
+            actionUrl = actionUrl + '&DepartmentId=' + departmentId;
+        }
+        if (yearId != undefined && yearId != null && yearId != '') {
+            actionUrl = actionUrl + '&YearId=' + yearId;
+        }
+        if (admissionTypeId != undefined && admissionTypeId != null && admissionTypeId != '') {
+            actionUrl = actionUrl + '&AdmissionTypeId=' + admissionTypeId;
         }
 
         $.ajax({

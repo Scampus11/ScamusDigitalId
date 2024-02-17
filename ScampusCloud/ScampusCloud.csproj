@@ -458,6 +458,7 @@
     <Compile Include="Repository\SessionMaster\SessionMasterRepository.cs" />
     <Compile Include="Repository\StaffDepartment\StaffDepartmentRepository.cs" />
     <Compile Include="Repository\Staff\StaffRepository.cs" />
+    <Compile Include="Repository\StudentAccess\StudentAccessRepository.cs" />
     <Compile Include="Repository\StudentCompany\StudentCompany.cs" />
     <Compile Include="Repository\StudentDepartment\StudentDepartmentRepository.cs" />
     <Compile Include="Repository\StudentFacility\StudentFacilityRepository.cs" />

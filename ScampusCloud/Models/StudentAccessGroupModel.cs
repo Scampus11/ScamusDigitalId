@@ -16,7 +16,7 @@ namespace ScampusCloud.Models
         public string StudentId { get; set; }
         [Required(ErrorMessage = "Please enter name")]
         [Column(TypeName = "varchar")]
-        public string Name { get; set; }
+        public string StudentName { get; set; }
         public Guid? CompanyId { get; set; }
         public int? AccessGroupId { get; set; }
         public int? SessionId { get; set; }
@@ -28,6 +28,12 @@ namespace ScampusCloud.Models
         public Guid? CreatedBy { get; set; }
         public Guid? ModifiedBy { get; set; }
         public int CollageId { get; set; }
+        public string College { get; set; }
+        public string Department { get; set; }
+        public string AdmissionType { get; set; }
+        public string Campus { get; set; }
+        public string BatchYear { get; set; }
+        public string AccessGroup { get; set; }
         public List<SelectListItem> lstCollage { get; set; }
         public int DepartmentId { get; set; }
         public List<SelectListItem> lstDepartment { get; set; }
