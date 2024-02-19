@@ -203,5 +203,16 @@ namespace ScampusCloud.Repository.AccessGroup
             objQueryBuilder.AddFieldValue("@CompanyId", CompanyId, DataTypes.Text, false);
             return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
         }
+        public List<SelectListItem> BindAvailableAccessGroupDropDown(string CompanyId)
+        {
+            QueryBuilder objQueryBuilder = new QueryBuilder
+            {
+                TableName = "Tbl_Mstr_AccessGroup_Master",
+                StoredProcedureName = @"Sps_Load_Available_AccessGroup_Dropdown",
+                SetQueryType = QueryBuilder.QueryType.SELECT,
+            };
+            objQueryBuilder.AddFieldValue("@CompanyId", CompanyId, DataTypes.Text, false);
+            return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
+        }
     }
 }

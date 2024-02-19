@@ -43,21 +43,9 @@ namespace ScampusCloud.Controllers
             _StudentAccessGroupModel.lstCampus = BindCampusDropdown(SessionManager.CompanyId.ToString());
             _StudentAccessGroupModel.lstYear = BindYearDropDown(SessionManager.CompanyId.ToString());
             _StudentAccessGroupModel.lstAdmissionType = BindAdmissionTypeDropDown(SessionManager.CompanyId.ToString());
-            _StudentAccessGroupModel.lstAccessGroupDropdown = BindAccessGroupTypeDropDown(SessionManager.CompanyId.ToString());
-
+            _StudentAccessGroupModel.lstAccessGroupDropdown = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
             List<SelectListItem> groupA = new List<SelectListItem>();
-            groupA = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
-
-            //List<object> groupA = new List<object>();
-            //groupA.Add(new { Name = "Australia", Code = "AU" });
-            //groupA.Add(new { Name = "Bermuda", Code = "BM" });
-            //groupA.Add(new { Name = "Canada", Code = "CA" });
-            //groupA.Add(new { Name = "Cameroon", Code = "CM" });
-            //groupA.Add(new { Name = "Denmark", Code = "DK" });
-            //groupA.Add(new { Name = "France", Code = "FR" });
-            //groupA.Add(new { Name = "Finland", Code = "FI" });
-            //groupA.Add(new { Name = "Germany", Code = "DE" });
-            //groupA.Add(new { Name = "Hong Kong", Code = "HK" });
+            groupA = BindAvailableAccessGroupDropDown(SessionManager.CompanyId.ToString());
             ViewBag.groupA = groupA;
             List<object> groupB = new List<object>();
             ViewBag.groupB = groupB;
@@ -187,6 +175,12 @@ namespace ScampusCloud.Controllers
         {
             List<SelectListItem> drpList = new List<SelectListItem>();
             drpList = _AccessGroupRepository.BindAccessGroupDropDown(CompanyId);
+            return drpList;
+        }
+        private List<SelectListItem> BindAvailableAccessGroupDropDown(string CompanyId)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _AccessGroupRepository.BindAvailableAccessGroupDropDown(CompanyId);
             return drpList;
         }
     }
