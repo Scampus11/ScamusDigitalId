@@ -44,15 +44,32 @@ namespace ScampusCloud.Controllers
             _StudentAccessGroupModel.lstYear = BindYearDropDown(SessionManager.CompanyId.ToString());
             _StudentAccessGroupModel.lstAdmissionType = BindAdmissionTypeDropDown(SessionManager.CompanyId.ToString());
             _StudentAccessGroupModel.lstAccessGroupDropdown = BindAccessGroupTypeDropDown(SessionManager.CompanyId.ToString());
+
+            List<SelectListItem> groupA = new List<SelectListItem>();
+            groupA = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
+
+            //List<object> groupA = new List<object>();
+            //groupA.Add(new { Name = "Australia", Code = "AU" });
+            //groupA.Add(new { Name = "Bermuda", Code = "BM" });
+            //groupA.Add(new { Name = "Canada", Code = "CA" });
+            //groupA.Add(new { Name = "Cameroon", Code = "CM" });
+            //groupA.Add(new { Name = "Denmark", Code = "DK" });
+            //groupA.Add(new { Name = "France", Code = "FR" });
+            //groupA.Add(new { Name = "Finland", Code = "FI" });
+            //groupA.Add(new { Name = "Germany", Code = "DE" });
+            //groupA.Add(new { Name = "Hong Kong", Code = "HK" });
+            ViewBag.groupA = groupA;
+            List<object> groupB = new List<object>();
+            ViewBag.groupB = groupB;
             return View(_StudentAccessGroupModel);
         }
-        public ActionResult StudentAccessGroupList(int page = 1, int pagesize = 10, string searchtxt = "", int CampusId = 0,int CollegeId = 0,int DepartmentId = 0,int YearId = 0,int AdmissionTypeId = 0)
+        public ActionResult StudentAccessGroupList(int page = 1, int pagesize = 10, string searchtxt = "", int CampusId = 0, int CollegeId = 0, int DepartmentId = 0, int YearId = 0, int AdmissionTypeId = 0)
         {
             try
             {
                 searchtxt = string.IsNullOrEmpty(searchtxt) ? "" : searchtxt;
                 int totals = Convert.ToInt32(_StudentAccessRepository.GetAllCount(searchtxt, SessionManager.CompanyId.ToString()));
-                var lstCountries = _StudentAccessRepository.GetStudentAccessList(searchtxt, page, pagesize,CampusId,CollegeId,DepartmentId,YearId,AdmissionTypeId,SessionManager.CompanyId.ToString());
+                var lstCountries = _StudentAccessRepository.GetStudentAccessList(searchtxt, page, pagesize, CampusId, CollegeId, DepartmentId, YearId, AdmissionTypeId, SessionManager.CompanyId.ToString());
                 Session["totalrecords"] = Convert.ToString(totals);
                 Session["paging_size"] = Convert.ToString(pagesize);
                 ViewData["totalrecords"] = totals;
@@ -109,7 +126,7 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<center>No data available in table</center>");
                 }
                 return Content(strHTML.ToString());
-                }
+            }
             catch (Exception ex)
             {
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
@@ -164,6 +181,12 @@ namespace ScampusCloud.Controllers
         {
             List<SelectListItem> drpList = new List<SelectListItem>();
             drpList = _AccessGroupRepository.BindAccessGroupTypeDropDown(CompanyId);
+            return drpList;
+        }
+        private List<SelectListItem> BindAccessGroupDropDown(string CompanyId)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _AccessGroupRepository.BindAccessGroupDropDown(CompanyId);
             return drpList;
         }
     }

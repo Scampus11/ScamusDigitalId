@@ -192,5 +192,16 @@ namespace ScampusCloud.Repository.AccessGroup
                 throw;
             }
         }
+        public List<SelectListItem> BindAccessGroupDropDown(string CompanyId)
+        {
+            QueryBuilder objQueryBuilder = new QueryBuilder
+            {
+                TableName = "Tbl_Mstr_AccessGroup_Master",
+                StoredProcedureName = @"Sps_Load_AccessGroup_Dropdown",
+                SetQueryType = QueryBuilder.QueryType.SELECT,
+            };
+            objQueryBuilder.AddFieldValue("@CompanyId", CompanyId, DataTypes.Text, false);
+            return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
+        }
     }
 }

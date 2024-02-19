@@ -57,99 +57,129 @@
                     <div class="card-toolbar col-lg-3 col-xl-4 justify-content-end">
                         <!--begin::Button-->
                         @*<a href="/DoorGroup/AddEditDoorGroup" class="btn btn-primary font-weight-bolder">
-                            <i class="fas fa-plus icon-sm-nm"></i>Bulk AG
-                        </a>*@
+                                <i class="fas fa-plus icon-sm-nm"></i>Bulk AG
+                            </a>*@
                         <button class="btn btn-primary my-2 my-lg-0" id="accordionBtn">Bulk AG</button>
                         <!--end::Button-->
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="accordion pt-4" id="accordionExample" style="display: none;">
+                <div class="card-body" id="headingOne">
+                    <div class="tab-content">
+                        <div class="row">
+                            @*<div class="col-xl-2"></div>*@
+                            <div class="col-xl-12">
+                                <div class="my-10 pr-3 pl-3">
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-1 text-left">Campus</label>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(model => model.CampusId, new SelectList(Model.lstCampus, "Value", "Text"), "Select Campus"
+                                                , new { @class = "form-control", @id = "ddlCampus" })
+                                        </div>
+                                        <label class="col-form-label col-1 text-left">College</label>
+                                        <div class="col-3" id="colleage">
+                                            @Html.DropDownListFor(model => model.CollageId, new List<SelectListItem>(), "Select College"
+                                                , new { @class = "form-control", @id = "ddlColleage" })
+                                        </div>
+                                        <label class="col-form-label col-1 text-left department_lable">Department</label>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(model => model.DepartmentId, new List<SelectListItem>(), "Select Department"
+                                                , new { @class = "form-control", @id = "ddlDepartment" })
+                                        </div>
 
-        <div class="">
-            <div class="flex-wrap border-0 pt-6 pb-0 row">
-                <div class="col-md-12">
-                    <div class="accordion pt-4" id="accordionExample" style="display: none;">
-                        <div class="">
-                            <div class="card-body" id="headingOne">
-                                <div class="tab-content">
-                                    <div class="row">
-                                        @*<div class="col-xl-2"></div>*@
-                                        <div class="col-xl-12">
-                                            <div class="my-10 pr-3 pl-3">
-                                                <!--begin::Group-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-1 text-left">Campus</label>
-                                                    <div class="col-3">
-                                                        @Html.DropDownListFor(model => model.CampusId, new SelectList(Model.lstCampus, "Value", "Text"), "Select Campus"
-                                                            , new { @class = "form-control", @id = "ddlCampus" })
-                                                    </div>
-                                                    <label class="col-form-label col-1 text-left">College</label>
-                                                    <div class="col-3" id="colleage">
-                                                        @Html.DropDownListFor(model => model.CollageId, new List<SelectListItem>(), "Select College"
-                                                            , new { @class = "form-control", @id = "ddlColleage" })
-                                                    </div>
-                                                    <label class="col-form-label col-1 text-left department_lable">Department</label>
-                                                    <div class="col-3">
-                                                        @Html.DropDownListFor(model => model.DepartmentId, new List<SelectListItem>(), "Select Department"
-                                                            , new { @class = "form-control", @id = "ddlDepartment" })
-                                                    </div>
+                                    </div>
+                                    <!--end::Group-->
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-1 text-left">Year</label>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(model => model.YearId, new SelectList(Model.lstYear, "Value", "Text"), "Select Year"
+        , new { @class = "form-control", @id = "ddlYear" })
+                                        </div>
 
-                                                </div>
-                                                <!--end::Group-->
-                                                <!--begin::Group-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-1 text-left">Year</label>
-                                                    <div class="col-3">
-                                                        @Html.DropDownListFor(model => model.YearId, new SelectList(Model.lstYear, "Value", "Text"), "Select Year"
-                    , new { @class = "form-control",@id="ddlYear" })
-                                                    </div>
+                                        <label class="col-form-label col-1 text-left">Admission Type</label>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(model => model.AdmissionTypeId, new SelectList(Model.lstAdmissionType, "Value", "Text"), "Select Admission Type"
+                                   , new { @class = "form-control", @id = "ddlAdminssionType" })
+                                        </div>
 
-                                                    <label class="col-form-label col-1 text-left">Admission Type</label>
-                                                    <div class="col-3">
-                                                        @Html.DropDownListFor(model => model.AdmissionTypeId, new SelectList(Model.lstAdmissionType, "Value", "Text"), "Select Admission Type"
-                                               , new { @class = "form-control", @id = "ddlAdminssionType" })
-                                                    </div>
+                                        <label class="col-form-label col-1 text-left">Gender</label>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                            {
+                                            new SelectListItem { Text = "Male", Value = "Male"},
+                                            new SelectListItem { Text = "Female", Value = "Female"}
+                                            }, "Select Gender", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+                                    <div class="form-group row">
+                                    </div>
+                                    <hr class="mt-2 mb-3" />
+                                    <div class="card-toolbar">
+                                        <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="SearchStudent()" name="saveAndContinue" value="saveAndContinue">
+                                            <i class="flaticon-search-1"></i>
+                                            <span class="nav-text">Go Filter</span>
+                                        </button>
 
-                                                    <label class="col-form-label col-1 text-left">Gender</label>
-                                                    <div class="col-3">
-                                                        @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
-                                                        {
-                                                        new SelectListItem { Text = "Male", Value = "Male"},
-                                                        new SelectListItem { Text = "Female", Value = "Female"}
-                                                        }, "Select Gender", new { @class = "form-control form-control-solid" })
-                                                    </div>
-                                                </div>
-                                                <!--end::Group-->
-                                                <div class="form-group row">
+                                        <button type="button" name="saveAndExit" value="saveAndExit " onclick="ClearFilter()" class="btn btn-success font-weight-bolder mr-2">
+                                            <i class="flaticon2-trash"></i>
+                                            <span class="nav-text">Clear Filter</span>
+                                        </button>
+                                    </div>
+                                    <div class="form-group form-row-seperated">
 
-                                                </div>
+                                    </div>
+                                    <hr class="mt-2 mb-3" />
+                                    <div class="form-group form-row-seperated">
 
-                                                <div class="card-toolbar">
-                                                    <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="SearchStudent()" name="saveAndContinue" value="saveAndContinue">
-                                                        <i class="flaticon-interface-5"></i>
-                                                        <span class="nav-text">Go Filter</span>
-                                                    </button>
+                                    </div>
 
-                                                    <button type="button" name="saveAndExit" value="saveAndExit " onclick="ClearFilter()" class="btn btn-success font-weight-bolder mr-2">
-                                                        <i class="flaticon-logout"></i>
-                                                        <span class="nav-text">Clear Filter</span>
-                                                    </button>
-                                                </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-3 text-left">Canteen Type</label>
+                                        <div class="col-">
+                                            @Html.DropDownListFor(model => model.AccessGroupTypeId, new SelectList(Model.lstAccessGroupDropdown, "Value", "Text"), "Select Canteen Type"
+, new { @class = "form-control", @id = "ddlCanteenType" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-row-seperated">
 
-                                                <div class="form-group row">
+                                    </div>
+                                    <hr class="mt-2 mb-3" />
+                                    <div class="form-group form-row-seperated">
 
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-3 text-left">Canteen Type</label>
-                                                    <div class="col-">
-                                                        @Html.DropDownListFor(model => model.AccessGroupTypeId, new SelectList(Model.lstAccessGroupDropdown, "Value", "Text"), "Select Canteen Type"
-   , new { @class = "form-control", @id = "ddlCanteenType" })
-                                                    </div>
-                                                </div>
-
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-6">
+                                            <div class="dual-list-groupa">
+                                                <h5>Available Access Group</h5>
+                                                <input id="listbox1">
                                             </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="dual-list-groupb">
+                                                <h5>Assigned Access Group</h5>
+                                                <input id="listbox2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="card-toolbar">
+                                            <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="Update()" name="update" value="update">
+                                                <i class="flaticon-edit-1"></i>
+                                                <span class="nav-text">Update</span>
+                                            </button>
+                                            <button type="button" class="btn btn-danger  btn-hover-light-danger font-weight-bolder mr-2" onclick="RemoveAllAG()" name="removeAllAccessGorup" value="removeAllAccessGorup">
+                                                <i class="flaticon-delete-1"></i>
+                                                <span class="nav-text">RemoveAllAG</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -176,14 +206,48 @@
     </div>
 </div>
 
+<link href="~/Content/ej2/customized/material.css" rel="stylesheet" />
+<link href="~/Content/ej2/material.css" rel="stylesheet" />
+<link href="~/Content/ej2/compatibility/material.css" rel="stylesheet" />
+<script src="~/Scripts/ej2/ej2.min.js"></script>
+<script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script>
     $(document).ready(function () {
         $('#accordionBtn').click(function () {
             $('#accordionExample').slideToggle();
         });
-        //LoadGridData();
+        LoadAccessGroup();
     });
+
+    function LoadAccessGroup() {
+         var listObj = new ej.dropdowns.ListBox({
+         dataSource: @Html.Raw(Json.Encode(ViewBag.GroupA)),
+         fields: { text: 'Text' },
+         scope: '#listbox2',
+         toolbarSettings: { items: ['moveTo','moveFrom'] },
+         height: '100px'
+        });
+        listObj.appendTo('#listbox1');
+        listObj = new ej.dropdowns.ListBox({
+                  dataSource: @Html.Raw(Json.Encode(ViewBag.GroupB)),
+                 fields: { text: 'Text' },
+                 scope: '#listbox1',
+                 height: '100px'
+        });
+        listObj.appendTo('#listbox2');
+    }
+
+    function RemoveAllAG() {
+        var listBoxA = document.getElementById('listbox1').ej2_instances[0];
+        var listBoxB = document.getElementById('listbox2').ej2_instances[0];
+        listBoxB.dataSource = [];
+        listBoxA.dataSource = @Html.Raw(Json.Encode(ViewBag.GroupA));
+        listBoxB.dataSource = yourNewDataForGroupB;
+        listBoxA.refresh();
+        listBoxB.refresh();
+    }
+
     $('#ddlCampus').change(function () {
         BindCollege($('#ddlCampus').val());
     });
@@ -258,5 +322,15 @@
         BindCollege($('#ddlCampus').val());
         BindDepartment($('#ddlColleage').val());
         LoadGridData();
+    }
+    function Update() {
+        var listBoxA = document.getElementById('listbox1').ej2_instances[0];
+        var listBoxB = document.getElementById('listbox2').ej2_instances[0];
+        var selectedItemsA = listBoxA.getSelectedItems();
+        var selectedItemsB = listBoxB.getSelectedItems();
+        var selectedValuesA = selectedItemsA.map(item => item.text);
+        var selectedValuesB = selectedItemsB.map(item => item.text);
+        console.log("Selected values from Group A:", selectedValuesA);
+        console.log("Selected values from Group B:", selectedValuesB);
     }
 </script>
