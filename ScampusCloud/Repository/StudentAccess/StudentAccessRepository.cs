@@ -3,6 +3,7 @@ using ScampusCloud.Models;
 using ScampusCloud.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -61,6 +62,61 @@ namespace ScampusCloud.Repository.StudentAccess
             }
 
         }
-
+        public StudentAccessGroupModel AddEdit_StudentAccessGroup(List<StudentAccessGroupModel> data, StudentAccessGroupModel _AccessGroupModel)
+        {
+            try
+            {
+                QueryBuilder objQueryBuilder = new QueryBuilder
+                {
+                    TableName = _AccessGroupModel.GetType().Name,
+                    StoredProcedureName = @"SP_Assign_StudentAccessGroup",
+                    SetQueryType = QueryBuilder.QueryType.SELECT
+                };
+                objQueryBuilder.AddFieldValue("@CompanyId", _AccessGroupModel.CompanyId, DataTypes.Text, false);
+                objQueryBuilder.AddFieldValue("@Isactive", _AccessGroupModel.IsActive, DataTypes.Boolean, false);
+                objQueryBuilder.AddFieldValue("@CreatedBy", _AccessGroupModel.CreatedBy, DataTypes.Text, false);
+                objQueryBuilder.AddFieldValue("@ModifiedBy", _AccessGroupModel.ModifiedBy, DataTypes.Text, false);
+                if (data != null && data.Count > 0)
+                {
+                    DataTable dt = common.ToDataTable(data);
+                    dt.Columns.Remove("ID");
+                    dt.Columns.Remove("CompanyId");
+                    dt.Columns.Remove("BlockId");
+                    dt.Columns.Remove("IsDeleted");
+                    dt.Columns.Remove("IsActive");
+                    dt.Columns.Remove("dtCreatedDate");
+                    dt.Columns.Remove("dtModifiedDate");
+                    dt.Columns.Remove("CreatedBy");
+                    dt.Columns.Remove("ModifiedBy");
+                    dt.Columns.Remove("lstCollage");
+                    dt.Columns.Remove("DepartmentId");
+                    dt.Columns.Remove("lstDepartment");
+                    dt.Columns.Remove("CampusId");
+                    dt.Columns.Remove("lstCampus");
+                    dt.Columns.Remove("YearId");
+                    dt.Columns.Remove("lstYear");
+                    dt.Columns.Remove("AdmissionTypeId");
+                    dt.Columns.Remove("lstAdmissionType");
+                    dt.Columns.Remove("Gender");
+                    dt.Columns.Remove("AccessGroupTypeId");
+                    dt.Columns.Remove("lstAccessGroupDropdown");
+                    dt.Columns.Remove("CollageId");
+                    dt.Columns.Remove("College");
+                    dt.Columns.Remove("Department");
+                    dt.Columns.Remove("AdmissionType");
+                    dt.Columns.Remove("Campus");
+                    dt.Columns.Remove("BatchYear");
+                    dt.Columns.Remove("AccessGroupId");
+                    objQueryBuilder.AddFieldValue("@TempTable", dt, DataTypes.Structured, false, "StudentAccessGroupType");
+                }
+                //objQueryBuilder.AddFieldValue("@ActionType", _AccessGroupModel.ActionType, DataTypes.Text, false);
+                return objgm.ExecuteObjectUsingSp<StudentAccessGroupModel>(objQueryBuilder);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
     }
 }

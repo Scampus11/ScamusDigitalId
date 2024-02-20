@@ -1,4 +1,5 @@
-﻿using ScampusCloud.Models;
+﻿using Newtonsoft.Json;
+using ScampusCloud.Models;
 using ScampusCloud.Repository.AccessGroup;
 using ScampusCloud.Repository.Reader;
 using ScampusCloud.Repository.Student;
@@ -85,9 +86,13 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
                     foreach (var item in lstCountries)
                     {
+                        
+
+                        string checkboxClick = "test("+ JsonConvert.SerializeObject(item.StudentId) + ","+ JsonConvert.SerializeObject(item.StudentName) 
+                            + "," + JsonConvert.SerializeObject(item.CompanyId)+")";
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.Id + "','StudentAccess','StudentAccess','Delete')";
                         strHTML.Append("<tr>");
-                        strHTML.Append("<td><input type=\"checkbox\" />&nbsp;</td>");
+                        strHTML.Append("<td><input type=\"checkbox\" onclick="+ checkboxClick + ">&nbsp;</input></td>");
                         strHTML.Append("<td>" + item.StudentId + "</td>");
                         strHTML.Append("<td>" + item.StudentName + "</td>");
                         strHTML.Append("<td>" + item.College + "</td>");
@@ -147,6 +152,16 @@ namespace ScampusCloud.Controllers
                 throw;
             }
         }
+
+        public ActionResult Update(List<StudentAccessGroupModel> data)
+        {
+            _StudentAccessGroupModel.CreatedBy = SessionManager.UserId;
+            _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
+            _StudentAccessGroupModel.CompanyId = SessionManager.CompanyId;
+            var test = _StudentAccessRepository.AddEdit_StudentAccessGroup(data, _StudentAccessGroupModel);
+            return Json(new { success = true });
+        }
+
         private List<SelectListItem> BindCampusDropdown(string CompanyId)
         {
             List<SelectListItem> drpList = new List<SelectListItem>();
