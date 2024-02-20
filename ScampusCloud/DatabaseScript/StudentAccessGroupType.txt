@@ -1,0 +1,7 @@
+CREATE TYPE StudentAccessGroupType AS TABLE
+(
+    StudentId nvarchar(100),
+	[name] nvarchar(1000),
+	CanteenTypeId int,
+	AccessGroup nvarchar(50)
+);
