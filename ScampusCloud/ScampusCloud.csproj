@@ -305,6 +305,31 @@
     <Content Include="bin\ScampusCloud.dll" />
     <Content Include="bin\ScampusCloud.pdb" />
     <Content Include="Connection\ConnectionString.txt" />
+    <Content Include="Content\ej2\bootstrap-dark.css" />
+    <Content Include="Content\ej2\bootstrap.css" />
+    <Content Include="Content\ej2\bootstrap4.css" />
+    <Content Include="Content\ej2\bootstrap5-dark.css" />
+    <Content Include="Content\ej2\bootstrap5.css" />
+    <Content Include="Content\ej2\compatibility\bootstrap.css" />
+    <Content Include="Content\ej2\compatibility\bootstrap4.css" />
+    <Content Include="Content\ej2\compatibility\fabric.css" />
+    <Content Include="Content\ej2\compatibility\highcontrast.css" />
+    <Content Include="Content\ej2\compatibility\material.css" />
+    <Content Include="Content\ej2\customized\material-dark.css" />
+    <Content Include="Content\ej2\customized\material.css" />
+    <Content Include="Content\ej2\customized\tailwind-dark.css" />
+    <Content Include="Content\ej2\customized\tailwind.css" />
+    <Content Include="Content\ej2\fabric-dark.css" />
+    <Content Include="Content\ej2\fabric.css" />
+    <Content Include="Content\ej2\fluent-dark.css" />
+    <Content Include="Content\ej2\fluent.css" />
+    <Content Include="Content\ej2\highcontrast.css" />
+    <Content Include="Content\ej2\material-dark.css" />
+    <Content Include="Content\ej2\material.css" />
+    <Content Include="Content\ej2\material3-dark.css" />
+    <Content Include="Content\ej2\material3.css" />
+    <Content Include="Content\ej2\tailwind-dark.css" />
+    <Content Include="Content\ej2\tailwind.css" />
     <Content Include="Content\Site.css" />
     <Content Include="css\site.css" />
     <Content Include="DatabaseScript\AccessGroupLevelTableType.txt" />
@@ -367,6 +392,8 @@
     <Content Include="lib\jquery\LICENSE.txt" />
     <Content Include="Logs\ErrorsLogs\Errorserrlog_638401877626364071.txt" />
     <Content Include="Logs\Errors\errlog_637876342818393775.txt" />
+    <Content Include="Scripts\ej2\ej2-pdfviewer-lib\pdfium.js" />
+    <Content Include="Scripts\ej2\ej2.min.js" />
     <Content Include="Web.config" />
     <Content Include="webcamjs\flash\README.txt" />
     <Content Include="webcamjs\webcam.js" />
@@ -537,6 +564,11 @@
     <Content Include="lib\bootstrap\LICENSE" />
     <Content Include="lib\jquery-validation\LICENSE.md" />
     <Content Include="lib\jquery\dist\jquery.min.map" />
+    <Content Include="Content\ej2\compatibility\bootstrap.scss" />
+    <Content Include="Content\ej2\compatibility\bootstrap4.scss" />
+    <Content Include="Content\ej2\compatibility\fabric.scss" />
+    <Content Include="Content\ej2\compatibility\highcontrast.scss" />
+    <Content Include="Content\ej2\compatibility\material.scss" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -605,6 +637,7 @@
     <Content Include="Views\AccessGroup\AddEditAccessGroup.cshtml" />
     <Content Include="Views\AccessGroup\_AccessGroupLevel.cshtml" />
     <Content Include="Views\StudentAccess\StudentAccess.cshtml" />
+    <Content Include="Scripts\ej2\ej2-pdfviewer-lib\pdfium.wasm" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -628,6 +661,12 @@
     <Folder Include="App_Data\" />
     <Folder Include="Logs\ErrorsLogs\Errors\" />
     <Folder Include="NewFolder1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\ej2\ej2.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
