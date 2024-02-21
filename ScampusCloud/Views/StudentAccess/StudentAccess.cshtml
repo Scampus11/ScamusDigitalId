@@ -213,10 +213,12 @@
 <script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script>
+    let combinationArray = [];
     $(document).ready(function () {
         $('#accordionBtn').click(function () {
             $('#accordionExample').slideToggle();
         });
+        LoadGridData();
         LoadAccessGroup();
     });
 
@@ -324,13 +326,73 @@
         LoadGridData();
     }
     function Update() {
-        var listBoxA = document.getElementById('listbox1').ej2_instances[0];
         var listBoxB = document.getElementById('listbox2').ej2_instances[0];
-        var selectedItemsA = listBoxA.getSelectedItems();
-        var selectedItemsB = listBoxB.getSelectedItems();
-        var selectedValuesA = selectedItemsA.map(item => item.text);
-        var selectedValuesB = selectedItemsB.map(item => item.text);
-        console.log("Selected values from Group A:", selectedValuesA);
-        console.log("Selected values from Group B:", selectedValuesB);
+        let keyToFetch = 'Value';
+        let values = [];
+        let newKey = 'CanteenTypeId';
+        let canteenTypeId = $("#ddlCanteenType").val();
+
+        if ($('#kt_datatable').find('input[type="checkbox"]:checked').length == 0) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Please select student for assign access group',
+                icon: "error",
+                showCancelButton: false,
+                confirmButtonText: 'OK'
+            });
+        }
+        else if ($("#ddlCanteenType").val() == '' || $("#ddlCanteenType").val() == undefined || $("#ddlCanteenType").val() == null) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Please select canteen type',
+                icon: "error",
+                showCancelButton: false,
+                confirmButtonText: 'OK'
+            });
+        }
+        else if (listBoxB.jsonData.length == 0) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Please select available access group',
+                icon: "error",
+                showCancelButton: false,
+                confirmButtonText: 'OK'
+            });
+        }
+        else {
+            listBoxB.jsonData.forEach(obj => {
+                if (obj.hasOwnProperty(keyToFetch)) {
+                    values.push(obj[keyToFetch]);
+                }
+            });
+            combinationArray.forEach((obj, index) => {
+                if (index <= values.length) {
+                    obj.AccessGroup = values.join(',');
+                    obj[newKey] = canteenTypeId;
+                } else {
+                    obj.AccessGroup = '';
+                }
+            });
+            let jsonData = JSON.stringify(combinationArray);
+            $.ajax({
+                url: '/StudentAccess/Update',
+                type: 'POST',
+                contentType: 'application/json',
+                data: jsonData,
+                success: function (response) {
+                    LoadGridData();
+                },
+                error: function (xhr, status, error) {
+                    
+                }
+            });
+        }
+    }
+    function test(StudentId, StudentName,CompanyId) {
+        let combination = {
+            StudentId: StudentId,
+            StudentName: StudentName,
+        };
+        combinationArray.push(combination);
     }
 </script>

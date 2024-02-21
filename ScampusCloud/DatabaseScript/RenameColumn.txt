@@ -1,0 +1,1 @@
+EXEC sp_rename 'Tbl_Mstr_Student_Access_Group_Control.SessionId', 'CanteenTypeId';

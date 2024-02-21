@@ -1,4 +1,5 @@
-﻿using ScampusCloud.Models;
+﻿using Newtonsoft.Json;
+using ScampusCloud.Models;
 using ScampusCloud.Repository.AccessGroup;
 using ScampusCloud.Repository.Reader;
 using ScampusCloud.Repository.Student;
@@ -43,21 +44,9 @@ namespace ScampusCloud.Controllers
             _StudentAccessGroupModel.lstCampus = BindCampusDropdown(SessionManager.CompanyId.ToString());
             _StudentAccessGroupModel.lstYear = BindYearDropDown(SessionManager.CompanyId.ToString());
             _StudentAccessGroupModel.lstAdmissionType = BindAdmissionTypeDropDown(SessionManager.CompanyId.ToString());
-            _StudentAccessGroupModel.lstAccessGroupDropdown = BindAccessGroupTypeDropDown(SessionManager.CompanyId.ToString());
-
+            _StudentAccessGroupModel.lstAccessGroupDropdown = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
             List<SelectListItem> groupA = new List<SelectListItem>();
-            groupA = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
-
-            //List<object> groupA = new List<object>();
-            //groupA.Add(new { Name = "Australia", Code = "AU" });
-            //groupA.Add(new { Name = "Bermuda", Code = "BM" });
-            //groupA.Add(new { Name = "Canada", Code = "CA" });
-            //groupA.Add(new { Name = "Cameroon", Code = "CM" });
-            //groupA.Add(new { Name = "Denmark", Code = "DK" });
-            //groupA.Add(new { Name = "France", Code = "FR" });
-            //groupA.Add(new { Name = "Finland", Code = "FI" });
-            //groupA.Add(new { Name = "Germany", Code = "DE" });
-            //groupA.Add(new { Name = "Hong Kong", Code = "HK" });
+            groupA = BindAvailableAccessGroupDropDown(SessionManager.CompanyId.ToString());
             ViewBag.groupA = groupA;
             List<object> groupB = new List<object>();
             ViewBag.groupB = groupB;
@@ -97,9 +86,13 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
                     foreach (var item in lstCountries)
                     {
+                        
+
+                        string checkboxClick = "test("+ JsonConvert.SerializeObject(item.StudentId) + ","+ JsonConvert.SerializeObject(item.StudentName) 
+                            + "," + JsonConvert.SerializeObject(item.CompanyId)+")";
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.Id + "','StudentAccess','StudentAccess','Delete')";
                         strHTML.Append("<tr>");
-                        strHTML.Append("<td><input type=\"checkbox\" />&nbsp;</td>");
+                        strHTML.Append("<td><input type=\"checkbox\" onclick="+ checkboxClick + ">&nbsp;</input></td>");
                         strHTML.Append("<td>" + item.StudentId + "</td>");
                         strHTML.Append("<td>" + item.StudentName + "</td>");
                         strHTML.Append("<td>" + item.College + "</td>");
@@ -159,6 +152,16 @@ namespace ScampusCloud.Controllers
                 throw;
             }
         }
+
+        public ActionResult Update(List<StudentAccessGroupModel> data)
+        {
+            _StudentAccessGroupModel.CreatedBy = SessionManager.UserId;
+            _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
+            _StudentAccessGroupModel.CompanyId = SessionManager.CompanyId;
+            var test = _StudentAccessRepository.AddEdit_StudentAccessGroup(data, _StudentAccessGroupModel);
+            return Json(new { success = true });
+        }
+
         private List<SelectListItem> BindCampusDropdown(string CompanyId)
         {
             List<SelectListItem> drpList = new List<SelectListItem>();
@@ -187,6 +190,12 @@ namespace ScampusCloud.Controllers
         {
             List<SelectListItem> drpList = new List<SelectListItem>();
             drpList = _AccessGroupRepository.BindAccessGroupDropDown(CompanyId);
+            return drpList;
+        }
+        private List<SelectListItem> BindAvailableAccessGroupDropDown(string CompanyId)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _AccessGroupRepository.BindAvailableAccessGroupDropDown(CompanyId);
             return drpList;
         }
     }
