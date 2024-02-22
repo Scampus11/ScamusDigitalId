@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace ScampusCloud.Models
 {
-    public class StudentAccessGroupModel : ResponseMessage
+    public class StudentAccessGroupModel
     {
         public int? Id { get; set; }
      

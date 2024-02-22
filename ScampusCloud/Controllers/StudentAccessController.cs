@@ -71,13 +71,11 @@ namespace ScampusCloud.Controllers
                     if (_StudentAccessGroupModel != null)
                     {
                         _StudentAccessGroupModel.IsEdit = true;
-                        //SessionManager.Code = _ReaderModel.Code;
                     }
                     else
                     {
                         _StudentAccessGroupModel = new StudentAccessGroupModel();
                         ViewBag.NoRecordExist = true;
-                        _StudentAccessGroupModel.Response_Message = "No record found";
                         SessionManager.Code = null;
                     }
                     #endregion

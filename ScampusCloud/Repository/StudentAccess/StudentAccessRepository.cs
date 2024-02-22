@@ -108,6 +108,8 @@ namespace ScampusCloud.Repository.StudentAccess
                     dt.Columns.Remove("BatchYear");
                     dt.Columns.Remove("AccessGroupId");
                     dt.Columns.Remove("CanteenType");
+                    dt.Columns.Remove("IsEdit");
+                    dt.Columns.Remove("ActionType");
                     objQueryBuilder.AddFieldValue("@TempTable", dt, DataTypes.Structured, false, "StudentAccessGroupType");
                 }
                 //objQueryBuilder.AddFieldValue("@ActionType", _AccessGroupModel.ActionType, DataTypes.Text, false);
