@@ -1,0 +1,34 @@
+CREATE PROCEDURE [dbo].[SP_GetStudentAccessGroup_Count]
+@Search nvarchar(max)='',
+@CampusId INT = 0,
+@CollegeId INT = 0,
+@DepartmentId INT = 0,
+@Year INT = 0,
+@AdmissionTypeId INT = 0,
+@page INT=1,
+@pagesize INT=10,
+@CompanyId nvarchar(100)=''
+AS
+BEGIN
+SET NOCOUNT ON  
+ DECLARE @FinalQuery NVARCHAR(MAX) = '', @SelectQuery NVARCHAR(MAX) = '',@TablesJoins NVARCHAR(MAX) = '', @WhereCaluse NVARCHAR(MAX) = '',@OrderByCaluse NVARCHAR(1000) = '',@GroupByCaluse NVARCHAR(1000) = ''
+	
+	SET @SelectQuery = @SelectQuery + ' SELECT COUNT(SM.Id) AS Count
+		FROM Tbl_Mstr_Student_Master SM WITH(NOLOCK) 
+		LEFT JOIN Tbl_Mstr_Campus_Master CM WITH(NOLOCK) ON CM.Id = SM.CampusId 
+		LEFT JOIN Tbl_Mstr_College_Master TSCM WITH(NOLOCK) ON TSCM.Id = SM.CollageId 
+		LEFT JOIN Tbl_Mstr_Student_Department_Master TSDM WITH(NOLOCK) ON TSDM.Id = SM.DepartmentId 
+		LEFT JOIN Tbl_Mstr_Year_Master TSYM WITH(NOLOCK) ON TSYM.Id = SM.YearId 
+		LEFT JOIN Tbl_Mstr_Admission_Master TSAM WITH(NOLOCK) ON TSAM.Id = SM.AdmissionTypeId 
+		LEFT JOIN Tbl_Mstr_Student_Access_Group_Control MSAG WITH(NOLOCK) ON MSAG.StudentId = SM.StudentId 
+		LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS1 WITH(NOLOCK) ON MAS1.Id = MSAG.CanteenTypeId
+		--LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS WITH(NOLOCK) ON CHARINDEX('','' + CAST(MAS.Id AS VARCHAR) + '','', '','' + MSAG.AccessGroupId + '','') > 0 '
+	
+	SET @WhereCaluse = @WhereCaluse + ' WHERE SM.CompanyId=@CompanyId'
+	SET @GroupByCaluse += ' GROUP BY SM.Id'
+
+    SET @FinalQuery += @SelectQuery + @TablesJoins + @WhereCaluse + @GroupByCaluse
+	PRINT @FinalQuery
+    EXECUTE sp_executesql @FinalQuery, N'@CompanyId nvarchar(100), @CampusId INT, @CollegeId INT, @DepartmentId INT, @Year INT, @AdmissionTypeId INT, @Search nvarchar(max), @page INT, @pagesize INT', 
+        @CompanyId, @CampusId, @CollegeId, @DepartmentId, @Year, @AdmissionTypeId, @Search, @page, @pagesize
+END

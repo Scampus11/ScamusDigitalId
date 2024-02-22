@@ -20,15 +20,17 @@ SET NOCOUNT ON
 	   TSAM.Name AS AdmissionType,
 	   CM.Name AS Campus,
 	   TSYM.Name AS BatchYear,
-	   STRING_AGG(MAS.Name, '','') AS AccessGroup
-	FROM Tbl_Mstr_Student_Master SM WITH(NOLOCK) 
-	LEFT JOIN Tbl_Mstr_Campus_Master CM WITH(NOLOCK) ON CM.Id = SM.CampusId 
-	LEFT JOIN Tbl_Mstr_College_Master TSCM WITH(NOLOCK) ON TSCM.Id = SM.CollageId 
-	LEFT JOIN Tbl_Mstr_Student_Department_Master TSDM WITH(NOLOCK) ON TSDM.Id = SM.DepartmentId 
-	LEFT JOIN Tbl_Mstr_Year_Master TSYM WITH(NOLOCK) ON TSYM.Id = SM.YearId 
-	LEFT JOIN Tbl_Mstr_Admission_Master TSAM WITH(NOLOCK) ON TSAM.Id = SM.AdmissionTypeId 
-	LEFT JOIN Tbl_Mstr_Student_Access_Group_Control MSAG WITH(NOLOCK) ON MSAG.StudentId = SM.Id 
-	LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS WITH(NOLOCK) ON CHARINDEX('','' + CAST(MAS.Id AS VARCHAR) + '','', '','' + MSAG.AccessGroupId + '','') > 0 '
+	   STRING_AGG(MAS.Name, '','') AS AccessGroup,
+	   MAS1.Name AS CanteenType
+		FROM Tbl_Mstr_Student_Master SM WITH(NOLOCK) 
+		LEFT JOIN Tbl_Mstr_Campus_Master CM WITH(NOLOCK) ON CM.Id = SM.CampusId 
+		LEFT JOIN Tbl_Mstr_College_Master TSCM WITH(NOLOCK) ON TSCM.Id = SM.CollageId 
+		LEFT JOIN Tbl_Mstr_Student_Department_Master TSDM WITH(NOLOCK) ON TSDM.Id = SM.DepartmentId 
+		LEFT JOIN Tbl_Mstr_Year_Master TSYM WITH(NOLOCK) ON TSYM.Id = SM.YearId 
+		LEFT JOIN Tbl_Mstr_Admission_Master TSAM WITH(NOLOCK) ON TSAM.Id = SM.AdmissionTypeId 
+		LEFT JOIN Tbl_Mstr_Student_Access_Group_Control MSAG WITH(NOLOCK) ON MSAG.StudentId = SM.StudentId 
+		LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS1 WITH(NOLOCK) ON MAS1.Id = MSAG.CanteenTypeId
+		LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS WITH(NOLOCK) ON CHARINDEX('','' + CAST(MAS.Id AS VARCHAR) + '','', '','' + MSAG.AccessGroupId + '','') > 0 '
 
 
 	SET @WhereCaluse = @WhereCaluse + ' WHERE (SM.Id LIKE ''%'' + @Search + ''%'' or SM.FirstName LIKE ''%'' + @Search + ''%'' or TSCM.Name LIKE ''%'' + @Search + ''%'' or TSDM.Name LIKE ''%'' + @Search + ''%''
@@ -54,13 +56,11 @@ SET NOCOUNT ON
 	  SET @WhereCaluse  += ' AND SM.AdmissionTypeId=@AdmissionTypeId '   
     END
 	
-	SET @GroupByCaluse += ' GROUP BY SM.StudentId, SM.FirstName, TSCM.Name, TSDM.Name, TSAM.Name, CM.Name, TSYM.Name'
+	SET @GroupByCaluse += ' GROUP BY SM.StudentId, SM.FirstName, TSCM.Name, TSDM.Name, TSAM.Name, CM.Name, TSYM.Name,MAS1.Name'
 
-	SET @OrderByCaluse += ' ORDER BY SM.Id ASC OFFSET 	(@Page -1) * @pageSize ROWS FETCH NEXT @pageSize ROWS ONLY'
+	SET @OrderByCaluse += ' ORDER BY SM.StudentId ASC OFFSET (@Page -1) * @pageSize ROWS FETCH NEXT @pageSize ROWS ONLY'
 
-
-
-    SET @FinalQuery += @SelectQuery + @TablesJoins + @WhereCaluse + @GroupByCaluse --+ @OrderByCaluse
+    SET @FinalQuery += @SelectQuery + @TablesJoins + @WhereCaluse + @GroupByCaluse + @OrderByCaluse
 	PRINT @FinalQuery
     EXECUTE sp_executesql @FinalQuery, N'@CompanyId nvarchar(100), @CampusId INT, @CollegeId INT, @DepartmentId INT, @Year INT, @AdmissionTypeId INT, @Search nvarchar(max), @page INT, @pagesize INT', 
         @CompanyId, @CampusId, @CollegeId, @DepartmentId, @Year, @AdmissionTypeId, @Search, @page, @pagesize

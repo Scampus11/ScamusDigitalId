@@ -1,0 +1,27 @@
+CREATE PROCEDURE [dbo].[SP_StudentAccessGroup_CURD]
+@Id int = null,
+@CompanyId uniqueidentifier = null,
+@CantennType nvarchar(100) = null,
+@Isactive bit = 0,
+@CreatedBy uniqueidentifier=null,
+@ModifiedBy uniqueidentifier=null,
+@ActionType nvarchar(20) = ''
+
+AS
+
+BEGIN
+	IF @ActionType = 'Edit' OR @ActionType='Remote'
+	BEGIN  
+		select C.Id,C.CompanyId,C.StudentId,C.FirstName,C.Code,
+		C.CreatedBy,C.ModifiedBy,C.Isactive
+		from Tbl_Mstr_Student_Master C 
+		LEFT JOIN Tbl_Mstr_Student_Access_Group_Control SAGC ON C.StudentId =  SAGC.StudentId
+		WHERE (C.Id=@Id) and C.CompanyId=@CompanyId
+	END  
+	IF @ActionType = 'Delete'  
+	BEGIN  
+		Delete from Tbl_Mstr_Student_Access_Group_Control Where Id = @Id
+		
+	END  
+END
+
