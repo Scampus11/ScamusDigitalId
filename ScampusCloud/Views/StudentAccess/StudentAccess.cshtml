@@ -172,7 +172,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="card-toolbar">
-                                            <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="Update()" name="Assign" value="Assign">
+                                            <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="AssignAccessGroup()" name="Assign" value="Assign">
                                                 <i class="flaticon-edit-1"></i>
                                                 <span class="nav-text">Assign</span>
                                             </button>
@@ -336,7 +336,7 @@
         BindDepartment($('#ddlColleage').val());
         LoadGridData();
     }
-    function Update() {
+    function AssignAccessGroup() {
         var listBoxB = document.getElementById('listbox2').ej2_instances[0];
         let keyToFetch = 'Value';
         let values = [];
@@ -386,11 +386,18 @@
             });
             let jsonData = JSON.stringify(combinationArray);
             $.ajax({
-                url: '/StudentAccess/Update',
+                url: '/StudentAccess/AssignAccessGroup',
                 type: 'POST',
                 contentType: 'application/json',
                 data: jsonData,
                 success: function (response) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Access group assigned to student',
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonText: 'OK'
+                    });
                     LoadGridData();
                 },
                 error: function (xhr, status, error) {

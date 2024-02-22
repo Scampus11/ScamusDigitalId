@@ -100,8 +100,6 @@ namespace ScampusCloud.Controllers
             }
 
         }
-
-
         public ActionResult StudentAccessGroupList(int page = 1, int pagesize = 10, string searchtxt = "", int CampusId = 0, int CollegeId = 0, int DepartmentId = 0, int YearId = 0, int AdmissionTypeId = 0)
         {
             try
@@ -198,7 +196,7 @@ namespace ScampusCloud.Controllers
             }
         }
 
-        public ActionResult Update(List<StudentAccessGroupModel> data)
+        public ActionResult AssignAccessGroup(List<StudentAccessGroupModel> data)
         {
             _StudentAccessGroupModel.CreatedBy = SessionManager.UserId;
             _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
