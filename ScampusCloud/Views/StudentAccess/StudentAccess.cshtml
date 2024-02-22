@@ -172,9 +172,9 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="card-toolbar">
-                                            <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="Update()" name="update" value="update">
+                                            <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="Update()" name="Assign" value="Assign">
                                                 <i class="flaticon-edit-1"></i>
-                                                <span class="nav-text">Update</span>
+                                                <span class="nav-text">Assign</span>
                                             </button>
                                             <button type="button" class="btn btn-danger  btn-hover-light-danger font-weight-bolder mr-2" onclick="RemoveAllAG()" name="removeAllAccessGorup" value="removeAllAccessGorup">
                                                 <i class="flaticon-delete-1"></i>
@@ -227,20 +227,31 @@
          dataSource: @Html.Raw(Json.Encode(ViewBag.GroupA)),
          fields: { text: 'Text' },
          scope: '#listbox2',
-         toolbarSettings: { items: ['moveTo','moveFrom'] },
-         height: '100px'
+         toolbarSettings: { items: ['moveTo','moveAllTo','moveFrom','moveAllFrom'] },
+         height: '200px'
         });
         listObj.appendTo('#listbox1');
         listObj = new ej.dropdowns.ListBox({
                   dataSource: @Html.Raw(Json.Encode(ViewBag.GroupB)),
                  fields: { text: 'Text' },
                  scope: '#listbox1',
-                 height: '100px'
+                 height: '200px'
         });
         listObj.appendTo('#listbox2');
     }
 
     function RemoveAllAG() {
+
+        if ($('#kt_datatable').find('input[type="checkbox"]:checked').length == 0) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Please select student for remove assigned access group',
+                icon: "error",
+                showCancelButton: false,
+                confirmButtonText: 'OK'
+            });
+        }
+
         var listBoxA = document.getElementById('listbox1').ej2_instances[0];
         var listBoxB = document.getElementById('listbox2').ej2_instances[0];
         listBoxB.dataSource = [];
@@ -383,7 +394,7 @@
                     LoadGridData();
                 },
                 error: function (xhr, status, error) {
-                    
+
                 }
             });
         }

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace ScampusCloud.Models
 {
-    public class StudentAccessGroupModel
+    public class StudentAccessGroupModel : ResponseMessage
     {
         public int? Id { get; set; }
      
@@ -46,6 +46,8 @@ namespace ScampusCloud.Models
         public string Gender { get; set; }
         public int AccessGroupTypeId { get; set; }
         public List<SelectListItem> lstAccessGroupDropdown { get; set; }
-        
+        public string CanteenType { get; set; }
+        public bool? IsEdit { get; set; }
+        public string ActionType { get; set; }
     }
 }

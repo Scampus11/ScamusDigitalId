@@ -1,0 +1,126 @@
+﻿@model ScampusCloud.Models.StudentAccessGroupModel
+@using ScampusCloud.Utility
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.IsEdit == false)
+    {
+        ViewData["Title"] = "Add Student Access Group";
+    }
+    else
+    {
+        ViewData["Title"] = "Edit Student Access Group";
+    }
+}
+<!--begin::Form-->
+<form id="frmManageReader" asp-action="AddEditStudentAccess" asp-controller="StudentAccess" method="post">
+    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">@ViewData["Title"]</h5>
+                    <!--end::Page Title-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid flex-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b example-compact">
+                        <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                            <div class="card-header" style="">
+                                <div class="card-title">
+                                    <h3 class="card-label">
+                                        <i class="mr-2"></i>
+                                        <small class=""></small>
+                                    </h3>
+                                </div>
+                                @Html.HiddenFor(x => x.IsEdit)
+                                @Html.HiddenFor(x => x.Id)
+                                @Html.HiddenFor(x => x.CompanyId)
+                                @Html.HiddenFor(x => x.CreatedBy)
+                                @Html.HiddenFor(x => x.ModifiedBy)
+                                @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
+                                <div class="card-toolbar">
+                                    <a href="/StudentAccess/StudentAccess" class="btn btn-danger font-weight-bolder mr-2">
+                                        <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
+                                    </a>
+                                    @{
+                                        if (ViewBag.NoRecordExist == null)
+                                        {
+                                            <button type="submit" asp-action="AddEditReader" class="btn btn-primary font-weight-bolder mr-2">
+                                                <i class="flaticon-interface-5"></i>
+                                                <span class="nav-text">@(Model.IsEdit == false ? "Save & Add New" : "Update & continue")</span>
+                                            </button>
+                                            <button type="submit" form="frmManageReader" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
+                                                <i class="flaticon-logout"></i>
+                                                <span class="nav-text">@(Model.IsEdit == false ? "Save & Exit" : "Update & Exit")</span>
+                                            </button>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="row h-100 justify-content-center align-items-center">
+                                <div class="col-md-6">
+                                    <div class="card-body">
+                                        @Html.Partial("_NotificationAlert", new ScampusCloud.Models.ResponseMessage() { IsSuccess = Model.IsSuccess, Response_Message = Model.Response_Message })
+                                        <div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">
+                                                    Student Id:
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                @Html.TextBoxFor(m => m.StudentId, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.StudentId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">
+                                                    Student Name:
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.StudentName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+    $(function () {
+         @if(TempData.ContainsKey("Message"))
+        {
+            @:toastr.success('@TempData["Message"]');
+        }
+    });
+
+    $("#chkIsActive").change(function () {
+        $("#hdnIsActive").val($(this).is(':checked'));
+    });
+    </script>
+}

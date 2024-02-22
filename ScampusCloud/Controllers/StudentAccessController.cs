@@ -38,7 +38,7 @@ namespace ScampusCloud.Controllers
             ViewData["paging_size"] = 10;
             if (ViewData["currentPage"] == null)
                 ViewData["currentPage"] = 1;
-            string searchtxt = "NA";
+            string searchtxt = "";
             int totals = Convert.ToInt32(_AccessGroupRepository.GetAllCount(searchtxt, SessionManager.CompanyId.ToString()));
             ViewData["totalrecords"] = totals;
             _StudentAccessGroupModel.lstCampus = BindCampusDropdown(SessionManager.CompanyId.ToString());
@@ -52,6 +52,58 @@ namespace ScampusCloud.Controllers
             ViewBag.groupB = groupB;
             return View(_StudentAccessGroupModel);
         }
+
+        public ActionResult AddEditStudentAccess(string ID = "")
+        {
+            try
+            {
+
+                _StudentAccessGroupModel.CreatedBy = SessionManager.UserId;
+                _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
+                _StudentAccessGroupModel.CompanyId = SessionManager.CompanyId;
+
+                if (!string.IsNullOrEmpty(ID) && ID != "0")
+                {
+                    #region Get Entity by id
+                    _StudentAccessGroupModel.ActionType = "Edit";
+                    _StudentAccessGroupModel.Id = Convert.ToInt32(ID);
+                    _StudentAccessGroupModel = _StudentAccessRepository.AddEdit_StudentAccessGroup(_StudentAccessGroupModel);
+                    if (_StudentAccessGroupModel != null)
+                    {
+                        _StudentAccessGroupModel.IsEdit = true;
+                        //SessionManager.Code = _ReaderModel.Code;
+                    }
+                    else
+                    {
+                        _StudentAccessGroupModel = new StudentAccessGroupModel();
+                        ViewBag.NoRecordExist = true;
+                        _StudentAccessGroupModel.Response_Message = "No record found";
+                        SessionManager.Code = null;
+                    }
+                    #endregion
+                }
+                //// If url Apeended with Querystring ID=0 then Redirect into current Action
+                else if (!string.IsNullOrEmpty(ID) && ID == "0")
+                {
+                    return RedirectToAction("AddEditReader");
+                }
+                else
+                {
+                    _StudentAccessGroupModel.IsEdit = false;
+                    _StudentAccessGroupModel.IsActive = true;
+                    SessionManager.Code = null;
+                }
+                return View(_StudentAccessGroupModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+
+        }
+
+
         public ActionResult StudentAccessGroupList(int page = 1, int pagesize = 10, string searchtxt = "", int CampusId = 0, int CollegeId = 0, int DepartmentId = 0, int YearId = 0, int AdmissionTypeId = 0)
         {
             try
@@ -78,7 +130,7 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<th class='datatable-cell'>Campus</th>");
                     strHTML.Append("<th class='datatable-cell'>Batch Year</th>");
                     strHTML.Append("<th class='datatable-cell'>Access Group </th>");
-                    //strHTML.Append("<th class='datatable-cell'>Canteen</th>");
+                    strHTML.Append("<th class='datatable-cell'>Canteen Type</th>");
                     //strHTML.Append("<th class='datatable-cell'>Block Group</th>");
                     strHTML.Append("<th class='datatable-cell'>Action</th>");
                     strHTML.Append("</tr>");
@@ -86,8 +138,6 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
                     foreach (var item in lstCountries)
                     {
-                        
-
                         string checkboxClick = "test("+ JsonConvert.SerializeObject(item.StudentId) + ","+ JsonConvert.SerializeObject(item.StudentName) 
                             + "," + JsonConvert.SerializeObject(item.CompanyId)+")";
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.Id + "','StudentAccess','StudentAccess','Delete')";
@@ -101,10 +151,7 @@ namespace ScampusCloud.Controllers
                         strHTML.Append("<td>" + item.Campus + "</td>");
                         strHTML.Append("<td>" + item.BatchYear + "</td>");
                         strHTML.Append("<td>" + item.AccessGroup + "</td>");
-                        //if (item.IsActive)
-                        //    strHTML.Append("<td><span><span class='label font-weight-bold label-lg label-light-primary label-inline'>Active</span></span></td>");
-                        //else
-                        //    strHTML.Append("<td><span><span class='label font-weight-bold label-lg label-light-danger label-inline'>InActive</span></span></td>");
+                        strHTML.Append("<td>" + item.CanteenType + "</td>");
                         strHTML.Append("<td>");
                         strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3' href= '/StudentAccess/AddEditStudentAccess?ID=" + item.Id + "'><i class='flaticon-edit'></i></a>");
                         strHTML.Append("<a id = 'del_" + item.Id + "' class='btn btn-sm btn-icon btn-lg-light btn-text-danger btn-hover-light-danger' onclick=" + DeleteConfirmationEvent + "><i class='flaticon-delete'></i></a>");
@@ -158,10 +205,11 @@ namespace ScampusCloud.Controllers
             _StudentAccessGroupModel.CreatedBy = SessionManager.UserId;
             _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
             _StudentAccessGroupModel.CompanyId = SessionManager.CompanyId;
-            var test = _StudentAccessRepository.AddEdit_StudentAccessGroup(data, _StudentAccessGroupModel);
+            var test = _StudentAccessRepository.Assign_StudentAccessGroup(data, _StudentAccessGroupModel);
             return Json(new { success = true });
         }
 
+        #region Private Method
         private List<SelectListItem> BindCampusDropdown(string CompanyId)
         {
             List<SelectListItem> drpList = new List<SelectListItem>();
@@ -198,5 +246,6 @@ namespace ScampusCloud.Controllers
             drpList = _AccessGroupRepository.BindAvailableAccessGroupDropDown(CompanyId);
             return drpList;
         }
+        #endregion
     }
 }

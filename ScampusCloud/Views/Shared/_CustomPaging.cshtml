@@ -139,6 +139,7 @@
                 alert(error);
             },
             success: function (data) {
+                debugger;
                 $(".loading").removeClass('show');
                 $('#' + divID).html('');
                 $('#' + divID).html(data);

@@ -158,7 +158,7 @@ namespace ScampusCloud.Repository.AccessGroup
                 QueryBuilder objQueryBuilder = new QueryBuilder
                 {
                     TableName = "Tbl_Mstr_AccessGroup_Master",
-                    StoredProcedureName = @"SP_GetAccessGroupData_Count",
+                    StoredProcedureName = @"SP_GetStudentAccessGroup_Count",
                     SetQueryType = QueryBuilder.QueryType.SELECT,
                 };
                 objQueryBuilder.AddFieldValue("@Search", searchtxt, DataTypes.Text, false);

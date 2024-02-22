@@ -48,7 +48,7 @@ namespace ScampusCloud.Repository.StudentAccess
                 QueryBuilder objQueryBuilder = new QueryBuilder
                 {
                     TableName = "Tbl_Mstr_Student_Master",
-                    StoredProcedureName = @"SP_GetStudentAccessGroupData",
+                    StoredProcedureName = @"SP_GetStudentAccessGroup_Count",
                     SetQueryType = QueryBuilder.QueryType.SELECT,
                 };
                 objQueryBuilder.AddFieldValue("@Search", searchtxt, DataTypes.Text, false);
@@ -62,7 +62,7 @@ namespace ScampusCloud.Repository.StudentAccess
             }
 
         }
-        public StudentAccessGroupModel AddEdit_StudentAccessGroup(List<StudentAccessGroupModel> data, StudentAccessGroupModel _AccessGroupModel)
+        public StudentAccessGroupModel Assign_StudentAccessGroup(List<StudentAccessGroupModel> data, StudentAccessGroupModel _AccessGroupModel)
         {
             try
             {
@@ -107,9 +107,45 @@ namespace ScampusCloud.Repository.StudentAccess
                     dt.Columns.Remove("Campus");
                     dt.Columns.Remove("BatchYear");
                     dt.Columns.Remove("AccessGroupId");
+                    dt.Columns.Remove("CanteenType");
                     objQueryBuilder.AddFieldValue("@TempTable", dt, DataTypes.Structured, false, "StudentAccessGroupType");
                 }
                 //objQueryBuilder.AddFieldValue("@ActionType", _AccessGroupModel.ActionType, DataTypes.Text, false);
+                return objgm.ExecuteObjectUsingSp<StudentAccessGroupModel>(objQueryBuilder);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
+
+        public StudentAccessGroupModel AddEdit_StudentAccessGroup(StudentAccessGroupModel _StudentAccessGroupModel)
+        {
+            try
+            {
+                QueryBuilder objQueryBuilder = new QueryBuilder
+                {
+                    TableName = _StudentAccessGroupModel.GetType().Name,
+                    StoredProcedureName = @"SP_StudentAccessGroup_CURD",
+                    SetQueryType = QueryBuilder.QueryType.SELECT
+                };
+                if (_StudentAccessGroupModel.ActionType == "Remote" || _StudentAccessGroupModel.ActionType == "Edit")
+                {
+                    objQueryBuilder.AddFieldValue("@Id", _StudentAccessGroupModel.Id, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@CompanyId", _StudentAccessGroupModel.CompanyId, DataTypes.Text, false);
+                }
+                else
+                {
+                    objQueryBuilder.AddFieldValue("@Id", _StudentAccessGroupModel.Id, DataTypes.Numeric, false);
+                    objQueryBuilder.AddFieldValue("@CompanyId", _StudentAccessGroupModel.CompanyId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@CanteenType", _StudentAccessGroupModel.CanteenTypeId, DataTypes.Numeric, false);
+                    objQueryBuilder.AddFieldValue("@Isactive", _StudentAccessGroupModel.IsActive, DataTypes.Boolean, false);
+                    objQueryBuilder.AddFieldValue("@CreatedBy", _StudentAccessGroupModel.CreatedBy, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@ModifiedBy", _StudentAccessGroupModel.ModifiedBy, DataTypes.Text, false);
+                }
+                objQueryBuilder.AddFieldValue("@ActionType", _StudentAccessGroupModel.ActionType, DataTypes.Text, false);
+
                 return objgm.ExecuteObjectUsingSp<StudentAccessGroupModel>(objQueryBuilder);
             }
             catch (Exception ex)
