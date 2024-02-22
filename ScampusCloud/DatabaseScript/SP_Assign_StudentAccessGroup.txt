@@ -7,11 +7,7 @@ CREATE PROCEDURE [dbo].[SP_Assign_StudentAccessGroup]
 AS
 
 BEGIN
-       IF EXISTS(SELECT TOP 1  1 FROM Tbl_Mstr_Student_Access_Group_Control)
-	   BEGIN
-	      TRUNCATE TABLE Tbl_Mstr_Student_Access_Group_Control
-	   END
-
-		INSERT INTO Tbl_Mstr_Student_Access_Group_Control (StudentId,CompanyId,[name],AccessGroupId,CanteenTypeId,BlockId,IsDeleted,IsActive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy)
+       
+	INSERT INTO Tbl_Mstr_Student_Access_Group_Control (StudentId,CompanyId,[name],AccessGroupId,CanteenTypeId,BlockId,IsDeleted,IsActive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy)
         SELECT StudentId,@CompanyId,[name],AccessGroup,CanteenTypeId,null,0,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy FROM @TempTable
 END
