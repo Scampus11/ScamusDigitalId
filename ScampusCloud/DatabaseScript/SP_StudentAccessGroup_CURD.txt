@@ -1,7 +1,9 @@
 ALTER PROCEDURE [dbo].[SP_StudentAccessGroup_CURD]
 @Id int = null,
+@StudentId nvarchar(50) = '',
 @CompanyId uniqueidentifier = null,
-@CantennType nvarchar(100) = null,
+@CanteenType INT = null,
+@AccessGroupId nvarchar(100) = null,
 @Isactive bit = 0,
 @CreatedBy uniqueidentifier=null,
 @ModifiedBy uniqueidentifier=null,
@@ -10,17 +12,21 @@ ALTER PROCEDURE [dbo].[SP_StudentAccessGroup_CURD]
 AS
 
 BEGIN
+    IF @ActionType = 'Update'
+	BEGIN
+	    UPDATE Tbl_Mstr_Student_Access_Group_Control SET CanteenTypeId = @CanteenType,AccessGroupId = @AccessGroupId WHERE StudentId = @StudentId
+	END
+
 	IF @ActionType = 'Edit' OR @ActionType='Remote'
 	BEGIN  
-		select C.Id,C.CompanyId,C.StudentId,C.FirstName AS StudentName,C.Code,
-		C.CreatedBy,C.ModifiedBy,C.Isactive
+		select C.Id,C.CompanyId,C.StudentId,C.FirstName AS StudentName,C.Code,SAGC.CanteenTypeId AS AccessGroupTypeId,
+		C.CreatedBy,C.ModifiedBy,C.Isactive,SAGC.Id as AccessGroupControlId
 		from Tbl_Mstr_Student_Master C 
 		LEFT JOIN Tbl_Mstr_Student_Access_Group_Control SAGC ON C.StudentId =  SAGC.StudentId
 		WHERE (C.Id=@Id) and C.CompanyId=@CompanyId
 	END  
 	IF @ActionType = 'Delete'  
 	BEGIN  
-		Delete from Tbl_Mstr_Student_Access_Group_Control Where Id = @Id
-		
+		UPDATE Tbl_Mstr_Student_Access_Group_Control SET CanteenTypeId = @CanteenType,AccessGroupId = @AccessGroupId WHERE StudentId = @StudentId
 	END  
 END

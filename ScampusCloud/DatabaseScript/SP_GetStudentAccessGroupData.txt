@@ -13,7 +13,7 @@ BEGIN
 SET NOCOUNT ON  
  DECLARE @FinalQuery NVARCHAR(MAX) = '', @SelectQuery NVARCHAR(MAX) = '',@TablesJoins NVARCHAR(MAX) = '', @WhereCaluse NVARCHAR(MAX) = '',@OrderByCaluse NVARCHAR(1000) = '',@GroupByCaluse NVARCHAR(1000) = ''
 	
-	SET @SelectQuery = @SelectQuery + ' SELECT SM.StudentId,
+	SET @SelectQuery = @SelectQuery + ' SELECT SM.Id,SM.StudentId,
        SM.FirstName AS StudentName,
 	   TSCM.Name AS College,
 	   TSDM.Name AS Department,
@@ -56,7 +56,7 @@ SET NOCOUNT ON
 	  SET @WhereCaluse  += ' AND SM.AdmissionTypeId=@AdmissionTypeId '   
     END
 	
-	SET @GroupByCaluse += ' GROUP BY SM.StudentId, SM.FirstName, TSCM.Name, TSDM.Name, TSAM.Name, CM.Name, TSYM.Name,MAS1.Name'
+	SET @GroupByCaluse += ' GROUP BY SM.Id,SM.StudentId, SM.FirstName, TSCM.Name, TSDM.Name, TSAM.Name, CM.Name, TSYM.Name,MAS1.Name'
 
 	SET @OrderByCaluse += ' ORDER BY SM.StudentId ASC OFFSET (@Page -1) * @pageSize ROWS FETCH NEXT @pageSize ROWS ONLY'
 
