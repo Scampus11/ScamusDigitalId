@@ -202,7 +202,7 @@
 
     </div>
 </div>
-
+@Html.Partial("_DeleteConfirmationPartial")
 <link href="~/Content/ej2/customized/material.css" rel="stylesheet" />
 <link href="~/Content/ej2/material.css" rel="stylesheet" />
 <link href="~/Content/ej2/compatibility/material.css" rel="stylesheet" />
@@ -428,7 +428,7 @@
     }
     function SelectStudent(StudentId, StudentName, CompanyId) {
         let isChecked = false;
-        
+
         $('#kt_datatable').find('[class^="chk_"]').each(function () {
             if ($(this).prop('checked')) {
                 isChecked = true;

@@ -1,4 +1,4 @@
-﻿@model ScampusCloud.Models.StudentAccessGroupModel
+﻿@model ScampusCloud.Models.StudentAccessMasterModel
 @using ScampusCloud.Utility
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -49,6 +49,7 @@
                                 @Html.HiddenFor(x => x.CreatedBy)
                                 @Html.HiddenFor(x => x.ModifiedBy)
                                 @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
+                                @Html.HiddenFor(x=>x.AccessGroupId)
                                 <div class="card-toolbar">
                                     <a href="/StudentAccess/StudentAccess" class="btn btn-danger font-weight-bolder mr-2">
                                         <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
@@ -56,7 +57,7 @@
                                     @{
                                         if (ViewBag.NoRecordExist == null)
                                         {
-                                            <button type="submit" asp-action="AddEditReader" class="btn btn-primary font-weight-bolder mr-2">
+                                            <button type="submit" asp-action="AddEditStudentAccess" class="btn btn-primary font-weight-bolder mr-2">
                                                 <i class="flaticon-interface-5"></i>
                                                 <span class="nav-text">@(Model.IsEdit == false ? "Save & Add New" : "Update & continue")</span>
                                             </button>
@@ -97,6 +98,34 @@
                                                 @Html.ValidationMessageFor(m => m.StudentName, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
+                                        <div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">
+                                                    Canteen Type:
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                @Html.DropDownListFor(model => model.AccessGroupTypeId, new SelectList(Model.lstAccessGroupDropdown, "Value", "Text"), "Select Canteen Type"
+, new { @class = "form-control", @id = "ddlCanteenType" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <div class="dual-list-groupa">
+                                                    <h5>Available Access Group</h5>
+                                                    <input id="listbox1">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="dual-list-groupb">
+                                                    <h5>Assigned Access Group</h5>
+                                                    <input id="listbox2">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -109,11 +138,19 @@
         </div>
     </div>
 </form>
+<link href="~/Content/ej2/customized/material.css" rel="stylesheet" />
+<link href="~/Content/ej2/material.css" rel="stylesheet" />
+<link href="~/Content/ej2/compatibility/material.css" rel="stylesheet" />
+<script src="~/Scripts/ej2/ej2.min.js"></script>
+<script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+
 
 @section Scripts{
     <script>
     $(function () {
-         @if(TempData.ContainsKey("Message"))
+        @if(TempData.ContainsKey("Message"))
         {
             @:toastr.success('@TempData["Message"]');
         }
@@ -122,5 +159,34 @@
     $("#chkIsActive").change(function () {
         $("#hdnIsActive").val($(this).is(':checked'));
     });
+        document.getElementById('frmManageReader').addEventListener('submit', function (e) {
+            var listBoxA = document.getElementById('listbox1').ej2_instances[0];
+            var listBoxB = document.getElementById('listbox2').ej2_instances[0];
+            var selectedItems = listBoxB.jsonData;
+            const ids = selectedItems.map(obj => obj.Value);
+            $("#AccessGroupId").val(ids.join(","));
+        });
+
+    $(document).ready(function () {
+        LoadAccessGroup();
+    })
+
+   function LoadAccessGroup() {
+      var listObj = new ej.dropdowns.ListBox({
+      dataSource: @Html.Raw(Json.Encode(ViewBag.GroupA)),
+      fields: { text: 'Text' },
+      scope: '#listbox2',
+      toolbarSettings: { items: ['moveTo','moveAllTo','moveFrom','moveAllFrom'] },
+      height: '200px'
+     });
+       listObj.appendTo('#listbox1');
+       listObj = new ej.dropdowns.ListBox({
+               dataSource: @Html.Raw(Json.Encode(ViewBag.GroupB)),
+              fields: { text: 'Text' },
+              scope: '#listbox1',
+              height: '200px'
+     });
+     listObj.appendTo('#listbox2');
+ }
     </script>
 }

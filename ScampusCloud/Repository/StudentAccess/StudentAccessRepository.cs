@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ScampusCloud.Repository.StudentAccess
 {
@@ -124,39 +125,54 @@ namespace ScampusCloud.Repository.StudentAccess
             }
         }
 
-        public StudentAccessGroupModel AddEdit_StudentAccessGroup(StudentAccessGroupModel _StudentAccessGroupModel)
+        public StudentAccessMasterModel AddEdit_StudentAccessGroup(StudentAccessMasterModel _StudentAccessMasterModel)
         {
             try
             {
                 QueryBuilder objQueryBuilder = new QueryBuilder
                 {
-                    TableName = _StudentAccessGroupModel.GetType().Name,
+                    TableName = _StudentAccessMasterModel.GetType().Name,
                     StoredProcedureName = @"SP_StudentAccessGroup_CURD",
                     SetQueryType = QueryBuilder.QueryType.SELECT
                 };
-                if (_StudentAccessGroupModel.ActionType == "Remote" || _StudentAccessGroupModel.ActionType == "Edit")
+                if (_StudentAccessMasterModel.ActionType == "Remote" || _StudentAccessMasterModel.ActionType == "Edit")
                 {
-                    objQueryBuilder.AddFieldValue("@Id", _StudentAccessGroupModel.Id, DataTypes.Text, false);
-                    objQueryBuilder.AddFieldValue("@CompanyId", _StudentAccessGroupModel.CompanyId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@Id", _StudentAccessMasterModel.Id, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@CompanyId", _StudentAccessMasterModel.CompanyId, DataTypes.Text, false);
                 }
                 else
                 {
-                    objQueryBuilder.AddFieldValue("@Id", _StudentAccessGroupModel.Id, DataTypes.Numeric, false);
-                    objQueryBuilder.AddFieldValue("@CompanyId", _StudentAccessGroupModel.CompanyId, DataTypes.Text, false);
-                    objQueryBuilder.AddFieldValue("@CanteenType", _StudentAccessGroupModel.CanteenTypeId, DataTypes.Numeric, false);
-                    objQueryBuilder.AddFieldValue("@Isactive", _StudentAccessGroupModel.IsActive, DataTypes.Boolean, false);
-                    objQueryBuilder.AddFieldValue("@CreatedBy", _StudentAccessGroupModel.CreatedBy, DataTypes.Text, false);
-                    objQueryBuilder.AddFieldValue("@ModifiedBy", _StudentAccessGroupModel.ModifiedBy, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@Id", _StudentAccessMasterModel.Id, DataTypes.Numeric, false);
+                    objQueryBuilder.AddFieldValue("@StudentId", _StudentAccessMasterModel.StudentId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@CompanyId", _StudentAccessMasterModel.CompanyId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@CanteenType", _StudentAccessMasterModel.AccessGroupTypeId, DataTypes.Numeric, false);
+                    objQueryBuilder.AddFieldValue("@AccessGroupId", _StudentAccessMasterModel.AccessGroupId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@Isactive", _StudentAccessMasterModel.IsActive, DataTypes.Boolean, false);
+                    objQueryBuilder.AddFieldValue("@CreatedBy", _StudentAccessMasterModel.CreatedBy, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@ModifiedBy", _StudentAccessMasterModel.ModifiedBy, DataTypes.Text, false);
                 }
-                objQueryBuilder.AddFieldValue("@ActionType", _StudentAccessGroupModel.ActionType, DataTypes.Text, false);
+                objQueryBuilder.AddFieldValue("@ActionType", _StudentAccessMasterModel.ActionType, DataTypes.Text, false);
 
-                return objgm.ExecuteObjectUsingSp<StudentAccessGroupModel>(objQueryBuilder);
+                return objgm.ExecuteObjectUsingSp<StudentAccessMasterModel>(objQueryBuilder);
             }
             catch (Exception ex)
             {
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
                 throw;
             }
+        }
+
+        public List<SelectListItem> BindAvailableAccessGroupDropDown(int Id,string ActionType)
+        {
+            QueryBuilder objQueryBuilder = new QueryBuilder
+            {
+                TableName = "Tbl_Mstr_AccessGroup_Master",
+                StoredProcedureName = @"SP_GetAvailableAssgined_Group",
+                SetQueryType = QueryBuilder.QueryType.SELECT,
+            };
+            objQueryBuilder.AddFieldValue("@Id", Id, DataTypes.Numeric, false);
+            objQueryBuilder.AddFieldValue("@ActionType", ActionType, DataTypes.Text, false);
+            return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
         }
     }
 }

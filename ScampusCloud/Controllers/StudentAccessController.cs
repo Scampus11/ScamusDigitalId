@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Newtonsoft.Json;
 using ScampusCloud.Models;
 using ScampusCloud.Repository.AccessGroup;
 using ScampusCloud.Repository.Reader;
@@ -23,6 +24,7 @@ namespace ScampusCloud.Controllers
         private readonly AccessGroupRepository _AccessGroupRepository;
         private readonly StudentAccessRepository _StudentAccessRepository;
         StudentAccessGroupModel _StudentAccessGroupModel = new StudentAccessGroupModel();
+        StudentAccessMasterModel _StudentAccessMasterModel = new StudentAccessMasterModel();
         #endregion
 
         public StudentAccessController()
@@ -58,23 +60,26 @@ namespace ScampusCloud.Controllers
             try
             {
 
-                _StudentAccessGroupModel.CreatedBy = SessionManager.UserId;
-                _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
-                _StudentAccessGroupModel.CompanyId = SessionManager.CompanyId;
+                _StudentAccessMasterModel.CreatedBy = SessionManager.UserId;
+                _StudentAccessMasterModel.ModifiedBy = SessionManager.UserId;
+                _StudentAccessMasterModel.CompanyId = SessionManager.CompanyId;
+               
+
 
                 if (!string.IsNullOrEmpty(ID) && ID != "0")
                 {
                     #region Get Entity by id
-                    _StudentAccessGroupModel.ActionType = "Edit";
-                    _StudentAccessGroupModel.Id = Convert.ToInt32(ID);
-                    _StudentAccessGroupModel = _StudentAccessRepository.AddEdit_StudentAccessGroup(_StudentAccessGroupModel);
-                    if (_StudentAccessGroupModel != null)
+                    _StudentAccessMasterModel.ActionType = "Edit";
+                    _StudentAccessMasterModel.Id = Convert.ToInt32(ID);
+                    _StudentAccessMasterModel.ActionType = "Edit";
+                    _StudentAccessMasterModel = _StudentAccessRepository.AddEdit_StudentAccessGroup(_StudentAccessMasterModel);
+                    if (_StudentAccessMasterModel != null)
                     {
-                        _StudentAccessGroupModel.IsEdit = true;
+                        _StudentAccessMasterModel.IsEdit = true;
                     }
                     else
                     {
-                        _StudentAccessGroupModel = new StudentAccessGroupModel();
+                        _StudentAccessMasterModel = new StudentAccessMasterModel();
                         ViewBag.NoRecordExist = true;
                         SessionManager.Code = null;
                     }
@@ -87,11 +92,17 @@ namespace ScampusCloud.Controllers
                 }
                 else
                 {
-                    _StudentAccessGroupModel.IsEdit = false;
-                    _StudentAccessGroupModel.IsActive = true;
+                    _StudentAccessMasterModel.IsEdit = false;
+                    _StudentAccessMasterModel.IsActive = true;
                     SessionManager.Code = null;
                 }
-                return View(_StudentAccessGroupModel);
+                _StudentAccessMasterModel.lstAccessGroupDropdown = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
+                List<SelectListItem> groupA = new List<SelectListItem>();
+                groupA = _StudentAccessRepository.BindAvailableAccessGroupDropDown(_StudentAccessMasterModel.AccessGroupControlId, "AvailableGroup");
+                ViewBag.groupA = groupA;
+                List<SelectListItem> groupB = new List<SelectListItem>();
+                ViewBag.groupB = _StudentAccessRepository.BindAvailableAccessGroupDropDown(_StudentAccessMasterModel.AccessGroupControlId, "AssignedGroup");
+                return View(_StudentAccessMasterModel);
             }
             catch (Exception ex)
             {
@@ -100,6 +111,36 @@ namespace ScampusCloud.Controllers
             }
 
         }
+
+        [HttpPost]
+        public ActionResult AddEditStudentAccess(StudentAccessMasterModel studentAccessMasterModel, string saveAndExit = "")
+        {
+
+            _StudentAccessMasterModel.CreatedBy = SessionManager.UserId;
+            _StudentAccessMasterModel.ModifiedBy = SessionManager.UserId;
+            _StudentAccessMasterModel.CompanyId = SessionManager.CompanyId;
+            _StudentAccessMasterModel.Id = Convert.ToInt32(studentAccessMasterModel.Id);
+            _StudentAccessMasterModel.AccessGroupId = studentAccessMasterModel.AccessGroupId;
+            _StudentAccessMasterModel.AccessGroupTypeId = studentAccessMasterModel.AccessGroupTypeId;
+            _StudentAccessMasterModel.StudentId = studentAccessMasterModel.StudentId;
+            _StudentAccessMasterModel.ActionType = "Update";
+            _StudentAccessMasterModel = _StudentAccessRepository.AddEdit_StudentAccessGroup(_StudentAccessMasterModel);
+
+            if (!string.IsNullOrEmpty(saveAndExit))
+            {
+                return RedirectToAction("StudentAccess", "StudentAccess");
+            }
+            else if (studentAccessMasterModel.IsEdit == true)
+            {
+                return RedirectToAction("AddEditStudentAccess", new { ID = studentAccessMasterModel.Id });
+            }
+            else
+            {
+                return RedirectToAction("AddEditStudentAccess");
+            }
+        }
+
+
         public ActionResult StudentAccessGroupList(int page = 1, int pagesize = 10, string searchtxt = "", int CampusId = 0, int CollegeId = 0, int DepartmentId = 0, int YearId = 0, int AdmissionTypeId = 0)
         {
             try
@@ -136,7 +177,7 @@ namespace ScampusCloud.Controllers
                     {
                         string checkboxClick = "SelectStudent(" + JsonConvert.SerializeObject(item.StudentId) + ","+ JsonConvert.SerializeObject(item.StudentName) 
                             + "," + JsonConvert.SerializeObject(item.CompanyId)+")";
-                        string DeleteConfirmationEvent = "DeleteConfirmation('" + item.Id + "','StudentAccess','StudentAccess','Delete')";
+                        string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StudentId + "','StudentAccess','StudentAccess','Delete')";
                         strHTML.Append("<tr>");
                         strHTML.Append("<td><input type=\"checkbox\" class=chk_"+item.StudentId+ " data-studentid="+item.StudentId+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
                         strHTML.Append("<td>" + item.StudentId + "</td>");
@@ -255,5 +296,22 @@ namespace ScampusCloud.Controllers
             return drpList;
         }
         #endregion
+        [HttpPost]
+        public ActionResult Delete(string Id)
+        {
+            try
+            {
+                _StudentAccessMasterModel.ActionType = "Delete";
+                _StudentAccessMasterModel.StudentId = Id;
+                var response = _StudentAccessRepository.AddEdit_StudentAccessGroup(_StudentAccessMasterModel);
+
+                return RedirectToAction("Reader", "Reader");
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
     }
 }
