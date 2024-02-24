@@ -48,7 +48,6 @@
     var cardTypes = '';
 
     function getpaging(divID, url, page, searchText, campusId,collegeId,departmentId,yearId,admissionTypeId, chr_status, _FromDate, _ToDate, _apikey) {
-        debugger;
         $(".loading").addClass('show');
         totalrecords = parseInt(@ViewData["totalrecords"]);
         var pagenumber = parseInt(page);
@@ -112,7 +111,6 @@
         if (ToDate != '') {
             actionUrl = actionUrl + '&ToDate=' + ToDate;
         }
-        debugger;
         if (campusId != undefined && campusId != null && campusId != '') {
             actionUrl = actionUrl + '&CampusId=' + campusId;
         }
@@ -139,7 +137,6 @@
                 alert(error);
             },
             success: function (data) {
-                debugger;
                 $(".loading").removeClass('show');
                 $('#' + divID).html('');
                 $('#' + divID).html(data);

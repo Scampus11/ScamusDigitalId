@@ -134,11 +134,11 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
                     foreach (var item in lstCountries)
                     {
-                        string checkboxClick = "test("+ JsonConvert.SerializeObject(item.StudentId) + ","+ JsonConvert.SerializeObject(item.StudentName) 
+                        string checkboxClick = "SelectStudent(" + JsonConvert.SerializeObject(item.StudentId) + ","+ JsonConvert.SerializeObject(item.StudentName) 
                             + "," + JsonConvert.SerializeObject(item.CompanyId)+")";
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.Id + "','StudentAccess','StudentAccess','Delete')";
                         strHTML.Append("<tr>");
-                        strHTML.Append("<td><input type=\"checkbox\" onclick="+ checkboxClick + ">&nbsp;</input></td>");
+                        strHTML.Append("<td><input type=\"checkbox\" class=chk_"+item.StudentId+ " data-studentid="+item.StudentId+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
                         strHTML.Append("<td>" + item.StudentId + "</td>");
                         strHTML.Append("<td>" + item.StudentName + "</td>");
                         strHTML.Append("<td>" + item.College + "</td>");
@@ -201,7 +201,19 @@ namespace ScampusCloud.Controllers
             _StudentAccessGroupModel.CreatedBy = SessionManager.UserId;
             _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
             _StudentAccessGroupModel.CompanyId = SessionManager.CompanyId;
+            _StudentAccessGroupModel.ActionType = "Assign";
             var test = _StudentAccessRepository.Assign_StudentAccessGroup(data, _StudentAccessGroupModel);
+            return Json(new { success = true });
+        }
+        [HttpPost]
+        public ActionResult RemoveAccessGroup(string StudentIds)
+        {
+            _StudentAccessGroupModel.CreatedBy = SessionManager.UserId;
+            _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
+            _StudentAccessGroupModel.CompanyId = SessionManager.CompanyId;
+            _StudentAccessGroupModel.ActionType = "Remove";
+            _StudentAccessGroupModel.StudentIds = StudentIds;
+            var test = _StudentAccessRepository.Assign_StudentAccessGroup(null, _StudentAccessGroupModel);
             return Json(new { success = true });
         }
 

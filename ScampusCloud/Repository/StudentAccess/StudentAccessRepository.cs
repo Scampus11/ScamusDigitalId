@@ -110,9 +110,11 @@ namespace ScampusCloud.Repository.StudentAccess
                     dt.Columns.Remove("CanteenType");
                     dt.Columns.Remove("IsEdit");
                     dt.Columns.Remove("ActionType");
+                    dt.Columns.Remove("StudentIds");
                     objQueryBuilder.AddFieldValue("@TempTable", dt, DataTypes.Structured, false, "StudentAccessGroupType");
                 }
-                //objQueryBuilder.AddFieldValue("@ActionType", _AccessGroupModel.ActionType, DataTypes.Text, false);
+                objQueryBuilder.AddFieldValue("@StudentIds", _AccessGroupModel.StudentIds, DataTypes.Text, false);
+                objQueryBuilder.AddFieldValue("@ActionType", _AccessGroupModel.ActionType, DataTypes.Text, false);
                 return objgm.ExecuteObjectUsingSp<StudentAccessGroupModel>(objQueryBuilder);
             }
             catch (Exception ex)

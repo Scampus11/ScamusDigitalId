@@ -56,9 +56,6 @@
                     </div>
                     <div class="card-toolbar col-lg-3 col-xl-4 justify-content-end">
                         <!--begin::Button-->
-                        @*<a href="/DoorGroup/AddEditDoorGroup" class="btn btn-primary font-weight-bolder">
-                                <i class="fas fa-plus icon-sm-nm"></i>Bulk AG
-                            </a>*@
                         <button class="btn btn-primary my-2 my-lg-0" id="accordionBtn">Bulk AG</button>
                         <!--end::Button-->
                     </div>
@@ -214,6 +211,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script>
     let combinationArray = [];
+    let checkedIds = [];
     $(document).ready(function () {
         $('#accordionBtn').click(function () {
             $('#accordionExample').slideToggle();
@@ -251,14 +249,34 @@
                 confirmButtonText: 'OK'
             });
         }
+        $.ajax({
+            url: '/StudentAccess/RemoveAccessGroup',
+            type: 'POST',
+            datatype:'json',
+            data: { StudentIds: checkedIds.join(",") },
+            success: function (response) {
+                Swal.fire({
+                    title: 'Success',
+                    text: 'Access group removed from selected student',
+                    icon: "success",
+                    showCancelButton: false,
+                    confirmButtonText: 'OK'
+                });
+                checkedIds = [];
+                Clear();
+                LoadGridData();
+            },
+            error: function (xhr, status, error) {
 
-        var listBoxA = document.getElementById('listbox1').ej2_instances[0];
+            }
+        });
+        @*var listBoxA = document.getElementById('listbox1').ej2_instances[0];
         var listBoxB = document.getElementById('listbox2').ej2_instances[0];
         listBoxB.dataSource = [];
         listBoxA.dataSource = @Html.Raw(Json.Encode(ViewBag.GroupA));
         listBoxB.dataSource = yourNewDataForGroupB;
         listBoxA.refresh();
-        listBoxB.refresh();
+        listBoxB.refresh();*@
     }
 
     $('#ddlCampus').change(function () {
@@ -398,6 +416,8 @@
                         showCancelButton: false,
                         confirmButtonText: 'OK'
                     });
+                    checkedIds = [];
+                    Clear();
                     LoadGridData();
                 },
                 error: function (xhr, status, error) {
@@ -406,11 +426,34 @@
             });
         }
     }
-    function test(StudentId, StudentName,CompanyId) {
-        let combination = {
-            StudentId: StudentId,
-            StudentName: StudentName,
-        };
-        combinationArray.push(combination);
+    function SelectStudent(StudentId, StudentName, CompanyId) {
+        let isChecked = false;
+        
+        $('#kt_datatable').find('[class^="chk_"]').each(function () {
+            if ($(this).prop('checked')) {
+                isChecked = true;
+                checkedIds.push($(this).data('studentid'));
+            }
+        });
+        if (isChecked) {
+            let existingIndex = combinationArray.findIndex(obj => obj.StudentId === StudentId);
+            if (existingIndex === -1) {
+                combinationArray.push({ StudentId: StudentId, StudentName: StudentName });
+            } else {
+                combinationArray[existingIndex].StudentName = StudentName;
+            }
+        }
+        combinationArray = combinationArray.filter(obj => checkedIds.includes(obj.StudentId));
+    }
+
+    function Clear() {
+        combinationArray = [];
+        $("#ddlCanteenType").val("");
+        var listBoxA = document.getElementById('listbox1').ej2_instances[0];
+        var listBoxB = document.getElementById('listbox2').ej2_instances[0];
+        listBoxB.dataSource = [];
+        listBoxA.dataSource = @Html.Raw(Json.Encode(ViewBag.GroupA));
+        listBoxA.refresh();
+        listBoxB.refresh();
     }
 </script>

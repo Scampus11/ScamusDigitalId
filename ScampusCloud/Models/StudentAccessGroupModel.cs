@@ -49,5 +49,6 @@ namespace ScampusCloud.Models
         public string CanteenType { get; set; }
         public bool? IsEdit { get; set; }
         public string ActionType { get; set; }
+        public string StudentIds { get; set; }
     }
 }
