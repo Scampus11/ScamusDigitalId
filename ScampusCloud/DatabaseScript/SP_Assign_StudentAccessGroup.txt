@@ -1,13 +1,38 @@
-CREATE PROCEDURE [dbo].[SP_Assign_StudentAccessGroup]
+ALTER PROCEDURE [dbo].[SP_Assign_StudentAccessGroup]
   @TempTable AS dbo.StudentAccessGroupType READONLY,
   @CreatedBy uniqueidentifier=null,
   @ModifiedBy uniqueidentifier=null,
   @Isactive bit = 0,
-  @CompanyId uniqueidentifier = null
+  @CompanyId uniqueidentifier = null,
+  @StudentIds nvarchar(50) = null,
+  @ActionType nvarchar(50) = null
 AS
 
 BEGIN
-       
-	INSERT INTO Tbl_Mstr_Student_Access_Group_Control (StudentId,CompanyId,[name],AccessGroupId,CanteenTypeId,BlockId,IsDeleted,IsActive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy)
-        SELECT StudentId,@CompanyId,[name],AccessGroup,CanteenTypeId,null,0,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy FROM @TempTable
+       IF(@ActionType = 'Assign')
+	   BEGIN
+	        INSERT INTO Tbl_Mstr_Student_Access_Group_Control (StudentId,CompanyId,[name],AccessGroupId,CanteenTypeId,BlockId,IsDeleted,IsActive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy)
+           SELECT T.StudentId,@CompanyId,T.[name],AccessGroup,T.CanteenTypeId,null,0,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy FROM @TempTable as T
+		   LEFT JOIN dbo.Tbl_Mstr_Student_Access_Group_Control u ON T.StudentId = u.StudentId
+		   WHERE u.StudentId IS NULL;
+
+		   UPDATE u
+           SET 
+			u.[name] = t.[name],
+			u.AccessGroupId = t.AccessGroup,
+			u.CanteenTypeId = t.CanteenTypeId,
+			u.IsDeleted = 0,
+			u.IsActive = @Isactive,
+			u.ModifiedDate = GETDATE(),
+			u.ModifiedBy = @ModifiedBy
+			FROM
+				dbo.Tbl_Mstr_Student_Access_Group_Control u
+			JOIN
+				@TempTable t ON u.StudentId = t.StudentId;
+	   END
+
+	   IF(@ActionType = 'Remove')
+	   BEGIN
+	        UPDATE Tbl_Mstr_Student_Access_Group_Control SET AccessGroupId = null,CanteenTypeId =  null WHERE StudentId IN(SELECT value FROM STRING_SPLIT(@StudentIds, ','))
+	   END
 END
