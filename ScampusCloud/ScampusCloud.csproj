@@ -342,7 +342,9 @@
     <Content Include="DatabaseScript\College Dropdown.txt" />
     <Content Include="DatabaseScript\Insert.txt" />
     <Content Include="DatabaseScript\Session Sps.txt" />
+    <Content Include="DatabaseScript\Sps_Load_AccessGroup_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_AccessGroup_Type_Dropdown.txt" />
+    <Content Include="DatabaseScript\Sps_Load_Available_AccessGroup_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_DoorGroup_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_Reader_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_Session_Dropdown.txt" />
@@ -358,8 +360,11 @@
     <Content Include="DatabaseScript\SP_GetDoorGroupData.txt" />
     <Content Include="DatabaseScript\SP_GetDoorGroupData_Count.txt" />
     <Content Include="DatabaseScript\SP_GetStaffData.txt" />
+    <Content Include="DatabaseScript\SP_GetStudentAccessGroupData.txt" />
+    <Content Include="DatabaseScript\SP_GetStudentAccessGroup_Count.txt" />
     <Content Include="DatabaseScript\SP_GetStudentData.txt" />
     <Content Include="DatabaseScript\SP_Staff_CURD.txt" />
+    <Content Include="DatabaseScript\SP_StudentAccessGroup_CURD.txt" />
     <Content Include="DatabaseScript\SP_Student_CURD.txt" />
     <Content Include="DatabaseScript\Student Department Dropdown.txt" />
     <Content Include="DatabaseScript\Tbl_Mstr_AccessGroup_level_Master.txt" />
