@@ -81,7 +81,7 @@
                                                 </label>
                                             </div>
                                             <div class="col-8">
-                                                @Html.TextBoxFor(m => m.StudentId, new { @class = "form-control", @required = "required" })
+                                                @Html.TextBoxFor(m => m.StudentId, new { @class = "form-control", @required = "required", @readonly = "readonly" })
                                                 @Html.ValidationMessageFor(m => m.StudentId, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -94,7 +94,7 @@
                                                 </label>
                                             </div>
                                             <div class="col-8">
-                                                @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control", @required = "required" })
+                                                @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control", @required = "required", @readonly = "readonly" })
                                                 @Html.ValidationMessageFor(m => m.StudentName, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
