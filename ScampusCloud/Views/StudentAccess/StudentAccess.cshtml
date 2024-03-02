@@ -426,13 +426,15 @@
             });
         }
     }
-    function SelectStudent(StudentId, StudentName, CompanyId) {
+    function SelectStudent() {
         let isChecked = false;
-
+        let StudentName = "", StudentId = "";
         $('#kt_datatable').find('[class^="chk_"]').each(function () {
             if ($(this).prop('checked')) {
                 isChecked = true;
                 checkedIds.push($(this).data('studentid'));
+                StudentId = $(this).data("studentid");
+                StudentName = $(this).data("studentname");
             }
         });
         if (isChecked) {

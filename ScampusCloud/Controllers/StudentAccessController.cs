@@ -158,7 +158,7 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<table class='datatable-bordered datatable-head-custom datatable-table' id='kt_datatable'>");
                     strHTML.Append("<thead class='datatable-head'>");
                     strHTML.Append("<tr class='datatable-row'>");
-                    strHTML.Append("<th class='datatable-cell'><span><input type=\"checkbox\" /></span></th>");
+                    strHTML.Append("<th class='datatable-cell'><input type=\"checkbox\">&nbsp;</input></th>");
                     strHTML.Append("<th class='datatable-cell'>Student Id</th>");
                     strHTML.Append("<th class='datatable-cell'>Student Name</th>");
                     strHTML.Append("<th class='datatable-cell'>College</th>");
@@ -175,11 +175,13 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
                     foreach (var item in lstCountries)
                     {
-                        string checkboxClick = "SelectStudent(" + JsonConvert.SerializeObject(item.StudentId) + ","+ JsonConvert.SerializeObject(item.StudentName) 
-                            + "," + JsonConvert.SerializeObject(item.CompanyId)+")";
+                        //string checkboxClick = "SelectStudent(" + JsonConvert.SerializeObject(item.StudentId) + "," + JsonConvert.SerializeObject(item.StudentName)
+                        //    + "," + JsonConvert.SerializeObject(item.CompanyId) + ")";
+
+                        string checkboxClick = "SelectStudent()";
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StudentId + "','StudentAccess','StudentAccess','Delete')";
                         strHTML.Append("<tr>");
-                        strHTML.Append("<td><input type=\"checkbox\" class=chk_"+item.StudentId+ " data-studentid="+item.StudentId+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
+                        strHTML.Append("<td><input type=\"checkbox\" class=chk_" + item.StudentId + " data-studentid=" + item.StudentId + " data-studentname="+item.StudentName+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
                         strHTML.Append("<td>" + item.StudentId + "</td>");
                         strHTML.Append("<td>" + item.StudentName + "</td>");
                         strHTML.Append("<td>" + item.College + "</td>");
@@ -213,7 +215,6 @@ namespace ScampusCloud.Controllers
 
             //return Json(Reader, JsonRequestBehavior.AllowGet);
         }
-
         public ActionResult StudentAccessGroupListCount()
         {
             try
