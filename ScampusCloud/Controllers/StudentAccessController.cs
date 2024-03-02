@@ -98,10 +98,10 @@ namespace ScampusCloud.Controllers
                 }
                 _StudentAccessMasterModel.lstAccessGroupDropdown = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
                 List<SelectListItem> groupA = new List<SelectListItem>();
-                groupA = _StudentAccessRepository.BindAvailableAccessGroupDropDown(_StudentAccessMasterModel.AccessGroupControlId, "AvailableGroup");
+                groupA = _StudentAccessRepository.BindAvailableAccessGroupDropDown(_StudentAccessMasterModel.AccessGroupControlId, "AvailableGroup","StudentAccess");
                 ViewBag.groupA = groupA;
                 List<SelectListItem> groupB = new List<SelectListItem>();
-                ViewBag.groupB = _StudentAccessRepository.BindAvailableAccessGroupDropDown(_StudentAccessMasterModel.AccessGroupControlId, "AssignedGroup");
+                ViewBag.groupB = _StudentAccessRepository.BindAvailableAccessGroupDropDown(_StudentAccessMasterModel.AccessGroupControlId, "AssignedGroup","StudentAccess");
                 return View(_StudentAccessMasterModel);
             }
             catch (Exception ex)
@@ -306,7 +306,7 @@ namespace ScampusCloud.Controllers
                 _StudentAccessMasterModel.StudentId = Id;
                 var response = _StudentAccessRepository.AddEdit_StudentAccessGroup(_StudentAccessMasterModel);
 
-                return RedirectToAction("Reader", "Reader");
+                return RedirectToAction("StudentAccess", "StudentAccess");
             }
             catch (Exception ex)
             {

@@ -162,7 +162,7 @@ namespace ScampusCloud.Repository.StudentAccess
             }
         }
 
-        public List<SelectListItem> BindAvailableAccessGroupDropDown(int Id,string ActionType)
+        public List<SelectListItem> BindAvailableAccessGroupDropDown(int Id,string ActionType,string GroupName)
         {
             QueryBuilder objQueryBuilder = new QueryBuilder
             {
@@ -172,6 +172,7 @@ namespace ScampusCloud.Repository.StudentAccess
             };
             objQueryBuilder.AddFieldValue("@Id", Id, DataTypes.Numeric, false);
             objQueryBuilder.AddFieldValue("@ActionType", ActionType, DataTypes.Text, false);
+            objQueryBuilder.AddFieldValue("@GroupName", GroupName, DataTypes.Text, false);
             return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
         }
     }

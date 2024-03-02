@@ -651,6 +651,7 @@
     <Content Include="Scripts\ej2\ej2-pdfviewer-lib\pdfium.wasm" />
     <Content Include="Views\StudentAccess\AddEditStudentAccess.cshtml" />
     <Content Include="Views\StaffAccess\StaffAccess.cshtml" />
+    <Content Include="Views\StaffAccess\AddEditStaffAccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

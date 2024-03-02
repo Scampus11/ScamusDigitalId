@@ -22,6 +22,7 @@ namespace ScampusCloud.Controllers
         private readonly AccessGroupRepository _AccessGroupRepository;
         private readonly StaffAccessRepository _StaffAccessRepository;
         StaffAccessGroupModel _StaffAccessGroupModel = new StaffAccessGroupModel();
+        StaffAccessMasterModel _StaffAccessMasterModel = new StaffAccessMasterModel();
         #endregion
 
         public StaffAccessController()
@@ -86,7 +87,7 @@ namespace ScampusCloud.Controllers
 
                         string checkboxClick = "SelectStaff()";
 
-                        string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StaffId + "','StudentAccess','StudentAccess','Delete')";
+                        string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StaffId + "','StaffAccess','StaffAccess','Delete')";
                         strHTML.Append("<tr>");
                         strHTML.Append("<td><input type=\"checkbox\" class=chk_" + item.StaffId + " data-staffid=" + item.StaffId + " data-staffname="+item.StaffName+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
                         strHTML.Append("<td>" + item.StaffId + "</td>");
@@ -162,6 +163,110 @@ namespace ScampusCloud.Controllers
             var test = _StaffAccessRepository.Assign_StaffAccessGroup(null, _StaffAccessGroupModel);
             return Json(new { success = true });
         }
+
+        public ActionResult AddEditStaffAccess(string ID = "")
+        {
+            try
+            {
+
+                _StaffAccessMasterModel.CreatedBy = SessionManager.UserId;
+                _StaffAccessMasterModel.ModifiedBy = SessionManager.UserId;
+                _StaffAccessMasterModel.CompanyId = SessionManager.CompanyId;
+
+
+
+                if (!string.IsNullOrEmpty(ID) && ID != "0")
+                {
+                    #region Get Entity by id
+                    _StaffAccessMasterModel.ActionType = "Edit";
+                    _StaffAccessMasterModel.Id = Convert.ToInt32(ID);
+                    _StaffAccessMasterModel.ActionType = "Edit";
+                    _StaffAccessMasterModel = _StaffAccessRepository.AddEdit_StaffAccessGroup(_StaffAccessMasterModel);
+                    if (_StaffAccessMasterModel != null)
+                    {
+                        _StaffAccessMasterModel.IsEdit = true;
+                    }
+                    else
+                    {
+                        _StaffAccessMasterModel = new StaffAccessMasterModel();
+                        ViewBag.NoRecordExist = true;
+                        SessionManager.Code = null;
+                    }
+                    #endregion
+                }
+                //// If url Apeended with Querystring ID=0 then Redirect into current Action
+                else if (!string.IsNullOrEmpty(ID) && ID == "0")
+                {
+                    return RedirectToAction("AddEditReader");
+                }
+                else
+                {
+                    _StaffAccessMasterModel.IsEdit = false;
+                    _StaffAccessMasterModel.IsActive = true;
+                    SessionManager.Code = null;
+                }
+                _StaffAccessMasterModel.lstAccessGroupDropdown = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
+                List<SelectListItem> groupA = new List<SelectListItem>();
+                groupA = _StaffAccessRepository.BindAvailableAccessGroupDropDown(_StaffAccessMasterModel.AccessGroupControlId, "AvailableGroup");
+                ViewBag.groupA = groupA;
+                List<SelectListItem> groupB = new List<SelectListItem>();
+                ViewBag.groupB = _StaffAccessRepository.BindAvailableAccessGroupDropDown(_StaffAccessMasterModel.AccessGroupControlId, "AssignedGroup");
+                return View(_StaffAccessMasterModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult AddEditStaffAccess(StaffAccessMasterModel staffAccessMasterModel, string saveAndExit = "")
+        {
+
+            _StaffAccessMasterModel.CreatedBy = SessionManager.UserId;
+            _StaffAccessMasterModel.ModifiedBy = SessionManager.UserId;
+            _StaffAccessMasterModel.CompanyId = SessionManager.CompanyId;
+            _StaffAccessMasterModel.Id = Convert.ToInt32(staffAccessMasterModel.Id);
+            _StaffAccessMasterModel.AccessGroupId = staffAccessMasterModel.AccessGroupId;
+            _StaffAccessMasterModel.AccessGroupTypeId = staffAccessMasterModel.AccessGroupTypeId;
+            _StaffAccessMasterModel.StaffId = staffAccessMasterModel.StaffId;
+            _StaffAccessMasterModel.ActionType = "Update";
+            _StaffAccessMasterModel = _StaffAccessRepository.AddEdit_StaffAccessGroup(_StaffAccessMasterModel);
+
+            if (!string.IsNullOrEmpty(saveAndExit))
+            {
+                return RedirectToAction("StaffAccess", "StaffAccess");
+            }
+            else if (staffAccessMasterModel.IsEdit == true)
+            {
+                return RedirectToAction("AddEditStaffAccess", new { ID = staffAccessMasterModel.Id });
+            }
+            else
+            {
+                return RedirectToAction("AddEditStaffAccess");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Delete(string Id)
+        {
+            try
+            {
+                _StaffAccessMasterModel.ActionType = "Delete";
+                _StaffAccessMasterModel.StaffId = Id;
+                var response = _StaffAccessRepository.AddEdit_StaffAccessGroup(_StaffAccessMasterModel);
+
+                return RedirectToAction("StaffAccess", "StaffAccess");
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
+
         #region Private Method
         private List<SelectListItem> BindStaffDepartmentDropDown(string CompanyId)
         {
