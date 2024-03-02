@@ -1,31 +1,64 @@
-CREATE PROCEDURE [dbo].[SP_GetAvailableAssgined_Group]
+ALTER PROCEDURE [dbo].[SP_GetAvailableAssgined_Group]
 @Id INT,
-@ActionType nvarchar(20) = ''
+@ActionType nvarchar(20) = '',
+@GroupName varchar(50) = ''
 AS
 BEGIN
-   IF(@ActionType = 'AvailableGroup')
-   BEGIN
-			SELECT CONVERT(NVARCHAR(10), Id) AS [Value], Name AS [Text] 
-			FROM Tbl_Mstr_AccessGroup_Master 
-			WHERE Id NOT IN (
-				SELECT TRY_CAST(value AS INT)
-				FROM string_split(
-					(SELECT AccessGroupId FROM Tbl_Mstr_Student_Access_Group_Control WHERE ID = @Id),
-					','
-				)
-			) AND Is_Canteen = 0
+  IF(@GroupName = 'StudentAccess')
+  BEGIN
+       IF(@ActionType = 'AvailableGroup')
+	   BEGIN
+				SELECT CONVERT(NVARCHAR(10), Id) AS [Value], Name AS [Text] 
+				FROM Tbl_Mstr_AccessGroup_Master 
+				WHERE Id NOT IN (
+					SELECT TRY_CAST(value AS INT)
+					FROM string_split(
+						(SELECT AccessGroupId FROM Tbl_Mstr_Student_Access_Group_Control WHERE ID = @Id),
+						','
+					)
+				) AND Is_Canteen = 0
 
-   END
-   IF(@ActionType = 'AssignedGroup')
-   BEGIN
-       SELECT CONVERT(NVARCHAR(10),AGM.Id) as [Value], AGM.Name AS [Text]
-		FROM Tbl_Mstr_Student_Access_Group_Control AS SAGC
-		INNER JOIN Tbl_Mstr_AccessGroup_Master AS AGM ON CHARINDEX(',' + CAST(AGM.Id AS VARCHAR) + ',', ',' + SAGC.AccessGroupId + ',') > 0
-		WHERE SAGC.Id = @Id
-		AND AGM.Is_Canteen = 0 
-		AND AGM.Id IN (
-			SELECT CAST(value AS INT) 
-			FROM string_split(SAGC.AccessGroupId, ',')
-		)
-   END
+	   END
+	   IF(@ActionType = 'AssignedGroup')
+	   BEGIN
+		   SELECT CONVERT(NVARCHAR(10),AGM.Id) as [Value], AGM.Name AS [Text]
+			FROM Tbl_Mstr_Student_Access_Group_Control AS SAGC
+			INNER JOIN Tbl_Mstr_AccessGroup_Master AS AGM ON CHARINDEX(',' + CAST(AGM.Id AS VARCHAR) + ',', ',' + SAGC.AccessGroupId + ',') > 0
+			WHERE SAGC.Id = @Id
+			AND AGM.Is_Canteen = 0 
+			AND AGM.Id IN (
+				SELECT CAST(value AS INT) 
+				FROM string_split(SAGC.AccessGroupId, ',')
+			)
+	   END
+  END
+  ELSE
+  BEGIN
+       IF(@ActionType = 'AvailableGroup')
+	   BEGIN
+				SELECT CONVERT(NVARCHAR(10), Id) AS [Value], Name AS [Text] 
+				FROM Tbl_Mstr_AccessGroup_Master 
+				WHERE Id NOT IN (
+					SELECT TRY_CAST(value AS INT)
+					FROM string_split(
+						(SELECT AccessGroupId FROM Tbl_Mstr_Staff_Access_Group_Control WHERE ID = @Id),
+						','
+					)
+				) AND Is_Canteen = 0
+
+	   END
+	   IF(@ActionType = 'AssignedGroup')
+	   BEGIN
+		   SELECT CONVERT(NVARCHAR(10),AGM.Id) as [Value], AGM.Name AS [Text]
+			FROM Tbl_Mstr_Staff_Access_Group_Control AS SAGC
+			INNER JOIN Tbl_Mstr_AccessGroup_Master AS AGM ON CHARINDEX(',' + CAST(AGM.Id AS VARCHAR) + ',', ',' + SAGC.AccessGroupId + ',') > 0
+			WHERE SAGC.Id = @Id
+			AND AGM.Is_Canteen = 0 
+			AND AGM.Id IN (
+				SELECT CAST(value AS INT) 
+				FROM string_split(SAGC.AccessGroupId, ',')
+			)
+	   END
+  END
 END
+
