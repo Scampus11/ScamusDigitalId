@@ -426,6 +426,7 @@
     <Compile Include="Controllers\ReaderController.cs" />
     <Compile Include="Controllers\RemoteValidationController.cs" />
     <Compile Include="Controllers\SessionMasterController.cs" />
+    <Compile Include="Controllers\StaffAccessController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\StaffDepartmentController.cs" />
     <Compile Include="Controllers\StudentAccessController.cs" />
@@ -461,6 +462,7 @@
     <Compile Include="Models\ProgramModel.cs" />
     <Compile Include="Models\ReaderModel.cs" />
     <Compile Include="Models\SessionMasterModel.cs" />
+    <Compile Include="Models\StaffAccessModel.cs" />
     <Compile Include="Models\StaffDepartmentModel.cs" />
     <Compile Include="Models\StaffModel.cs" />
     <Compile Include="Models\ResponseMessage.cs" />
@@ -491,6 +493,7 @@
     <Compile Include="Repository\Program\ProgramRepository.cs" />
     <Compile Include="Repository\Reader\ReaderRepository.cs" />
     <Compile Include="Repository\SessionMaster\SessionMasterRepository.cs" />
+    <Compile Include="Repository\StaffAccessRepository.cs" />
     <Compile Include="Repository\StaffDepartment\StaffDepartmentRepository.cs" />
     <Compile Include="Repository\Staff\StaffRepository.cs" />
     <Compile Include="Repository\StudentAccess\StudentAccessRepository.cs" />
@@ -647,6 +650,7 @@
     <Content Include="Views\StudentAccess\StudentAccess.cshtml" />
     <Content Include="Scripts\ej2\ej2-pdfviewer-lib\pdfium.wasm" />
     <Content Include="Views\StudentAccess\AddEditStudentAccess.cshtml" />
+    <Content Include="Views\StaffAccess\StaffAccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

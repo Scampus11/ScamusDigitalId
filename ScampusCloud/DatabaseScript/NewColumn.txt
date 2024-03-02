@@ -1,0 +1,5 @@
+ALTER TABLE Tbl_Mstr_Staff_Access_Group_Control
+ADD  CanteenTypeId INT null
+---------------------------
+ALTER TABLE Tbl_Mstr_Staff_Access_Group_Control
+ALTER COLUMN AccessGroupId varchar(50) null
