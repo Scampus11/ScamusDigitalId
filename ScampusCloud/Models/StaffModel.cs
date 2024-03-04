@@ -31,7 +31,7 @@ namespace ScampusCloud.Models
 		public string PersonalPhone { get; set; }
 
 		[Required(ErrorMessage = "Email Address is required")]
-		[RegularExpression(@"^[_a-z0-9-]+(\.[_a-z0-9-]+)*(\+[a-z0-9-]+)?@[a-z0-9-]+(\.[a-z0-9-]+)*$", ErrorMessage = "Invalid Email Address Format")]
+		//[RegularExpression(@"^[_a-z0-9-]+(\.[_a-z0-9-]+)*(\+[a-z0-9-]+)?@[a-z0-9-]+(\.[a-z0-9-]+)*$", ErrorMessage = "Invalid Email Address Format")]
 		[Remote(action: "IsEmailIdExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Email Id is already in use.")]
 		public string EmailId { get; set; }
 		[Required(ErrorMessage = "Password is required")]

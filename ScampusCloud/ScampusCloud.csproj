@@ -341,6 +341,7 @@
     <Content Include="DatabaseScript\AdmissionTypeshort Dropdown.txt" />
     <Content Include="DatabaseScript\College Dropdown.txt" />
     <Content Include="DatabaseScript\DatatypeChange.txt" />
+    <Content Include="DatabaseScript\DropColumn.txt" />
     <Content Include="DatabaseScript\Insert.txt" />
     <Content Include="DatabaseScript\NewColumn.txt" />
     <Content Include="DatabaseScript\RenameColumn.txt" />
@@ -365,6 +366,7 @@
     <Content Include="DatabaseScript\SP_GetAvailableAssgined_Group.txt" />
     <Content Include="DatabaseScript\SP_GetDoorGroupData.txt" />
     <Content Include="DatabaseScript\SP_GetDoorGroupData_Count.txt" />
+    <Content Include="DatabaseScript\SP_GetStaffAccessGroupData.txt" />
     <Content Include="DatabaseScript\SP_GetStaffAccessGroup_Count.txt" />
     <Content Include="DatabaseScript\SP_GetStaffData.txt" />
     <Content Include="DatabaseScript\SP_GetStudentAccessGroupData.txt" />
