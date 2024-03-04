@@ -86,11 +86,8 @@ namespace ScampusCloud.Repository
                     dt.Columns.Remove("ModifiedBy");
                     dt.Columns.Remove("DepartmentId");
                     dt.Columns.Remove("lstDepartment");
-                    dt.Columns.Remove("AccessGroupTypeId");
-                    dt.Columns.Remove("lstAccessGroupDropdown");
                     dt.Columns.Remove("Department");
                     dt.Columns.Remove("AccessGroupId");
-                    dt.Columns.Remove("CanteenType");
                     dt.Columns.Remove("IsEdit");
                     dt.Columns.Remove("ActionType");
                     dt.Columns.Remove("StaffIds");
@@ -138,7 +135,6 @@ namespace ScampusCloud.Repository
                     objQueryBuilder.AddFieldValue("@Id", _StaffAccessMasterModel.Id, DataTypes.Numeric, false);
                     objQueryBuilder.AddFieldValue("@StaffId", _StaffAccessMasterModel.StaffId, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@CompanyId", _StaffAccessMasterModel.CompanyId, DataTypes.Text, false);
-                    objQueryBuilder.AddFieldValue("@CanteenType", _StaffAccessMasterModel.AccessGroupTypeId, DataTypes.Numeric, false);
                     objQueryBuilder.AddFieldValue("@AccessGroupId", _StaffAccessMasterModel.AccessGroupId, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@Isactive", _StaffAccessMasterModel.IsActive, DataTypes.Boolean, false);
                     objQueryBuilder.AddFieldValue("@CreatedBy", _StaffAccessMasterModel.CreatedBy, DataTypes.Text, false);

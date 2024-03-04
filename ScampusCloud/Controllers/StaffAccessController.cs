@@ -43,7 +43,6 @@ namespace ScampusCloud.Controllers
             ViewData["totalrecords"] = totals;
 
             _StaffAccessGroupModel.lstDepartment = BindStaffDepartmentDropDown(SessionManager.CompanyId.ToString());
-            _StaffAccessGroupModel.lstAccessGroupDropdown = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
             List<SelectListItem> groupA = new List<SelectListItem>();
             groupA = BindAvailableAccessGroupDropDown(SessionManager.CompanyId.ToString());
             ViewBag.groupA = groupA;
@@ -74,7 +73,6 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<th class='datatable-cell'>Staff Name</th>");
                     strHTML.Append("<th class='datatable-cell'>Department </th>");
                     strHTML.Append("<th class='datatable-cell'>Access Group </th>");
-                    strHTML.Append("<th class='datatable-cell'>Canteen Type</th>");
                     //strHTML.Append("<th class='datatable-cell'>Block Group</th>");
                     strHTML.Append("<th class='datatable-cell'>Action</th>");
                     strHTML.Append("</tr>");
@@ -82,11 +80,7 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
                     foreach (var item in lstCountries)
                     {
-                        //string checkboxClick = "SelectStaff(" + JsonConvert.SerializeObject(item.StaffId) + "," + JsonConvert.SerializeObject(item.StaffName)
-                        //    + "," + JsonConvert.SerializeObject(item.CompanyId) + ")";
-
                         string checkboxClick = "SelectStaff()";
-
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StaffId + "','StaffAccess','StaffAccess','Delete')";
                         strHTML.Append("<tr>");
                         strHTML.Append("<td><input type=\"checkbox\" class=chk_" + item.StaffId + " data-staffid=" + item.StaffId + " data-staffname="+item.StaffName+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
@@ -94,7 +88,6 @@ namespace ScampusCloud.Controllers
                         strHTML.Append("<td>" + item.StaffName + "</td>");
                         strHTML.Append("<td>" + item.Department + "</td>");
                         strHTML.Append("<td>" + item.AccessGroup + "</td>");
-                        strHTML.Append("<td>" + item.CanteenType + "</td>");
                         strHTML.Append("<td>");
                         strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3' href= '/StaffAccess/AddEditStaffAccess?ID=" + item.Id + "'><i class='flaticon-edit'></i></a>");
                         strHTML.Append("<a id = 'del_" + item.Id + "' class='btn btn-sm btn-icon btn-lg-light btn-text-danger btn-hover-light-danger' onclick=" + DeleteConfirmationEvent + "><i class='flaticon-delete'></i></a>");
@@ -149,6 +142,7 @@ namespace ScampusCloud.Controllers
             _StaffAccessGroupModel.ModifiedBy = SessionManager.UserId;
             _StaffAccessGroupModel.CompanyId = SessionManager.CompanyId;
             _StaffAccessGroupModel.ActionType = "Assign";
+            _StaffAccessGroupModel.IsActive = true;
             var test = _StaffAccessRepository.Assign_StaffAccessGroup(data, _StaffAccessGroupModel);
             return Json(new { success = true });
         }
@@ -205,7 +199,6 @@ namespace ScampusCloud.Controllers
                     _StaffAccessMasterModel.IsActive = true;
                     SessionManager.Code = null;
                 }
-                _StaffAccessMasterModel.lstAccessGroupDropdown = BindAccessGroupDropDown(SessionManager.CompanyId.ToString());
                 List<SelectListItem> groupA = new List<SelectListItem>();
                 groupA = _StaffAccessRepository.BindAvailableAccessGroupDropDown(_StaffAccessMasterModel.AccessGroupControlId, "AvailableGroup");
                 ViewBag.groupA = groupA;
@@ -230,8 +223,8 @@ namespace ScampusCloud.Controllers
             _StaffAccessMasterModel.CompanyId = SessionManager.CompanyId;
             _StaffAccessMasterModel.Id = Convert.ToInt32(staffAccessMasterModel.Id);
             _StaffAccessMasterModel.AccessGroupId = staffAccessMasterModel.AccessGroupId;
-            _StaffAccessMasterModel.AccessGroupTypeId = staffAccessMasterModel.AccessGroupTypeId;
             _StaffAccessMasterModel.StaffId = staffAccessMasterModel.StaffId;
+            _StaffAccessMasterModel.IsActive = true;
             _StaffAccessMasterModel.ActionType = "Update";
             _StaffAccessMasterModel = _StaffAccessRepository.AddEdit_StaffAccessGroup(_StaffAccessMasterModel);
 

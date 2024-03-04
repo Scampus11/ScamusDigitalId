@@ -28,9 +28,6 @@ namespace ScampusCloud.Models
         public Guid? CreatedBy { get; set; }
         public Guid? ModifiedBy { get; set; }
         public string AccessGroup { get; set; }
-        public int AccessGroupTypeId { get; set; }
-        public List<SelectListItem> lstAccessGroupDropdown { get; set; }
-        public string CanteenType { get; set; }
         public bool? IsEdit { get; set; }
         public string ActionType { get; set; }
         public string StaffIds { get; set; }
@@ -46,8 +43,6 @@ namespace ScampusCloud.Models
         [Column(TypeName = "varchar")]
         public string StaffName { get; set; }
         public Guid? CompanyId { get; set; }
-        public int AccessGroupTypeId { get; set; }
-        public List<SelectListItem> lstAccessGroupDropdown { get; set; }
         public bool IsActive { get; set; }
         public DateTime dtCreatedDate { get; set; }
         public DateTime dtModifiedDate { get; set; }
