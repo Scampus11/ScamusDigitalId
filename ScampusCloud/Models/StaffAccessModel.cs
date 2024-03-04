@@ -19,7 +19,6 @@ namespace ScampusCloud.Models
         public string StaffName { get; set; }
         public Guid? CompanyId { get; set; }
         public int? AccessGroupId { get; set; }
-        public int? CanteenTypeId { get; set; }
         public int? BlockId { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsActive { get; set; }
