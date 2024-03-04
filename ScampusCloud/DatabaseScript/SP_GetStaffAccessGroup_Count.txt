@@ -1,5 +1,5 @@
 --exec SP_GetStaffAccessGroup_Count @CompanyId='A1B42BAF-8C3D-43DA-A5EB-47334EF958D2'
-CREATE PROCEDURE [dbo].[SP_GetStaffAccessGroup_Count]
+ALTER PROCEDURE [dbo].[SP_GetStaffAccessGroup_Count]
 @Search nvarchar(max)='',
 @DepartmentId INT = 0,
 @page INT=1,
@@ -14,7 +14,6 @@ SET NOCOUNT ON
 		FROM Tbl_Mstr_Staff_Master SM WITH(NOLOCK) 
 		LEFT JOIN Tbl_Mstr_StaffDepartment_Master SDM WITH(NOLOCK) ON SDM.Id = SM.DepartmentId 
 		LEFT JOIN Tbl_Mstr_Staff_Access_Group_Control MSAG WITH(NOLOCK) ON MSAG.StaffId = SM.StaffId 
-		LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS1 WITH(NOLOCK) ON MAS1.Id = MSAG.CanteenTypeId
 		--LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS WITH(NOLOCK) ON CHARINDEX('','' + CAST(MAS.Id AS VARCHAR) + '','', '','' + MSAG.AccessGroupId + '','') > 0 '
 
 	SET @WhereCaluse = @WhereCaluse + ' WHERE SM.CompanyId=@CompanyId'

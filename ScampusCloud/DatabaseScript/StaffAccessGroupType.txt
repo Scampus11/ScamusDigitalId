@@ -1,7 +1,6 @@
 CREATE TYPE StaffAccessGroupType AS TABLE
 ( StaffId NVARCHAR(100) null,
- name VARCHAR(1000) null,
- CanteenTypeId int null,
+  name VARCHAR(1000) null,
   AccessGroup nvarchar(50) null
 );
 

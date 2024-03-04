@@ -1,5 +1,6 @@
+GO
 --exec SP_GetStaffAccessGroupData @CompanyId='A1B42BAF-8C3D-43DA-A5EB-47334EF958D2'
-CREATE PROCEDURE [dbo].[SP_GetStaffAccessGroupData]
+ALTER PROCEDURE [dbo].[SP_GetStaffAccessGroupData]
 @Search nvarchar(max)='',
 @DepartmentId INT = 0,
 @page INT=1,
@@ -13,12 +14,10 @@ SET NOCOUNT ON
 	SET @SelectQuery = @SelectQuery + ' SELECT SM.Id,SM.StaffId,
        SM.FullName AS StaffName,
 	   SDM.Name AS Department,
-	   STRING_AGG(MAS.Name, '','') AS AccessGroup,
-	   MAS1.Name AS CanteenType
+	   STRING_AGG(MAS.Name, '','') AS AccessGroup
 		FROM Tbl_Mstr_Staff_Master SM WITH(NOLOCK) 
 		LEFT JOIN Tbl_Mstr_StaffDepartment_Master SDM WITH(NOLOCK) ON SDM.Id = SM.DepartmentId 
 		LEFT JOIN Tbl_Mstr_Staff_Access_Group_Control MSAG WITH(NOLOCK) ON MSAG.StaffId = SM.StaffId 
-		LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS1 WITH(NOLOCK) ON MAS1.Id = MSAG.CanteenTypeId
 		LEFT JOIN Tbl_Mstr_AccessGroup_Master MAS WITH(NOLOCK) ON CHARINDEX('','' + CAST(MAS.Id AS VARCHAR) + '','', '','' + MSAG.AccessGroupId + '','') > 0 '
 
 
@@ -28,7 +27,7 @@ SET NOCOUNT ON
 	  SET @WhereCaluse += ' AND SM.DepartmentId=@DepartmentId '    
     END 
 	
-	SET @GroupByCaluse += ' GROUP BY SM.Id,SM.StaffId, SM.FullName, SDM.Name,MAS1.Name'
+	SET @GroupByCaluse += ' GROUP BY SM.Id,SM.StaffId, SM.FullName, SDM.Name'
 
 	SET @OrderByCaluse += ' ORDER BY SM.StaffId ASC OFFSET (@Page -1) * @pageSize ROWS FETCH NEXT @pageSize ROWS ONLY'
 

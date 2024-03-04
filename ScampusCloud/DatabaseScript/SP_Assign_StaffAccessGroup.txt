@@ -11,8 +11,8 @@ AS
 BEGIN
        IF(@ActionType = 'Assign')
 	   BEGIN
-	        INSERT INTO Tbl_Mstr_Staff_Access_Group_Control (StaffId,CompanyId,[name],AccessGroupId,CanteenTypeId,BlockId,IsDeleted,IsActive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy)
-           SELECT T.StaffId,@CompanyId,T.[name],AccessGroup,T.CanteenTypeId,null,0,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy FROM @TempTable as T
+	        INSERT INTO Tbl_Mstr_Staff_Access_Group_Control (StaffId,CompanyId,[name],AccessGroupId,BlockId,IsDeleted,IsActive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy)
+           SELECT T.StaffId,@CompanyId,T.[name],AccessGroup,null,0,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy FROM @TempTable as T
 		   LEFT JOIN dbo.Tbl_Mstr_Staff_Access_Group_Control u ON T.StaffId = u.StaffId
 		   WHERE u.StaffId IS NULL;
 
@@ -33,7 +33,7 @@ BEGIN
 
 	   IF(@ActionType = 'Remove')
 	   BEGIN
-	        UPDATE Tbl_Mstr_Staff_Access_Group_Control SET AccessGroupId = null,CanteenTypeId =  null WHERE StaffId IN(SELECT value FROM STRING_SPLIT(@StaffIds, ','))
+	        UPDATE Tbl_Mstr_Staff_Access_Group_Control SET AccessGroupId = null WHERE StaffId IN(SELECT value FROM STRING_SPLIT(@StaffIds, ','))
 	   END
 END
 

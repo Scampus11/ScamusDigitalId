@@ -1,8 +1,7 @@
-CREATE PROCEDURE [dbo].[SP_StaffAccessGroup_CURD]
+ALTER PROCEDURE [dbo].[SP_StaffAccessGroup_CURD]
 @Id int = null,
 @StaffId nvarchar(50) = '',
 @CompanyId uniqueidentifier = null,
-@CanteenType INT = null,
 @AccessGroupId nvarchar(100) = null,
 @Isactive bit = 0,
 @CreatedBy uniqueidentifier=null,
@@ -13,12 +12,12 @@ AS
 BEGIN
     IF @ActionType = 'Update'
 	BEGIN
-	    UPDATE Tbl_Mstr_Staff_Access_Group_Control SET CanteenTypeId = @CanteenType,AccessGroupId = @AccessGroupId WHERE StaffId = @StaffId
+	    UPDATE Tbl_Mstr_Staff_Access_Group_Control SET AccessGroupId = @AccessGroupId WHERE StaffId = @StaffId
 	END
 
 	IF @ActionType = 'Edit' OR @ActionType='Remote'
 	BEGIN  
-		select C.Id,C.CompanyId,C.StaffId,C.FullName AS StaffName,C.Code,SAGC.CanteenTypeId AS AccessGroupTypeId,
+		select C.Id,C.CompanyId,C.StaffId,C.FullName AS StaffName,C.Code,
 		C.CreatedBy,C.ModifiedBy,C.Isactive,SAGC.Id as AccessGroupControlId
 		from Tbl_Mstr_Staff_Master C 
 		LEFT JOIN Tbl_Mstr_Staff_Access_Group_Control SAGC ON C.StaffId =  SAGC.StaffId
@@ -26,6 +25,6 @@ BEGIN
 	END  
 	IF @ActionType = 'Delete'  
 	BEGIN  
-		UPDATE Tbl_Mstr_Staff_Access_Group_Control SET CanteenTypeId = @CanteenType,AccessGroupId = @AccessGroupId WHERE StaffId = @StaffId
+		UPDATE Tbl_Mstr_Staff_Access_Group_Control SET AccessGroupId = @AccessGroupId WHERE StaffId = @StaffId
 	END  
 END

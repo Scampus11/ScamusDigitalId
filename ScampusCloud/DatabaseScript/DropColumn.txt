@@ -1,0 +1,2 @@
+ALTER TABLE Tbl_Mstr_Staff_Access_Group_Control
+DROP COLUMN CanteenTypeId
