@@ -244,6 +244,7 @@ namespace ScampusCloud.Controllers
             _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
             _StudentAccessGroupModel.CompanyId = SessionManager.CompanyId;
             _StudentAccessGroupModel.ActionType = "Assign";
+            _StudentAccessGroupModel.IsActive = true;
             var test = _StudentAccessRepository.Assign_StudentAccessGroup(data, _StudentAccessGroupModel);
             return Json(new { success = true });
         }
