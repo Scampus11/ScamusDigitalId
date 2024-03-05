@@ -37,12 +37,8 @@
                         <span class="fab fa-font-awesome-flag text-primary"></span>
                     </span> @ViewData["Title"]
                 </h5>
-                <!--end::Page Title-->
             </div>
-            <!--end::Page Heading-->
         </div>
-        <!--end::Info-->
-
     </div>
 </div>
 <div class="container">
@@ -55,93 +51,13 @@
                     </div>
                     <div class="card-toolbar col-lg-3 col-xl-4 justify-content-end">
                         <!--begin::Button-->
-                        <button class="btn btn-primary my-2 my-lg-0" id="accordionBtn">Bulk AG</button>
+                        <button type="button" class="btn btn-primary mr-2" id="btnBulkAg" data-toggle="modal" data-target="#BulkAgModal">Bulk AG</button>
+                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#FilterModal">Filter</button>
                         <!--end::Button-->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="accordion pt-4" id="accordionExample" style="display: none;">
-                <div class="card-body" id="headingOne">
-                    <div class="tab-content">
-                        <div class="row">
-                            @*<div class="col-xl-2"></div>*@
-                            <div class="col-xl-12">
-                                <div class="my-10 pr-3 pl-3">
-                                    <!--begin::Group-->
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-1 text-left department_lable">Department</label>
-                                        <div class="col-3">
-                                            @Html.DropDownListFor(model => model.DepartmentId, new SelectList(Model.lstDepartment, "Value", "Text"), "Select Department", new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                    <!--end::Group-->
-                                    <!--begin::Group-->
-                                    <!--end::Group-->
-                                    <div class="form-group row">
-                                    </div>
-                                    <hr class="mt-2 mb-3" />
-                                    <div class="card-toolbar">
-                                        <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="SearchStaff()" name="saveAndContinue" value="saveAndContinue">
-                                            <i class="flaticon-search-1"></i>
-                                            <span class="nav-text">Go Filter</span>
-                                        </button>
-
-                                        <button type="button" name="saveAndExit" value="saveAndExit " onclick="ClearFilter()" class="btn btn-success font-weight-bolder mr-2">
-                                            <i class="flaticon2-trash"></i>
-                                            <span class="nav-text">Clear Filter</span>
-                                        </button>
-                                    </div>
-                                    <div class="form-group form-row-seperated">
-
-                                    </div>
-                                    <hr class="mt-2 mb-3" />
-                                    <div class="form-group form-row-seperated">
-
-                                    </div>
-                                    <div class="form-group form-row-seperated">
-                                    </div>
-                                    <hr class="mt-2 mb-3" />
-                                    <div class="form-group form-row-seperated">
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-6">
-                                            <div class="dual-list-groupa">
-                                                <h5>Available Access Group</h5>
-                                                <input id="listbox1">
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="dual-list-groupb">
-                                                <h5>Assigned Access Group</h5>
-                                                <input id="listbox2">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="card-toolbar">
-                                            <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="AssignAccessGroup()" name="Assign" value="Assign">
-                                                <i class="flaticon-edit-1"></i>
-                                                <span class="nav-text">Assign</span>
-                                            </button>
-                                            <button type="button" class="btn btn-danger  btn-hover-light-danger font-weight-bolder mr-2" onclick="RemoveAllAG()" name="removeAllAccessGorup" value="removeAllAccessGorup">
-                                                <i class="flaticon-delete-1"></i>
-                                                <span class="nav-text">RemoveAllAG</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="card-body pt-0">
             <div class="mb-7">
             </div>
@@ -152,11 +68,101 @@
                 <div id="pagingFooter" class="datatable-pager">
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>
+<div class="row">
+    <div class="col-xl-6">
+        <!--begin::Card-->
+        <!--begin::Modal-->
+        <div class="modal fade" id="BulkAgModal" tabindex="-1" role="dialog" aria-labelledby="BulkAgModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @*<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>*@
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <div class="col-6">
+                                <div class="dual-list-groupa">
+                                    <h5>Available Access Group</h5>
+                                    <input id="listbox1">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="dual-list-groupb">
+                                    <h5>Assigned Access Group</h5>
+                                    <input id="listbox2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" onclick="AssignAccessGroup()" data-dismiss="modal">Assign</button>
+                        <button type="button" class="btn btn-primary font-weight-bold" onclick="RemoveAllAG()">RemoveAllAG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Modal-->
+        <!--end::Card-->
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-xl-6">
+        <!--begin::Card-->
+        <!--begin::Modal-->
+        <div class="modal fade" id="FilterModal" tabindex="-1" role="dialog" aria-labelledby="FilterModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @*<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>*@
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--begin::Group-->
+                        <div class="form-group row">
+                            <label class="col-form-label col-1 text-left department_lable">Department</label>
+                            <div class="col-3">
+                                @Html.DropDownListFor(model => model.DepartmentId, new SelectList(Model.lstDepartment, "Value", "Text"), "Select Department", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                        </div>
+                        <hr class="mt-2 mb-3" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" onclick="SearchStaff()" data-dismiss="modal">Go Filter</button>
+                        <button type="button" class="btn btn-primary font-weight-bold" onclick="ClearFilter()" data-dismiss="modal">Clear Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Modal-->
+        <!--end::Card-->
+    </div>
+</div>
+
+
+<input type="hidden" id="pagesize" />
+<input type="hidden" id="totalrecords" />
+<input type="hidden" id="pagenumber" value="1" />
+<input type="hidden" id="noofpages" />
+<input type="hidden" id="hdnShowing1st" value="1" />
+<input type="hidden" id="hdnShowingLast" value="5" />
+<input type="hidden" id="hdnPageClick" />
+<input type="hidden" id="hdnSelectedPage" value="1" />
+
+
 @Html.Partial("_DeleteConfirmationPartial")
 <link href="~/Content/ej2/customized/material.css" rel="stylesheet" />
 <link href="~/Content/ej2/material.css" rel="stylesheet" />
@@ -168,6 +174,7 @@
     let combinationArray = [];
     let checkedIds = [];
     $(document).ready(function () {
+        $("#btnBulkAg").attr("disabled", true);
         $('#accordionBtn').click(function () {
             $('#accordionExample').slideToggle();
         });
@@ -270,6 +277,7 @@
                     checkedIds = [];
                     Clear();
                     LoadGridData();
+                    $("#btnBulkAg").attr("disabled", true);
                 },
                 error: function (xhr, status, error) {}
             });
@@ -329,8 +337,14 @@
                 combinationArray[existingIndex].StaffName = StaffName;
             }
         }
+        else {
+            $("#btnBulkAg").attr("disabled", true);
+            combinationArray = [];
+        }
         //combinationArray = combinationArray.filter(obj => checkedIds.includes(obj.StudentId));
-        console.log(combinationArray);
+        if (combinationArray.length > 0) {
+            $("#btnBulkAg").attr("disabled", false);
+        }
     }
 
     function Clear() {

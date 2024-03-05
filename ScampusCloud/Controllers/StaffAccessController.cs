@@ -38,7 +38,7 @@ namespace ScampusCloud.Controllers
             ViewData["paging_size"] = 10;
             if (ViewData["currentPage"] == null)
                 ViewData["currentPage"] = 1;
-            string searchtxt = "";
+            string searchtxt = "NA";
             int totals = Convert.ToInt32(_AccessGroupRepository.GetAllCount(searchtxt, SessionManager.CompanyId.ToString()));
             ViewData["totalrecords"] = totals;
 
