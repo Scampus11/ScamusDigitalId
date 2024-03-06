@@ -56,6 +56,7 @@
                     </div>
                     <div class="card-toolbar col-lg-3 col-xl-4 justify-content-end">
                         <!--begin::Button-->
+                        <button type="button" class="btn btn-primary mr-2" id="btnSelectAll" onclick="SelectAllStudent()">Select All</button>
                         <button type="button" class="btn btn-primary mr-2" id="btnBulkAg" data-toggle="modal" data-target="#BulkAgModal">Bulk AG</button>
                         <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#FilterModal">Filter</button>
                         <!--end::Button-->
@@ -321,6 +322,7 @@
                 });
                 checkedIds = [];
                 Clear();
+                $("#btnBulkAg").attr("disabled", true);
                 LoadGridData();
             },
             error: function (xhr, status, error) {
@@ -511,6 +513,34 @@
         if (combinationArray.length > 0) {
             $("#btnBulkAg").attr("disabled", false);
         }
+    }
+
+    function SelectAllStudent() {
+        $('#kt_datatable').find('[class^="chk_"]').each(function () {
+            $(this).prop('checked', true);
+            if ($(this).prop('checked')) {
+                isChecked = true;
+                checkedIds.push($(this).data('studentid'));
+                StudentId = $(this).data("studentid");
+                StudentName = $(this).data("studentname");
+            }
+            if (isChecked) {
+                let existingIndex = combinationArray.findIndex(obj => obj.StudentId === StudentId);
+                if (existingIndex === -1) {
+                    combinationArray.push({ StudentId: StudentId, StudentName: StudentName });
+                } else {
+                    combinationArray[existingIndex].StudentName = StudentName;
+                }
+            }
+            else {
+                $("#btnBulkAg").attr("disabled", true);
+                combinationArray = [];
+            }
+        });
+        if (combinationArray.length > 0) {
+            $("#btnBulkAg").attr("disabled", false);
+        }
+        console.log(combinationArray);
     }
 
     function Clear() {
