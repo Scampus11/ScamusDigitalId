@@ -1,4 +1,3 @@
-GO
 --exec SP_GetStaffAccessGroupData @CompanyId='A1B42BAF-8C3D-43DA-A5EB-47334EF958D2'
 ALTER PROCEDURE [dbo].[SP_GetStaffAccessGroupData]
 @Search nvarchar(max)='',
@@ -13,6 +12,8 @@ SET NOCOUNT ON
 	
 	SET @SelectQuery = @SelectQuery + ' SELECT SM.Id,SM.StaffId,
        SM.FullName AS StaffName,
+	   SM.ImageBase64,
+	   SM.ImagePath,
 	   SDM.Name AS Department,
 	   STRING_AGG(MAS.Name, '','') AS AccessGroup
 		FROM Tbl_Mstr_Staff_Master SM WITH(NOLOCK) 
@@ -27,7 +28,7 @@ SET NOCOUNT ON
 	  SET @WhereCaluse += ' AND SM.DepartmentId=@DepartmentId '    
     END 
 	
-	SET @GroupByCaluse += ' GROUP BY SM.Id,SM.StaffId, SM.FullName, SDM.Name'
+	SET @GroupByCaluse += ' GROUP BY SM.Id,SM.StaffId, SM.FullName, SDM.Name,SM.ImageBase64,SM.ImagePath'
 
 	SET @OrderByCaluse += ' ORDER BY SM.StaffId ASC OFFSET (@Page -1) * @pageSize ROWS FETCH NEXT @pageSize ROWS ONLY'
 

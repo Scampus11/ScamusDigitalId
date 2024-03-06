@@ -17,7 +17,7 @@ BEGIN
 
 	IF @ActionType = 'Edit' OR @ActionType='Remote'
 	BEGIN  
-		select C.Id,C.CompanyId,C.StaffId,C.FullName AS StaffName,C.Code,
+		select C.Id,C.CompanyId,C.StaffId,C.ImagePath,C.ImageBase64,C.FullName AS StaffName,C.Code,
 		C.CreatedBy,C.ModifiedBy,C.Isactive,SAGC.Id as AccessGroupControlId
 		from Tbl_Mstr_Staff_Master C 
 		LEFT JOIN Tbl_Mstr_Staff_Access_Group_Control SAGC ON C.StaffId =  SAGC.StaffId
