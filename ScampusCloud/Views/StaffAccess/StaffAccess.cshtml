@@ -51,6 +51,7 @@
                     </div>
                     <div class="card-toolbar col-lg-3 col-xl-4 justify-content-end">
                         <!--begin::Button-->
+                        <button type="button" class="btn btn-primary mr-2" id="btnSelectAll" onclick="SelectAllStaff()">Select All</button>
                         <button type="button" class="btn btn-primary mr-2" id="btnBulkAg" data-toggle="modal" data-target="#BulkAgModal">Bulk AG</button>
                         <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#FilterModal">Filter</button>
                         <!--end::Button-->
@@ -105,7 +106,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" onclick="AssignAccessGroup()" data-dismiss="modal">Assign</button>
-                        <button type="button" class="btn btn-primary font-weight-bold" onclick="RemoveAllAG()">RemoveAllAG</button>
+                        <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" onclick="RemoveAllAG()">RemoveAllAG</button>
                     </div>
                 </div>
             </div>
@@ -309,6 +310,7 @@
                     });
                     checkedIds = [];
                     Clear();
+                    $("#btnBulkAg").attr("disabled", true);
                     LoadGridData();
                 },
                 error: function (xhr, status, error) {
@@ -345,6 +347,34 @@
         if (combinationArray.length > 0) {
             $("#btnBulkAg").attr("disabled", false);
         }
+    }
+
+    function SelectAllStaff() {
+        $('#kt_datatable').find('[class^="chk_"]').each(function () {
+            $(this).prop('checked', true);
+            if ($(this).prop('checked')) {
+                isChecked = true;
+                checkedIds.push($(this).data("staffid"));
+                StaffId = $(this).data("staffid");
+                StaffName = $(this).data("staffname");
+            }
+            if (isChecked) {
+                let existingIndex = combinationArray.findIndex(obj => obj.StaffId === StaffId);
+                if (existingIndex === -1) {
+                    combinationArray.push({ StaffId: StaffId, StaffName: StaffName });
+                } else {
+                    combinationArray[existingIndex].StaffName = StaffName;
+                }
+            }
+            else {
+                $("#btnBulkAg").attr("disabled", true);
+                combinationArray = [];
+            }
+        });
+        if (combinationArray.length > 0) {
+            $("#btnBulkAg").attr("disabled", false);
+        }
+        console.log(combinationArray);
     }
 
     function Clear() {

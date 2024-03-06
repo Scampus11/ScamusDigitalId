@@ -7,6 +7,7 @@ using ScampusCloud.Repository.StudentAccess;
 using ScampusCloud.Utility;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -80,12 +81,22 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
                     foreach (var item in lstCountries)
                     {
+                        string ImgSrc = string.Empty;
+                        string PhotoImgSrc = string.Empty;
                         string checkboxClick = "SelectStaff()";
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StaffId + "','StaffAccess','StaffAccess','Delete')";
+
+                        string fileExtension = Path.GetExtension(item.ImagePath);
+
+                        if (!string.IsNullOrEmpty(item.ImageBase64))
+                            PhotoImgSrc = "data:image/" + fileExtension.TrimStart('.') + ";base64," + item.ImageBase64;
+
                         strHTML.Append("<tr>");
                         strHTML.Append("<td><input type=\"checkbox\" class=chk_" + item.StaffId + " data-staffid=" + item.StaffId + " data-staffname="+item.StaffName+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
                         strHTML.Append("<td>" + item.StaffId + "</td>");
-                        strHTML.Append("<td>" + item.StaffName + "</td>");
+                        strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
+                            "<div class='ml-4'>" +
+                            "<a href='#' class='font-size-sm text-dark-50 text-hover-primary'>" + item.StaffName + "</a></div></div></span></td>");
                         strHTML.Append("<td>" + item.Department + "</td>");
                         strHTML.Append("<td>" + item.AccessGroup + "</td>");
                         strHTML.Append("<td>");
