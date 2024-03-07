@@ -50,6 +50,8 @@ namespace ScampusCloud.Models
         public bool? IsEdit { get; set; }
         public string ActionType { get; set; }
         public string StudentIds { get; set; }
+        public string ImagePath { get; set; }
+        public string ImageBase64 { get; set; }
     }
 
     public class StudentAccessMasterModel
@@ -71,5 +73,7 @@ namespace ScampusCloud.Models
         public string ActionType { get; set; }
         public int AccessGroupControlId { get; set; }
         public string AccessGroupId { get; set; }
+        public string ImagePath { get; set; }
+        public string ImageBase64 { get; set; }
     }
 }

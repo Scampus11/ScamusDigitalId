@@ -1,3 +1,4 @@
+--exec SP_GetStudentAccessGroupData @CompanyId='A1B42BAF-8C3D-43DA-A5EB-47334EF958D2'
 ALTER PROCEDURE [dbo].[SP_GetStudentAccessGroupData]
 @Search nvarchar(max)='',
 @CampusId INT = 0,
@@ -15,6 +16,8 @@ SET NOCOUNT ON
 	
 	SET @SelectQuery = @SelectQuery + ' SELECT SM.Id,SM.StudentId,
        SM.FirstName AS StudentName,
+	   SM.ImageBase64,
+	   SM.ImagePath,
 	   TSCM.Name AS College,
 	   TSDM.Name AS Department,
 	   TSAM.Name AS AdmissionType,
@@ -56,7 +59,7 @@ SET NOCOUNT ON
 	  SET @WhereCaluse  += ' AND SM.AdmissionTypeId=@AdmissionTypeId '   
     END
 	
-	SET @GroupByCaluse += ' GROUP BY SM.Id,SM.StudentId, SM.FirstName, TSCM.Name, TSDM.Name, TSAM.Name, CM.Name, TSYM.Name,MAS1.Name'
+	SET @GroupByCaluse += ' GROUP BY SM.Id,SM.StudentId, SM.FirstName,SM.ImageBase64,SM.ImagePath, TSCM.Name, TSDM.Name, TSAM.Name, CM.Name, TSYM.Name,MAS1.Name'
 
 	SET @OrderByCaluse += ' ORDER BY SM.StudentId ASC OFFSET (@Page -1) * @pageSize ROWS FETCH NEXT @pageSize ROWS ONLY'
 

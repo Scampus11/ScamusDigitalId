@@ -19,7 +19,7 @@ BEGIN
 
 	IF @ActionType = 'Edit' OR @ActionType='Remote'
 	BEGIN  
-		select C.Id,C.CompanyId,C.StudentId,C.FirstName AS StudentName,C.Code,SAGC.CanteenTypeId AS AccessGroupTypeId,
+		select C.Id,C.CompanyId,C.StudentId,C.ImagePath,C.ImageBase64,C.FirstName AS StudentName,C.Code,SAGC.CanteenTypeId AS AccessGroupTypeId,
 		C.CreatedBy,C.ModifiedBy,C.Isactive,SAGC.Id as AccessGroupControlId
 		from Tbl_Mstr_Student_Master C 
 		LEFT JOIN Tbl_Mstr_Student_Access_Group_Control SAGC ON C.StudentId =  SAGC.StudentId

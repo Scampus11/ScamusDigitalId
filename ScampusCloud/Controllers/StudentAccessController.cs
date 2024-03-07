@@ -8,6 +8,7 @@ using ScampusCloud.Repository.StudentAccess;
 using ScampusCloud.Utility;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -177,13 +178,22 @@ namespace ScampusCloud.Controllers
                     {
                         //string checkboxClick = "SelectStudent(" + JsonConvert.SerializeObject(item.StudentId) + "," + JsonConvert.SerializeObject(item.StudentName)
                         //    + "," + JsonConvert.SerializeObject(item.CompanyId) + ")";
-
+                        string ImgSrc = string.Empty;
+                        string PhotoImgSrc = string.Empty;
                         string checkboxClick = "SelectStudent()";
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StudentId + "','StudentAccess','StudentAccess','Delete')";
+
+                        string fileExtension = Path.GetExtension(item.ImagePath);
+
+                        if (!string.IsNullOrEmpty(item.ImageBase64))
+                            PhotoImgSrc = "data:image/" + fileExtension.TrimStart('.') + ";base64," + item.ImageBase64;
+
                         strHTML.Append("<tr>");
                         strHTML.Append("<td><input type=\"checkbox\" class=chk_" + item.StudentId + " data-studentid=" + item.StudentId + " data-studentname="+item.StudentName+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
                         strHTML.Append("<td>" + item.StudentId + "</td>");
-                        strHTML.Append("<td>" + item.StudentName + "</td>");
+                        strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
+                             "<div class='ml-4'>" +
+                             "<a href='#' class='font-size-sm text-dark-50 text-hover-primary'>" + item.StudentName + "</a></div></div></span></td>");
                         strHTML.Append("<td>" + item.College + "</td>");
                         strHTML.Append("<td>" + item.Department + "</td>");
                         strHTML.Append("<td>" + item.AdmissionType + "</td>");
@@ -244,6 +254,7 @@ namespace ScampusCloud.Controllers
             _StudentAccessGroupModel.ModifiedBy = SessionManager.UserId;
             _StudentAccessGroupModel.CompanyId = SessionManager.CompanyId;
             _StudentAccessGroupModel.ActionType = "Assign";
+            _StudentAccessGroupModel.IsActive = true;
             var test = _StudentAccessRepository.Assign_StudentAccessGroup(data, _StudentAccessGroupModel);
             return Json(new { success = true });
         }

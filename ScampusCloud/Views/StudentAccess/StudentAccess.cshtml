@@ -56,7 +56,9 @@
                     </div>
                     <div class="card-toolbar col-lg-3 col-xl-4 justify-content-end">
                         <!--begin::Button-->
-                        <button class="btn btn-primary my-2 my-lg-0" id="accordionBtn">Bulk AG</button>
+                        <button type="button" class="btn btn-primary mr-2" id="btnSelectAll" onclick="SelectAllStudent()">Select All</button>
+                        <button type="button" class="btn btn-primary mr-2" id="btnBulkAg" data-toggle="modal" data-target="#BulkAgModal">Bulk AG</button>
+                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#FilterModal">Filter</button>
                         <!--end::Button-->
                     </div>
                 </div>
@@ -70,50 +72,7 @@
                             @*<div class="col-xl-2"></div>*@
                             <div class="col-xl-12">
                                 <div class="my-10 pr-3 pl-3">
-                                    <!--begin::Group-->
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-1 text-left">Campus</label>
-                                        <div class="col-3">
-                                            @Html.DropDownListFor(model => model.CampusId, new SelectList(Model.lstCampus, "Value", "Text"), "Select Campus"
-                                                , new { @class = "form-control", @id = "ddlCampus" })
-                                        </div>
-                                        <label class="col-form-label col-1 text-left">College</label>
-                                        <div class="col-3" id="colleage">
-                                            @Html.DropDownListFor(model => model.CollageId, new List<SelectListItem>(), "Select College"
-                                                , new { @class = "form-control", @id = "ddlColleage" })
-                                        </div>
-                                        <label class="col-form-label col-1 text-left department_lable">Department</label>
-                                        <div class="col-3">
-                                            @Html.DropDownListFor(model => model.DepartmentId, new List<SelectListItem>(), "Select Department"
-                                                , new { @class = "form-control", @id = "ddlDepartment" })
-                                        </div>
-
-                                    </div>
-                                    <!--end::Group-->
-                                    <!--begin::Group-->
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-1 text-left">Year</label>
-                                        <div class="col-3">
-                                            @Html.DropDownListFor(model => model.YearId, new SelectList(Model.lstYear, "Value", "Text"), "Select Year"
-        , new { @class = "form-control", @id = "ddlYear" })
-                                        </div>
-
-                                        <label class="col-form-label col-1 text-left">Admission Type</label>
-                                        <div class="col-3">
-                                            @Html.DropDownListFor(model => model.AdmissionTypeId, new SelectList(Model.lstAdmissionType, "Value", "Text"), "Select Admission Type"
-                                   , new { @class = "form-control", @id = "ddlAdminssionType" })
-                                        </div>
-
-                                        <label class="col-form-label col-1 text-left">Gender</label>
-                                        <div class="col-3">
-                                            @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
-                                            {
-                                            new SelectListItem { Text = "Male", Value = "Male"},
-                                            new SelectListItem { Text = "Female", Value = "Female"}
-                                            }, "Select Gender", new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                    <!--end::Group-->
+                                    
                                     <div class="form-group row">
                                     </div>
                                     <hr class="mt-2 mb-3" />
@@ -128,45 +87,10 @@
                                             <span class="nav-text">Clear Filter</span>
                                         </button>
                                     </div>
-                                    <div class="form-group form-row-seperated">
-
-                                    </div>
+                                    <div class="form-group form-row-seperated"></div>
                                     <hr class="mt-2 mb-3" />
-                                    <div class="form-group form-row-seperated">
-
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-3 text-left">Canteen Type</label>
-                                        <div class="col-">
-                                            @Html.DropDownListFor(model => model.AccessGroupTypeId, new SelectList(Model.lstAccessGroupDropdown, "Value", "Text"), "Select Canteen Type"
-, new { @class = "form-control", @id = "ddlCanteenType" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-row-seperated">
-
-                                    </div>
-                                    <hr class="mt-2 mb-3" />
-                                    <div class="form-group form-row-seperated">
-
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-6">
-                                            <div class="dual-list-groupa">
-                                                <h5>Available Access Group</h5>
-                                                <input id="listbox1">
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="dual-list-groupb">
-                                                <h5>Assigned Access Group</h5>
-                                                <input id="listbox2">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-
-                                    </div>
+                                    <div class="form-group form-row-seperated"></div>
+                                    <div class="form-group row"></div>
                                     <div class="form-group row">
                                         <div class="card-toolbar">
                                             <button type="button" class="btn btn-primary font-weight-bolder mr-2" onclick="AssignAccessGroup()" name="Assign" value="Assign">
@@ -186,7 +110,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card-body pt-0">
             <div class="mb-7">
             </div>
@@ -197,11 +120,145 @@
                 <div id="pagingFooter" class="datatable-pager">
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>
+<div class="row">
+    <div class="col-xl-6">
+        <!--begin::Card-->
+        <!--begin::Modal-->
+        <div class="modal fade" id="FilterModal" tabindex="-1" role="dialog" aria-labelledby="FilterModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @*<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>*@
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--begin::Group-->
+                        <!--begin::Group-->
+                        <div class="form-group row">
+                            <label class="col-form-label col-1 text-left">Campus</label>
+                            <div class="col-3">
+                                @Html.DropDownListFor(model => model.CampusId, new SelectList(Model.lstCampus, "Value", "Text"), "Select Campus"
+                                    , new { @class = "form-control", @id = "ddlCampus" })
+                            </div>
+                            <label class="col-form-label col-1 text-left">College</label>
+                            <div class="col-3" id="colleage">
+                                @Html.DropDownListFor(model => model.CollageId, new List<SelectListItem>(), "Select College"
+                                    , new { @class = "form-control", @id = "ddlColleage" })
+                            </div>
+                            <label class="col-form-label col-1 text-left department_lable">Department</label>
+                            <div class="col-3">
+                                @Html.DropDownListFor(model => model.DepartmentId, new List<SelectListItem>(), "Select Department"
+                                    , new { @class = "form-control", @id = "ddlDepartment" })
+                            </div>
+
+                        </div>
+                        <!--end::Group-->
+                        <!--begin::Group-->
+                        <div class="form-group row">
+                            <label class="col-form-label col-1 text-left">Year</label>
+                            <div class="col-3">
+                                @Html.DropDownListFor(model => model.YearId, new SelectList(Model.lstYear, "Value", "Text"), "Select Year"
+, new { @class = "form-control", @id = "ddlYear" })
+                            </div>
+
+                            <label class="col-form-label col-1 text-left">Admission Type</label>
+                            <div class="col-3">
+                                @Html.DropDownListFor(model => model.AdmissionTypeId, new SelectList(Model.lstAdmissionType, "Value", "Text"), "Select Admission Type"
+                       , new { @class = "form-control", @id = "ddlAdminssionType" })
+                            </div>
+
+                            <label class="col-form-label col-1 text-left">Gender</label>
+                            <div class="col-3">
+                                @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>
+                                {
+                                new SelectListItem { Text = "Male", Value = "Male"},
+                                new SelectListItem { Text = "Female", Value = "Female"}
+                                }, "Select Gender", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <!--end::Group-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" onclick="SearchStudent()" data-dismiss="modal">Go Filter</button>
+                        <button type="button" class="btn btn-primary font-weight-bold" onclick="ClearFilter()" data-dismiss="modal">Clear Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Modal-->
+        <!--end::Card-->
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Card-->
+        <!--begin::Modal-->
+        <div class="modal fade" id="BulkAgModal" tabindex="-1" role="dialog" aria-labelledby="BulkAgModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @*<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>*@
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-form-label col-3 text-left">Canteen Type</label>
+                            <div class="col-">
+                                @Html.DropDownListFor(model => model.AccessGroupTypeId, new SelectList(Model.lstAccessGroupDropdown, "Value", "Text"), "Select Canteen Type"
+, new { @class = "form-control", @id = "ddlCanteenType" })
+                            </div>
+                        </div>
+                        <div class="form-group form-row-seperated">
+                        </div>
+                        <hr class="mt-2 mb-3" />
+                        <div class="form-group form-row-seperated">
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-6">
+                                <div class="dual-list-groupa">
+                                    <h5>Available Access Group</h5>
+                                    <input id="listbox1">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="dual-list-groupb">
+                                    <h5>Assigned Access Group</h5>
+                                    <input id="listbox2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" onclick="AssignAccessGroup()" data-dismiss="modal">Assign</button>
+                        <button type="button" class="btn btn-primary font-weight-bold" onclick="RemoveAllAG()">RemoveAllAG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Modal-->
+        <!--end::Card-->
+    </div>
+
+</div>
+
+
+
+<input type="hidden" id="pagesize" />
+<input type="hidden" id="totalrecords" />
+<input type="hidden" id="pagenumber" value="1" />
+<input type="hidden" id="noofpages" />
+<input type="hidden" id="hdnShowing1st" value="1" />
+<input type="hidden" id="hdnShowingLast" value="5" />
+<input type="hidden" id="hdnPageClick" />
+<input type="hidden" id="hdnSelectedPage" value="1" />
 @Html.Partial("_DeleteConfirmationPartial")
 <link href="~/Content/ej2/customized/material.css" rel="stylesheet" />
 <link href="~/Content/ej2/material.css" rel="stylesheet" />
@@ -213,6 +270,7 @@
     let combinationArray = [];
     let checkedIds = [];
     $(document).ready(function () {
+        $("#btnBulkAg").attr("disabled", true);
         $('#accordionBtn').click(function () {
             $('#accordionExample').slideToggle();
         });
@@ -264,6 +322,7 @@
                 });
                 checkedIds = [];
                 Clear();
+                $("#btnBulkAg").attr("disabled", true);
                 LoadGridData();
             },
             error: function (xhr, status, error) {
@@ -419,6 +478,7 @@
                     checkedIds = [];
                     Clear();
                     LoadGridData();
+                    $("#btnBulkAg").attr("disabled", true);
                 },
                 error: function (xhr, status, error) {
 
@@ -445,7 +505,42 @@
                 combinationArray[existingIndex].StudentName = StudentName;
             }
         }
+        else {
+            $("#btnBulkAg").attr("disabled", true);
+            combinationArray = [];
+        }
         combinationArray = combinationArray.filter(obj => checkedIds.includes(obj.StudentId));
+        if (combinationArray.length > 0) {
+            $("#btnBulkAg").attr("disabled", false);
+        }
+    }
+
+    function SelectAllStudent() {
+        $('#kt_datatable').find('[class^="chk_"]').each(function () {
+            $(this).prop('checked', true);
+            if ($(this).prop('checked')) {
+                isChecked = true;
+                checkedIds.push($(this).data('studentid'));
+                StudentId = $(this).data("studentid");
+                StudentName = $(this).data("studentname");
+            }
+            if (isChecked) {
+                let existingIndex = combinationArray.findIndex(obj => obj.StudentId === StudentId);
+                if (existingIndex === -1) {
+                    combinationArray.push({ StudentId: StudentId, StudentName: StudentName });
+                } else {
+                    combinationArray[existingIndex].StudentName = StudentName;
+                }
+            }
+            else {
+                $("#btnBulkAg").attr("disabled", true);
+                combinationArray = [];
+            }
+        });
+        if (combinationArray.length > 0) {
+            $("#btnBulkAg").attr("disabled", false);
+        }
+        console.log(combinationArray);
     }
 
     function Clear() {

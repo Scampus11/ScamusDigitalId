@@ -91,6 +91,8 @@ namespace ScampusCloud.Repository
                     dt.Columns.Remove("IsEdit");
                     dt.Columns.Remove("ActionType");
                     dt.Columns.Remove("StaffIds");
+                    dt.Columns.Remove("ImagePath");
+                    dt.Columns.Remove("ImageBase64");
                     objQueryBuilder.AddFieldValue("@TempTable", dt, DataTypes.Structured, false, "StaffAccessGroupType");
                 }
                 objQueryBuilder.AddFieldValue("@StaffIds", _AccessGroupModel.StaffIds, DataTypes.Text, false);

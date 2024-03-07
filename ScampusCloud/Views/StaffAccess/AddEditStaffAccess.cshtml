@@ -73,6 +73,21 @@
                                 <div class="col-md-6">
                                     <div class="card-body">
                                         @*@Html.Partial("_NotificationAlert", new ScampusCloud.Models.ResponseMessage() { IsSuccess = Model.IsSuccess, Response_Message = Model.Response_Message })*@
+                                       
+                                        <div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">
+                                                    Photo:
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="image-input image-input-outline" id="dv_EmpImag">
+                                                    <div class="image-input-wrapper commonBgSize empimage"></div>
+                                                    @Html.HiddenFor(Model => Model.ImageBase64)
+                                                    @Html.HiddenFor(Model => Model.ImagePath)
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group row">
                                             <div class="col-4 text-right">
                                                 <label class="col-form-label">
@@ -154,7 +169,9 @@
             $("#AccessGroupId").val(ids.join(","));
         });
 
-    $(document).ready(function () {
+        $(document).ready(function () {
+            debugger;
+        $('.empimage').css('background-image', 'url(data:image/png;base64,' + '@Model.ImageBase64' + ')')
         LoadAccessGroup();
     })
 

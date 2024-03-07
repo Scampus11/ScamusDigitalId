@@ -112,6 +112,8 @@ namespace ScampusCloud.Repository.StudentAccess
                     dt.Columns.Remove("IsEdit");
                     dt.Columns.Remove("ActionType");
                     dt.Columns.Remove("StudentIds");
+                    dt.Columns.Remove("ImagePath");
+                    dt.Columns.Remove("ImageBase64");
                     objQueryBuilder.AddFieldValue("@TempTable", dt, DataTypes.Structured, false, "StudentAccessGroupType");
                 }
                 objQueryBuilder.AddFieldValue("@StudentIds", _AccessGroupModel.StudentIds, DataTypes.Text, false);

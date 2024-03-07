@@ -33,6 +33,8 @@ namespace ScampusCloud.Models
         public string Department { get; set; }
         public int DepartmentId { get; set; }
         public List<SelectListItem> lstDepartment { get; set; }
+        public string ImagePath { get; set; }
+        public string ImageBase64 { get; set; }
     }
     public class StaffAccessMasterModel
     {
@@ -51,5 +53,7 @@ namespace ScampusCloud.Models
         public string ActionType { get; set; }
         public int AccessGroupControlId { get; set; }
         public string AccessGroupId { get; set; }
+        public string ImagePath { get; set; }
+        public string ImageBase64 { get; set; }
     }
 }
