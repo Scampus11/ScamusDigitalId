@@ -383,6 +383,7 @@
     <Content Include="DatabaseScript\Tbl_Mstr_AccessGroup_Master.txt" />
     <Content Include="DatabaseScript\Tbl_Mstr_AccessGroup_Type_Master.txt" />
     <Content Include="DatabaseScript\Tbl_Mstr_DoorGroup_Master.txt" />
+    <Content Include="DatabaseScript\Tbl_Mstr_Service_Master.txt" />
     <Content Include="DatabaseScript\Tbl_Mstr_Session_Master.txt" />
     <Content Include="DatabaseScript\Tbl_Mstr_Staff_Access_Group_Control.txt" />
     <Content Include="DatabaseScript\Tbl_Mstr_Student_Access_Group_Control.txt" />
