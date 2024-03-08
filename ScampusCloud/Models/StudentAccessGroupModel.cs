@@ -62,7 +62,7 @@ namespace ScampusCloud.Models
         [Column(TypeName = "varchar")]
         public string StudentName { get; set; }
         public Guid? CompanyId { get; set; }
-        public int AccessGroupTypeId { get; set; }
+        public int? AccessGroupTypeId { get; set; }
         public List<SelectListItem> lstAccessGroupDropdown { get; set; }
         public bool IsActive { get; set; }
         public DateTime dtCreatedDate { get; set; }

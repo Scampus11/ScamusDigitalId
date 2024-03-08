@@ -58,18 +58,19 @@ namespace ScampusCloud.Controllers
             {
                 searchtxt = string.IsNullOrEmpty(searchtxt) ? "" : searchtxt;
                 int totals = Convert.ToInt32(_StaffAccessRepository.GetAllCount(searchtxt, SessionManager.CompanyId.ToString()));
-                var lstCountries = _StaffAccessRepository.GetStaffAccessList(searchtxt, page, pagesize,  DepartmentId, SessionManager.CompanyId.ToString());
+                var lstStaffAccessGroup = _StaffAccessRepository.GetStaffAccessList(searchtxt, page, pagesize,  DepartmentId, SessionManager.CompanyId.ToString());
                 Session["totalrecords"] = Convert.ToString(totals);
                 Session["paging_size"] = Convert.ToString(pagesize);
                 ViewData["totalrecords"] = totals;
                 ViewData["paging_size"] = pagesize;
                 StringBuilder strHTML = new StringBuilder();
-                if (lstCountries.Count > 0)
+                string checkboxAllClick = "SelectAllStaff()";
+                if (lstStaffAccessGroup.Count > 0)
                 {
-                    strHTML.Append("<table class='datatable-bordered datatable-head-custom datatable-table' id='kt_datatable'>");
+                    strHTML.Append("<table class='table table-head-custom table-vertical-center datatable-bordered datatable-head-custom datatable-table' id='kt_advance_table_widget_1'>");
                     strHTML.Append("<thead class='datatable-head'>");
                     strHTML.Append("<tr class='datatable-row'>");
-                    strHTML.Append("<th class='datatable-cell'><input type=\"checkbox\">&nbsp;</input></th>");
+                    strHTML.Append("<th class=pl-0 style=width: 20px><label class=checkbox checkbox-lg checkbox-single><input id='chkAll' type=checkbox value=1 onclick="+checkboxAllClick+"><span></span></input></label></th>");
                     strHTML.Append("<th class='datatable-cell'>Staff Id</th>");
                     strHTML.Append("<th class='datatable-cell'>Staff Name</th>");
                     strHTML.Append("<th class='datatable-cell'>Department </th>");
@@ -79,7 +80,7 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("</tr>");
                     strHTML.Append("</thead>");
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
-                    foreach (var item in lstCountries)
+                    foreach (var item in lstStaffAccessGroup)
                     {
                         string ImgSrc = string.Empty;
                         string PhotoImgSrc = string.Empty;
@@ -92,13 +93,13 @@ namespace ScampusCloud.Controllers
                             PhotoImgSrc = "data:image/" + fileExtension.TrimStart('.') + ";base64," + item.ImageBase64;
 
                         strHTML.Append("<tr>");
-                        strHTML.Append("<td><input type=\"checkbox\" class=chk_" + item.StaffId + " data-staffid=" + item.StaffId + " data-staffname="+item.StaffName+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
-                        strHTML.Append("<td>" + item.StaffId + "</td>");
+                        strHTML.Append("<td class=pl-0 py-6><label class=checkbox checkbox-lg checkbox-single><input type=checkbox value=1 class=chk_" + item.StaffId + " data-staffid=" + item.StaffId + " data-staffname=" + item.StaffName + " onclick=" + checkboxClick +" /><span></span></label></td>");
+                        strHTML.Append("<td class=pl-0><span class=text-dark-75 font-weight-bolder d-block font-size-lg>" + item.StaffId + "</span></td>");
                         strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
                             "<div class='ml-4'>" +
                             "<a href='#' class='font-size-sm text-dark-50 text-hover-primary'>" + item.StaffName + "</a></div></div></span></td>");
-                        strHTML.Append("<td>" + item.Department + "</td>");
-                        strHTML.Append("<td>" + item.AccessGroup + "</td>");
+                        strHTML.Append("<td class=pl-0 py-6>" + item.Department + "</td>");
+                        strHTML.Append("<td class=pl-0 py-6>" + item.AccessGroup + "</td>");
                         strHTML.Append("<td>");
                         strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3' href= '/StaffAccess/AddEditStaffAccess?ID=" + item.Id + "'><i class='flaticon-edit'></i></a>");
                         strHTML.Append("<a id = 'del_" + item.Id + "' class='btn btn-sm btn-icon btn-lg-light btn-text-danger btn-hover-light-danger' onclick=" + DeleteConfirmationEvent + "><i class='flaticon-delete'></i></a>");

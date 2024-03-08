@@ -51,9 +51,16 @@
                     </div>
                     <div class="card-toolbar col-lg-3 col-xl-4 justify-content-end">
                         <!--begin::Button-->
-                        <button type="button" class="btn btn-primary mr-2" id="btnSelectAll" onclick="SelectAllStaff()">Select All</button>
                         <button type="button" class="btn btn-primary mr-2" id="btnBulkAg" data-toggle="modal" data-target="#BulkAgModal">Bulk AG</button>
-                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#FilterModal">Filter</button>
+                        @*<button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#FilterModal">Filter</button>*@
+                        <span class="svg-icon svg-icon-primary svg-icon-2x" data-toggle="modal" data-target="#FilterModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path d="M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z" fill="#000000" />
+                                </g>
+                            </svg>
+                        </span>
                         <!--end::Button-->
                     </div>
                 </div>
@@ -77,10 +84,10 @@
         <!--begin::Card-->
         <!--begin::Modal-->
         <div class="modal fade" id="BulkAgModal" tabindex="-1" role="dialog" aria-labelledby="BulkAgModal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        @*<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>*@
+                        <h5 class="modal-title" id="exampleModalLabel">Assign Group</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -105,8 +112,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold" onclick="AssignAccessGroup()" data-dismiss="modal">Assign</button>
-                        <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" onclick="RemoveAllAG()">RemoveAllAG</button>
+                        <button type="button" class="btn btn-primary font-weight-bold" onclick="AssignAccessGroup()" data-dismiss="modal">Assign</button>
+                        <button type="button" class="btn btn-danger font-weight-bold" data-dismiss="modal" onclick="RemoveAllAG()">RemoveAllAG</button>
                     </div>
                 </div>
             </div>
@@ -121,10 +128,10 @@
         <!--begin::Card-->
         <!--begin::Modal-->
         <div class="modal fade" id="FilterModal" tabindex="-1" role="dialog" aria-labelledby="FilterModal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        @*<h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>*@
+                        <h5 class="modal-title" id="exampleModalLabel">Filter</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -142,18 +149,14 @@
                         <hr class="mt-2 mb-3" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold" onclick="SearchStaff()" data-dismiss="modal">Go Filter</button>
-                        <button type="button" class="btn btn-primary font-weight-bold" onclick="ClearFilter()" data-dismiss="modal">Clear Filter</button>
+                        <button type="button" class="btn btn-primary font-weight-bold" onclick="SearchStaff()" data-dismiss="modal">Go</button>
+                        <button type="button" class="btn btn-danger font-weight-bold" onclick="ClearFilter()" data-dismiss="modal">Clear</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!--end::Modal-->
-        <!--end::Card-->
     </div>
 </div>
-
-
 <input type="hidden" id="pagesize" />
 <input type="hidden" id="totalrecords" />
 <input type="hidden" id="pagenumber" value="1" />
@@ -230,7 +233,7 @@
         var listBoxB = document.getElementById('listbox2').ej2_instances[0];
         let keyToFetch = 'Value';
         let values = [];
-        if ($('#kt_datatable').find('input[type="checkbox"]:checked').length == 0) {
+        if ($('#kt_advance_table_widget_1').find('input[type="checkbox"]:checked').length == 0) {
             Swal.fire({
                 title: 'Error',
                 text: 'Please select staff for assign access group',
@@ -285,7 +288,7 @@
         }
     }
     function RemoveAllAG() {
-        if ($('#kt_datatable').find('input[type="checkbox"]:checked').length == 0) {
+        if ($('#kt_advance_table_widget_1').find('input[type="checkbox"]:checked').length == 0) {
         Swal.fire({
             title: 'Error',
             text: 'Please select staff for remove assigned access group',
@@ -294,7 +297,7 @@
             confirmButtonText: 'OK'
         });
         }
-        if ($('#kt_datatable').find('input[type="checkbox"]:checked').length != 0) {
+        if ($('#kt_advance_table_widget_1').find('input[type="checkbox"]:checked').length != 0) {
             $.ajax({
                 url: '/StaffAccess/RemoveAccessGroup',
                 type: 'POST',
@@ -323,7 +326,7 @@
     function SelectStaff() {
         let StaffName = "",StaffId = "";
         let isChecked = false;
-        $('#kt_datatable').find('[class^="chk_"]').each(function () {
+        $('#kt_advance_table_widget_1').find('[class^="chk_"]').each(function () {
             if ($(this).prop('checked')) {
                 isChecked = true;
                 checkedIds.push($(this).data("staffid"));
@@ -350,13 +353,25 @@
     }
 
     function SelectAllStaff() {
-        $('#kt_datatable').find('[class^="chk_"]').each(function () {
-            $(this).prop('checked', true);
+        var isChkAllChecked = false;
+        if ($("#chkAll").is(":checked") == true) {
+            isChkAllChecked = true;
+        }
+        $('#kt_advance_table_widget_1').find('[class^="chk_"]').each(function () {
+            if (isChkAllChecked) {
+                $(this).prop('checked', true);
+            }
+            else {
+                $(this).prop('checked', false);
+            }
             if ($(this).prop('checked')) {
                 isChecked = true;
                 checkedIds.push($(this).data("staffid"));
                 StaffId = $(this).data("staffid");
                 StaffName = $(this).data("staffname");
+            }
+            else {
+                isChecked = false;
             }
             if (isChecked) {
                 let existingIndex = combinationArray.findIndex(obj => obj.StaffId === StaffId);
@@ -374,7 +389,9 @@
         if (combinationArray.length > 0) {
             $("#btnBulkAg").attr("disabled", false);
         }
-        console.log(combinationArray);
+        else {
+            $("#btnBulkAg").attr("disabled", true);
+        }
     }
 
     function Clear() {

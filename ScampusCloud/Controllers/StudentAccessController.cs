@@ -148,18 +148,19 @@ namespace ScampusCloud.Controllers
             {
                 searchtxt = string.IsNullOrEmpty(searchtxt) ? "" : searchtxt;
                 int totals = Convert.ToInt32(_StudentAccessRepository.GetAllCount(searchtxt, SessionManager.CompanyId.ToString()));
-                var lstCountries = _StudentAccessRepository.GetStudentAccessList(searchtxt, page, pagesize, CampusId, CollegeId, DepartmentId, YearId, AdmissionTypeId, SessionManager.CompanyId.ToString());
+                var lstStudentAccessGroup = _StudentAccessRepository.GetStudentAccessList(searchtxt, page, pagesize, CampusId, CollegeId, DepartmentId, YearId, AdmissionTypeId, SessionManager.CompanyId.ToString());
                 Session["totalrecords"] = Convert.ToString(totals);
                 Session["paging_size"] = Convert.ToString(pagesize);
                 ViewData["totalrecords"] = totals;
                 ViewData["paging_size"] = pagesize;
                 StringBuilder strHTML = new StringBuilder();
-                if (lstCountries.Count > 0)
+                string checkboxAllClick = "SelectAllStudent()";
+                if (lstStudentAccessGroup.Count > 0)
                 {
-                    strHTML.Append("<table class='datatable-bordered datatable-head-custom datatable-table' id='kt_datatable'>");
+                    strHTML.Append("<table class='table table-head-custom table-vertical-center table-responsive datatable-bordered datatable-head-custom datatable-table' id='kt_advance_table_widget_1'>");
                     strHTML.Append("<thead class='datatable-head'>");
                     strHTML.Append("<tr class='datatable-row'>");
-                    strHTML.Append("<th class='datatable-cell'><input type=\"checkbox\">&nbsp;</input></th>");
+                    strHTML.Append("<th class=pl-0><label class=checkbox checkbox-lg checkbox-single><input id='chkAll' type=checkbox value=1 onclick=" + checkboxAllClick +"><span></span></input><span></span></label></th>");
                     strHTML.Append("<th class='datatable-cell'>Student Id</th>");
                     strHTML.Append("<th class='datatable-cell'>Student Name</th>");
                     strHTML.Append("<th class='datatable-cell'>College</th>");
@@ -174,23 +175,18 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("</tr>");
                     strHTML.Append("</thead>");
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
-                    foreach (var item in lstCountries)
+                    foreach (var item in lstStudentAccessGroup)
                     {
-                        //string checkboxClick = "SelectStudent(" + JsonConvert.SerializeObject(item.StudentId) + "," + JsonConvert.SerializeObject(item.StudentName)
-                        //    + "," + JsonConvert.SerializeObject(item.CompanyId) + ")";
                         string ImgSrc = string.Empty;
                         string PhotoImgSrc = string.Empty;
                         string checkboxClick = "SelectStudent()";
                         string DeleteConfirmationEvent = "DeleteConfirmation('" + item.StudentId + "','StudentAccess','StudentAccess','Delete')";
-
                         string fileExtension = Path.GetExtension(item.ImagePath);
-
                         if (!string.IsNullOrEmpty(item.ImageBase64))
                             PhotoImgSrc = "data:image/" + fileExtension.TrimStart('.') + ";base64," + item.ImageBase64;
-
                         strHTML.Append("<tr>");
-                        strHTML.Append("<td><input type=\"checkbox\" class=chk_" + item.StudentId + " data-studentid=" + item.StudentId + " data-studentname="+item.StudentName+" onclick=" + checkboxClick + ">&nbsp;</input></td>");
-                        strHTML.Append("<td>" + item.StudentId + "</td>");
+                        strHTML.Append("<td class=pl-0 py-6><label class=checkbox checkbox-lg checkbox-single><input type=checkbox value=1 class=chk_" + item.StudentId + " data-studentid=" + item.StudentId + " data-studentname="+item.StudentName+" onclick=" + checkboxClick + "></input><span></span></label></td>");
+                        strHTML.Append("<td class=pl-0>" + item.StudentId + "</td>");
                         strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
                              "<div class='ml-4'>" +
                              "<a href='#' class='font-size-sm text-dark-50 text-hover-primary'>" + item.StudentName + "</a></div></div></span></td>");
