@@ -1,0 +1,13 @@
+CREATE PROCEDURE [dbo].[SP_GetServicesData_Count]
+@Search nvarchar(max)='',
+@CompanyId nvarchar(100)=''
+AS
+BEGIN
+	
+	SET NOCOUNT OFF;
+	SELECT COUNT(C.Id) FROM Tbl_Mstr_Service_Master c
+	LEFT JOIN Tbl_Mstr_StaffDepartment_Master SDM ON SDM.Id = C.DeptId
+	LEFT JOIN Tbl_Mstr_Staff_Master AS SM ON CHARINDEX(',' + CAST(SM.Id AS VARCHAR) + ',', ',' + C.EmployeeIds + ',') > 0
+	WHERE (c.Name LIKE '%' + @Search + '%' OR c.Description LIKE '%' + @Search + '%')
+	and c.CompanyId=@CompanyId
+END

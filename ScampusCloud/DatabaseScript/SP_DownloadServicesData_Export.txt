@@ -1,0 +1,16 @@
+CREATE PROCEDURE [dbo].[SP_DownloadServicesData_Export]
+@Search nvarchar(max)='',
+@CompanyId nvarchar(100)=''
+
+AS
+BEGIN
+		SELECT C.Name,C.Code,C.[Description],C.[StartDateTime],C.[EndDateTime],SDM.Name As Department,
+		STRING_AGG(SM.FullName, ',') AS EmployeeName
+		FROM Tbl_Mstr_Service_Master c
+		LEFT JOIN Tbl_Mstr_StaffDepartment_Master SDM ON SDM.Id = C.DeptId
+		LEFT JOIN Tbl_Mstr_Staff_Master AS SM ON CHARINDEX(',' + CAST(SM.Id AS VARCHAR) + ',', ',' + C.EmployeeIds + ',') > 0
+		WHERE (c.Name LIKE '%' + @Search + '%')
+		and c.CompanyId=@CompanyId
+		GROUP BY C.Name,C.Code,C.[Description],C.[StartDateTime],C.[EndDateTime],SDM.Name
+		
+END

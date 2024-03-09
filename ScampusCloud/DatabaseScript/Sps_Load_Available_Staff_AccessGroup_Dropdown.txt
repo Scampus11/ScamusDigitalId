@@ -1,0 +1,34 @@
+CREATE PROCEDURE [dbo].[Sps_Load_Available_Staff_AccessGroup_Dropdown]
+@Id INT,
+@CompanyId nvarchar(100)=''	,
+@ActionType nvarchar(20) = ''
+AS
+BEGIN
+IF(@ActionType = 'AvailableGroup')
+BEGIN
+    IF(@Id = 0)
+	BEGIN
+	    SELECT CONVERT(NVARCHAR(10),Id) as [Value],[FullName] AS [Text] FROM Tbl_Mstr_Staff_Master 
+	    WHERE IsActive=1 And CompanyId=@CompanyId
+	END
+	ELSE
+	BEGIN
+	     SELECT CONVERT(NVARCHAR(10), Id) AS [Value], FullName AS [Text] 
+				FROM Tbl_Mstr_Staff_Master 
+				WHERE Id NOT IN (
+					SELECT TRY_CAST(value AS INT)
+					FROM string_split(
+						(SELECT EmployeeIds FROM Tbl_Mstr_Service_Master WHERE ID = @Id),
+						','
+					)
+				)And CompanyId=@CompanyId
+	END
+END
+IF(@ActionType = 'AssignedGroup')
+BEGIN
+    SELECT CONVERT(NVARCHAR(10),SM1.Id) as [Value],[FullName] AS [Text] FROM Tbl_Mstr_Service_Master AS SM 
+	INNER JOIN Tbl_Mstr_Staff_Master AS SM1 ON CHARINDEX(',' + CAST(SM1.Id AS VARCHAR) + ',', ',' + SM.EmployeeIds + ',') > 0
+	WHERE SM.Id = @Id
+END
+END
+

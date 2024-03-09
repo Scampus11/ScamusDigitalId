@@ -1,0 +1,61 @@
+CREATE PROCEDURE [dbo].[SP_Services_CURD]
+@Id int = null,
+@Name nvarchar(50)=null,
+@CompanyId uniqueidentifier = null,
+@Code nvarchar(100) = null,
+@Description nvarchar(1000) = null,
+@DeptId int = null,
+@StartDateTime nvarchar(100) = null,
+@EndDateTime nvarchar(100) = null,
+@EmployeeIds nvarchar(100)='',
+@Isactive bit = 0,
+@CreatedBy uniqueidentifier=null,
+@ModifiedBy uniqueidentifier=null,
+@ActionType nvarchar(20) = ''
+AS
+
+BEGIN
+	IF @ActionType = 'Insert'  
+	BEGIN  
+		
+		--Start Reader
+	    Insert into Tbl_Mstr_Service_Master
+		(
+			Name, CompanyId, Code,Description,DeptId,StartDateTime,EndDateTime,EmployeeIds,IsDeleted,IsActive,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy
+		) 
+		values
+		(
+			@Name, @CompanyId, @Code,@Description,@DeptId,@StartDateTime,@EndDateTime,@EmployeeIds,0,@Isactive,GETDATE(),GETDATE(),@CreatedBy,@ModifiedBy
+		)
+		--End Reader
+
+		
+	END  
+	IF @ActionType = 'Edit' OR @ActionType='Remote'
+	BEGIN  
+		select C.Id,C.CompanyId,C.Name,C.Code,C.Description,C.DeptId AS DepartmentId,c.StartDateTime,C.EndDateTime,C.EmployeeIds,
+		C.CreatedBy,C.ModifiedBy,C.Isactive
+		from Tbl_Mstr_Service_Master C 
+		WHERE (C.Id=@Id or C.Code=@Code) and CompanyId=@CompanyId
+	END  
+	IF @ActionType = 'Update'  
+	BEGIN  
+	--Start Reader
+		UPDATE Tbl_Mstr_Service_Master SET  
+			Name = IsNull(@Name,Name), 
+			Code=ISNULL(@Code,Code),
+			DeptId = IsNull(@DeptId,DeptId), 
+			StartDateTime = @StartDateTime,
+			EndDateTime = @EndDateTime,
+			EmployeeIds = @EmployeeIds,
+			Isactive=@Isactive,
+			ModifiedDate = GETDATE() 
+		WHERE CompanyId = @CompanyId and Id=@Id
+	--End Reader
+	END  
+	IF @ActionType = 'Delete'  
+	BEGIN  
+		Delete from Tbl_Mstr_Service_Master Where Id = @Id
+		
+	END  
+END

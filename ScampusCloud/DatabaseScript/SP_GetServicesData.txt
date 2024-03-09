@@ -1,0 +1,25 @@
+--exec SP_GetServicesData '',1,10, 'A1B42BAF-8C3D-43DA-A5EB-47334EF958D2'
+ALTER PROCEDURE [dbo].[SP_GetServicesData]
+@Search nvarchar(max)=''
+,@page INT=1
+,@pagesize INT=10
+,@CompanyId nvarchar(100)=''
+
+AS
+
+BEGIN
+	SELECT C.Id,C.Name,C.Code,C.[Description],C.[StartDateTime],C.[EndDateTime],SDM.Name As Department,
+	STRING_AGG(SM.FullName, ',') AS EmployeeName,
+	ISNULL(c.IsDeleted,1) AS IsDeleted,ISNULL(c.IsActive,1) AS IsActive FROM Tbl_Mstr_Service_Master c
+	LEFT JOIN Tbl_Mstr_StaffDepartment_Master SDM ON SDM.Id = C.DeptId
+	LEFT JOIN Tbl_Mstr_Staff_Master AS SM ON CHARINDEX(',' + CAST(SM.Id AS VARCHAR) + ',', ',' + C.EmployeeIds + ',') > 0
+	WHERE (c.Name LIKE '%' + @Search + '%' OR c.Description LIKE '%' + @Search + '%')
+	and c.CompanyId=@CompanyId
+	GROUP BY C.Id,C.Name,C.Code,C.[Description],C.[StartDateTime],C.[EndDateTime],SDM.Name,c.IsDeleted,c.IsActive
+	ORDER BY C.Id ASC
+	OFFSET 	(@Page -1) * @pageSize ROWS
+	FETCH NEXT @pageSize ROWS ONLY
+END
+
+
+
