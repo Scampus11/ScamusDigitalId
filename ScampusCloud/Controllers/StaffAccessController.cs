@@ -16,6 +16,7 @@ using System.Web.Mvc;
 
 namespace ScampusCloud.Controllers
 {
+    [SessionTimeoutAttribute]
     public class StaffAccessController : Controller
     {
         #region Variable Declaration
