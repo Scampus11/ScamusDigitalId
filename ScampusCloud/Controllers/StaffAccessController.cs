@@ -67,16 +67,16 @@ namespace ScampusCloud.Controllers
                 string checkboxAllClick = "SelectAllStaff()";
                 if (lstStaffAccessGroup.Count > 0)
                 {
-                    strHTML.Append("<table class='table table-head-custom table-vertical-center datatable-bordered datatable-head-custom datatable-table' id='kt_advance_table_widget_1'>");
-                    strHTML.Append("<thead class='datatable-head'>");
+                    strHTML.Append("<table class='table table-head-custom table-vertical-center' id='kt_advance_table_widget_1'>");
+                    strHTML.Append("<thead>");
                     strHTML.Append("<tr class='datatable-row'>");
-                    strHTML.Append("<th class=pl-0 style=width: 20px><label class=checkbox checkbox-lg checkbox-single><input id='chkAll' type=checkbox value=1 onclick="+checkboxAllClick+"><span></span></input></label></th>");
-                    strHTML.Append("<th class='datatable-cell'>Staff Id</th>");
-                    strHTML.Append("<th class='datatable-cell'>Staff Name</th>");
-                    strHTML.Append("<th class='datatable-cell'>Department </th>");
-                    strHTML.Append("<th class='datatable-cell'>Access Group </th>");
+                    strHTML.Append("<th><label class=checkbox checkbox-lg checkbox-single><input id='chkAll' type=checkbox value=1 onclick="+checkboxAllClick+"><span></span></input></label></th>");
+                    strHTML.Append("<th>Staff Id</th>");
+                    strHTML.Append("<th>Staff Name</th>");
+                    strHTML.Append("<th>Department </th>");
+                    strHTML.Append("<th>Access Group </th>");
                     //strHTML.Append("<th class='datatable-cell'>Block Group</th>");
-                    strHTML.Append("<th class='datatable-cell'>Action</th>");
+                    strHTML.Append("<th>Action</th>");
                     strHTML.Append("</tr>");
                     strHTML.Append("</thead>");
                     strHTML.Append("<tbody class='datatable-body custom-scroll'>");
@@ -93,7 +93,7 @@ namespace ScampusCloud.Controllers
                             PhotoImgSrc = "data:image/" + fileExtension.TrimStart('.') + ";base64," + item.ImageBase64;
 
                         strHTML.Append("<tr>");
-                        strHTML.Append("<td class=pl-0 py-6><label class=checkbox checkbox-lg checkbox-single><input type=checkbox value=1 class=chk_" + item.StaffId + " data-staffid=" + item.StaffId + " data-staffname=" + item.StaffName + " onclick=" + checkboxClick +" /><span></span></label></td>");
+                        strHTML.Append("<td><label class=checkbox checkbox-lg checkbox-single><input type=checkbox value=1 class=chk_" + item.StaffId + " data-staffid=" + item.StaffId + " data-staffname=" + item.StaffName + " onclick=" + checkboxClick +" /><span></span></label></td>");
                         strHTML.Append("<td class=pl-0><span class=text-dark-75 font-weight-bolder d-block font-size-lg>" + item.StaffId + "</span></td>");
                         strHTML.Append("<td style='width:250px;'><span><div class='d-flex align-items-center'><div class='symbol symbol-40 flex-shrink-0'><img src='" + PhotoImgSrc + "' style='height:40px;border-radius:100%;border:1px solid;' alt='photo'></div>" +
                             "<div class='ml-4'>" +

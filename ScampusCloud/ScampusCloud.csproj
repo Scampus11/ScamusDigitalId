@@ -440,6 +440,7 @@
     <Compile Include="Controllers\ProgramController.cs" />
     <Compile Include="Controllers\ReaderController.cs" />
     <Compile Include="Controllers\RemoteValidationController.cs" />
+    <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\SessionMasterController.cs" />
     <Compile Include="Controllers\StaffAccessController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
@@ -476,6 +477,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProgramModel.cs" />
     <Compile Include="Models\ReaderModel.cs" />
+    <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\SessionMasterModel.cs" />
     <Compile Include="Models\StaffAccessModel.cs" />
     <Compile Include="Models\StaffDepartmentModel.cs" />
@@ -507,6 +509,7 @@
     <Compile Include="Repository\Login\LoginRepository.cs" />
     <Compile Include="Repository\Program\ProgramRepository.cs" />
     <Compile Include="Repository\Reader\ReaderRepository.cs" />
+    <Compile Include="Repository\Service\ServiceRepository.cs" />
     <Compile Include="Repository\SessionMaster\SessionMasterRepository.cs" />
     <Compile Include="Repository\StaffAccessRepository.cs" />
     <Compile Include="Repository\StaffDepartment\StaffDepartmentRepository.cs" />
@@ -667,6 +670,8 @@
     <Content Include="Views\StudentAccess\AddEditStudentAccess.cshtml" />
     <Content Include="Views\StaffAccess\StaffAccess.cshtml" />
     <Content Include="Views\StaffAccess\AddEditStaffAccess.cshtml" />
+    <Content Include="Views\Services\Services.cshtml" />
+    <Content Include="Views\Services\AddEditServices.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

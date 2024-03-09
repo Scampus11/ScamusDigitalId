@@ -1,0 +1,483 @@
+﻿@model ScampusCloud.Models.ServiceModel
+@using ScampusCloud.Utility
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.IsEdit == false)
+    {
+        ViewData["Title"] = "Add Services";
+    }
+    else
+    {
+        ViewData["Title"] = "Edit Services";
+    }
+}
+<!--begin::Form-->
+<form id="frmManageReader" asp-action="AddEditServices" asp-controller="Services" method="post">
+    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">@ViewData["Title"]</h5>
+                    <!--end::Page Title-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid flex-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b example-compact">
+                        <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                            <div class="card-header" style="">
+                                <div class="card-title">
+                                    <h3 class="card-label">
+                                        <i class="mr-2"></i>
+                                        <small class=""></small>
+                                    </h3>
+                                </div>
+                                @Html.HiddenFor(x => x.IsEdit)
+                                @Html.HiddenFor(x => x.Id)
+                                @Html.HiddenFor(x => x.CompanyId)
+                                @Html.HiddenFor(x => x.CreatedBy)
+                                @Html.HiddenFor(x => x.ModifiedBy)
+                                @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
+                                @Html.HiddenFor(x => x.StartDateTime)
+                                @Html.HiddenFor(x => x.EndDateTime)
+                                @Html.HiddenFor(x => x.EmployeeIds)
+                                <div class="card-toolbar">
+                                    <a href="/Services/Services" class="btn btn-danger font-weight-bolder mr-2">
+                                        <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
+                                    </a>
+                                    @{
+                                        if (ViewBag.NoRecordExist == null)
+                                        {
+                                            <button type="submit" asp-action="AddEditServices" class="btn btn-primary font-weight-bolder mr-2">
+                                                <i class="flaticon-interface-5"></i>
+                                                <span class="nav-text">@(Model.IsEdit == false ? "Save & Add New" : "Update & continue")</span>
+                                            </button>
+                                            <button type="submit" form="frmManageReader" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
+                                                <i class="flaticon-logout"></i>
+                                                <span class="nav-text">@(Model.IsEdit == false ? "Save & Exit" : "Update & Exit")</span>
+                                            </button>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="row h-100 justify-content-center align-items-center">
+                                @*<div class="col-md-6">*@
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active px-9" id="kt_user_edit_tab_1" role="tabpanel">
+                                            <div class="row">
+                                                <div class="col-xl-11 my-2">
+                                                    <div class="form-group row">
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                Name:
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @required = "required" })
+                                                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                                        </div>
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                Code:
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                Description:
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">Department</label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.DropDownListFor(model => model.DepartmentId, new SelectList(Model.lstDepartment, "Value", "Text"), "Select Department", new { @class = "form-control" })
+                                                        </div>  
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                Start Date Time
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="input-group date">
+                                                                <input type="text" class="form-control" placeholder="Select date and time" id="kt_datetimepicker_5" />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text">
+                                                                        <i class="la la-calendar glyphicon-th"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                End Date Time
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <div class="input-group date">
+                                                                <input type="text" class="form-control" placeholder="Select date and time" id="kt_datetimepicker_6" />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text">
+                                                                        <i class="la la-calendar glyphicon-th"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group row">
+                                                        <div class="col-4 text-left">
+                                                            <div class="dual-list-groupa">
+                                                                <h6>Available Access Group</h6>
+                                                                <input id="listbox1">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4 text-left">
+                                                            <div class="dual-list-groupb">
+                                                                <h6>Assigned Access Group</h6>
+                                                                <input id="listbox2">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-1 text-left">
+                                                            <label class="col-form-label">Is Active: </label>
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <span class='switch switch-icon'>
+                                                                <label>
+                                                                    @if (Model.IsActive)
+                                                                    {
+                                                                        <input type='checkbox' id="chkIsActive" checked="checked">
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type='checkbox' id="chkIsActive">
+                                                                    }
+                                                                    <span></span>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    @*<div class="form-group row">
+                                            <div class="col-4 text-text">
+                                                <label class="col-form-label">
+                                                    Name:
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">
+                                                    Code:
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>*@
+
+                                    @*<div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">
+                                                    Description:
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @required = "required" })
+                                            </div>
+                                        </div>*@
+
+                                    @*<div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">
+                                                    Start Date Time
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control" placeholder="Select date and time" id="kt_datetimepicker_5" />
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">
+                                                            <i class="la la-calendar glyphicon-th"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+
+                                    @*<div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">
+                                                    End Date Time
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control" placeholder="Select date and time" id="kt_datetimepicker_6" />
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">
+                                                            <i class="la la-calendar glyphicon-th"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+
+                                    @*<div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">Department</label>
+                                            </div>
+
+                                            <div class="col-8">
+                                                @Html.DropDownListFor(model => model.DepartmentId, new SelectList(Model.lstDepartment, "Value", "Text"), "Select Department", new { @class = "form-control" })
+                                            </div>
+                                        </div>*@
+
+                                    @*<div class="form-group row">
+                                            <div class="col-6">
+                                                <div class="dual-list-groupa">
+                                                    <h5>Available Access Group</h5>
+                                                    <input id="listbox1">
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="dual-list-groupb">
+                                                    <h5>Assigned Access Group</h5>
+                                                    <input id="listbox2">
+                                                </div>
+                                            </div>
+                                        </div>*@
+
+                                    @*<div class="form-group row">
+                                            <div class="col-4 text-right">
+                                                <label class="col-form-label">Is Active: </label>
+                                            </div>
+                                            <div class="col-8">
+                                                <span class='switch switch-icon'>
+                                                    <label>
+                                                        @if (Model.IsActive)
+                                                        {
+                                                            <input type='checkbox' id="chkIsActive" checked="checked">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type='checkbox' id="chkIsActive">
+                                                        }
+
+                                                        <span></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>*@
+
+                                </div>
+                                @*</div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+<link href="~/Content/ej2/customized/material.css" rel="stylesheet" />
+<link href="~/Content/ej2/material.css" rel="stylesheet" />
+<link href="~/Content/ej2/compatibility/material.css" rel="stylesheet" />
+<script src="~/Scripts/ej2/ej2.min.js"></script>
+<script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+@section Scripts{
+    <script>
+
+    $(document).ready(function () {
+        LoadAccessGroup();
+        debugger;
+
+        var startdateComponents = '@Model.StartDateTime'.split(' ');
+
+        // Extract the date, month, year, time, and meridian
+        var day = parseInt(startdateComponents[0]);
+        var month = startdateComponents[1];
+        var year = parseInt(startdateComponents[2]);
+        var time = startdateComponents[4];
+        var meridian = startdateComponents[5];
+
+        // Convert time to 24-hour format if it's in AM/PM format
+        if (meridian === 'PM') {
+            var timeComponents = time.split(':');
+            var hours = parseInt(timeComponents[0]) + 12;
+            var minutes = parseInt(timeComponents[1]);
+        } else {
+            var timeComponents = time.split(':');
+            var hours = parseInt(timeComponents[0]);
+            var minutes = parseInt(timeComponents[1]);
+        }
+
+        // Create a new Date object with the extracted components
+        var dateTime = new Date(year, getMonthIndex(month), day, hours, minutes);
+
+        $('#kt_datetimepicker_5').datetimepicker('setDate', dateTime);
+
+
+         var enddateComponents = '@Model.EndDateTime'.split(' ');
+
+         // Extract the date, month, year, time, and meridian
+        var day = parseInt(enddateComponents[0]);
+        var month = enddateComponents[1];
+        var year = parseInt(enddateComponents[2]);
+        var time = enddateComponents[4];
+        var meridian = enddateComponents[5];
+
+         // Convert time to 24-hour format if it's in AM/PM format
+         if (meridian === 'PM') {
+             var timeComponents = time.split(':');
+             var hours = parseInt(timeComponents[0]) + 12;
+             var minutes = parseInt(timeComponents[1]);
+         } else {
+             var timeComponents = time.split(':');
+             var hours = parseInt(timeComponents[0]);
+             var minutes = parseInt(timeComponents[1]);
+         }
+
+         // Create a new Date object with the extracted components
+         var dateTime = new Date(year, getMonthIndex(month), day, hours, minutes);
+
+         $('#kt_datetimepicker_6').datetimepicker('setDate', dateTime);
+
+
+
+    })
+
+        function getMonthIndex(month) {
+            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            return months.indexOf(month);
+        }
+
+    $(function () {
+     @if(TempData.ContainsKey("Message"))
+        {
+            @:toastr.success('@TempData["Message"]');
+        }
+    });
+
+    $("#chkIsActive").change(function () {
+        $("#hdnIsActive").val($(this).is(':checked'));
+    });
+    $('#kt_datetimepicker_5').datetimepicker({
+        format: "dd MM yyyy - HH:ii P",
+        showMeridian: true,
+        todayHighlight: true,
+        autoclose: true,
+        pickerPosition: 'bottom-left'
+    }).on('change', function (e) {
+        var datetimeValue = $(this).val();
+        $("#StartDateTime").val(datetimeValue);
+        var dateTimeParts = datetimeValue.split(' - ');
+        var datePart = dateTimeParts[0];
+        var timePart = dateTimeParts[1];
+        var parsedDate = new Date(datePart + ' ' + timePart);
+        $('#kt_datetimepicker_6').datetimepicker('setStartDate', parsedDate);
+    });
+    $('#kt_datetimepicker_6').datetimepicker({
+        format: "dd MM yyyy - HH:ii P",
+        showMeridian: true,
+        todayHighlight: true,
+        autoclose: true,
+        pickerPosition: 'bottom-left'
+    })
+
+    //    $('#kt_datetimepicker_5').on('change', function () {
+    //        debugger;
+
+
+    //    if (selectedDate.date) {
+    //        var minDate = new Date(selectedDate.date.valueOf());
+    //        $('#kt_datetimepicker_6').datetimepicker('setStartDate', minDate);
+    //    }
+
+
+    //});
+
+    $('#kt_datetimepicker_6').on('change', function () {
+        var datetimeValue = $(this).val();
+        $("#EndDateTime").val(datetimeValue);
+    });
+    function LoadAccessGroup() {
+     var listObj = new ej.dropdowns.ListBox({
+     dataSource: @Html.Raw(Json.Encode(ViewBag.GroupA)),
+     fields: { text: 'Text' },
+     scope: '#listbox2',
+     toolbarSettings: { items: ['moveTo','moveAllTo','moveFrom','moveAllFrom'] },
+     height: '200px'
+    });
+    listObj.appendTo('#listbox1');
+    listObj = new ej.dropdowns.ListBox({
+              dataSource: @Html.Raw(Json.Encode(ViewBag.GroupB)),
+             fields: { text: 'Text' },
+             scope: '#listbox1',
+             height: '200px'
+    });
+    listObj.appendTo('#listbox2');
+        }
+
+     document.getElementById('frmManageReader').addEventListener('submit', function (e) {
+        debugger;
+        var listBoxA = document.getElementById('listbox1').ej2_instances[0];
+        var listBoxB = document.getElementById('listbox2').ej2_instances[0];
+        var selectedItems = listBoxB.jsonData;
+        const ids = selectedItems.map(obj => obj.Value);
+        $("#EmployeeIds").val(ids.join(","));
+    });
+    </script>
+}
