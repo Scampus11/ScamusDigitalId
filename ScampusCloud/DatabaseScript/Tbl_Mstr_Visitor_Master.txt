@@ -1,0 +1,48 @@
+USE [ScampusCloud]
+GO
+
+/****** Object:  Table [dbo].[Tbl_Mstr_Visitor_Master]    Script Date: 03/09/2024 2:57:17 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Tbl_Mstr_Visitor_Master](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [nvarchar](500) NULL,
+	[LastName] [nvarchar](500) NULL,
+	[CompanyId] [uniqueidentifier] NULL,
+	[Code] [nvarchar](50) NULL,
+	[CompanyName] [nvarchar](500) NULL,
+	[VisitorreasonIds] [nvarchar](50) NULL,
+	[VisitorTypeIds] [nvarchar](50) NULL,
+	[PhoneNumber] [nvarchar](50) NULL,
+	[EmailId] [nvarchar](50) NULL,
+	[NationalId] [nvarchar](50) NULL,
+	[HostEmployeeCode] [nvarchar](50) NULL,
+	[AccessCardNumber] [nvarchar](50) NULL,
+	[ValidFrom] [nvarchar](50) NULL,
+	[ValidTo] [nvarchar](50) NULL,
+	[CheckId] [nvarchar](50) NULL,
+	[CheckOut] [nvarchar](50) NULL,
+	[StatusId] int NULL,
+	[VisitorRegNumber] [nvarchar](50) NULL,
+	[ServiceIds] [nvarchar](50) NULL,
+	[VisitorPreRegStatus] [nvarchar](50) NULL,
+	[ImagePath] [nvarchar](500) NULL,
+	[ImageBase64] [varchar](max) NULL,
+	[IsDeleted] [bit] NULL,
+	[IsActive] [bit] NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[ModifiedBy] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_Tbl_Mstr_Visitor_Master] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
