@@ -349,6 +349,7 @@
     <Content Include="DatabaseScript\Sps_Load_AccessGroup_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_AccessGroup_Type_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_Available_AccessGroup_Dropdown.txt" />
+    <Content Include="DatabaseScript\Sps_Load_Available_Staff_AccessGroup_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_DoorGroup_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_Reader_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_Session_Dropdown.txt" />
@@ -359,6 +360,7 @@
     <Content Include="DatabaseScript\SP_DoorGroup_CURD.txt" />
     <Content Include="DatabaseScript\SP_DownloadAceessGroupData_Export.txt" />
     <Content Include="DatabaseScript\SP_DownloadDoorGroupData_Export.txt" />
+    <Content Include="DatabaseScript\SP_DownloadServicesData_Export.txt" />
     <Content Include="DatabaseScript\SP_DownloadStudentData_Export.txt" />
     <Content Include="DatabaseScript\SP_GetAccessGroupData.txt" />
     <Content Include="DatabaseScript\SP_GetAccessGroupData_Count.txt" />
@@ -366,12 +368,15 @@
     <Content Include="DatabaseScript\SP_GetAvailableAssgined_Group.txt" />
     <Content Include="DatabaseScript\SP_GetDoorGroupData.txt" />
     <Content Include="DatabaseScript\SP_GetDoorGroupData_Count.txt" />
+    <Content Include="DatabaseScript\SP_GetServicesData.txt" />
+    <Content Include="DatabaseScript\SP_GetServicesData_Count.txt" />
     <Content Include="DatabaseScript\SP_GetStaffAccessGroupData.txt" />
     <Content Include="DatabaseScript\SP_GetStaffAccessGroup_Count.txt" />
     <Content Include="DatabaseScript\SP_GetStaffData.txt" />
     <Content Include="DatabaseScript\SP_GetStudentAccessGroupData.txt" />
     <Content Include="DatabaseScript\SP_GetStudentAccessGroup_Count.txt" />
     <Content Include="DatabaseScript\SP_GetStudentData.txt" />
+    <Content Include="DatabaseScript\SP_Services_CURD.txt" />
     <Content Include="DatabaseScript\SP_StaffAccessGroup_CURD.txt" />
     <Content Include="DatabaseScript\SP_Staff_CURD.txt" />
     <Content Include="DatabaseScript\SP_StudentAccessGroup_CURD.txt" />
