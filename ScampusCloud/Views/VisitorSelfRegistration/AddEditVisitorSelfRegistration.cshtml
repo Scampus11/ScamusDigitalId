@@ -1,0 +1,336 @@
+﻿@model ScampusCloud.Models.VisitorSelfRegistrationModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Add Visitor Self Registration";
+}
+@Html.Partial("_LayoutHeadScriptsPartial")
+<form id="frmManageReader" asp-action="AddEditVisitorSelfRegistration" asp-controller="VisitorSelfRegistration" method="post">
+    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">@ViewData["Title"]</h5>
+                    <!--end::Page Title-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid flex-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b example-compact">
+                        <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                            <div class="card-header" style="">
+                                <div class="card-title">
+                                    <h3 class="card-label">
+                                        <i class="mr-2"></i>
+                                        <small class=""></small>
+                                    </h3>
+                                </div>
+                                @Html.HiddenFor(x => x.IsEdit)
+                                @Html.HiddenFor(x => x.Id)
+                                @Html.HiddenFor(x => x.CompanyId)
+                                @Html.HiddenFor(x => x.CreatedBy)
+                                @Html.HiddenFor(x => x.ModifiedBy)
+                                @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
+                                @Html.HiddenFor(x => x.ServiceIds);
+                                <div class="card-toolbar">
+                                    <a href="/Services/Services" class="btn btn-danger font-weight-bolder mr-2">
+                                        <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
+                                    </a>
+                                    @{
+                                        if (ViewBag.NoRecordExist == null)
+                                        {
+                                            <button type="submit" asp-action="AddEditServices" class="btn btn-primary font-weight-bolder mr-2">
+                                                <i class="flaticon-interface-5"></i>
+                                                <span class="nav-text">Save & Add New</span>
+                                            </button>
+                                            <button type="submit" form="frmManageReader" name="saveAndExit" value="saveAndExit " class="btn btn-success font-weight-bolder mr-2">
+                                                <i class="flaticon-logout"></i>
+                                                <span class="nav-text">Save & Exit</span>
+                                            </button>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="row h-100 justify-content-center align-items-center">
+                                @*<div class="col-md-6">*@
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active px-9" id="kt_user_edit_tab_1" role="tabpanel">
+                                            <div class="row">
+                                                <div class="col-xl-11 my-2">
+                                                    <div class="form-group row">
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                FirstName:
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @required = "required" })
+                                                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                                                        </div>
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                LastName:
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                Code:
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">Company Name</label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                Visitor Type
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.HiddenFor(Model => Model.VisitorTypeIds)
+                                                            @*@Html.HiddenFor(Model => Model.DoorGroupId)*@
+                                                            <select id="ddlVisitorType" multiple="multiple" required=required name="ddlVisitorType" onchange="SelectVisitorType()">
+                                                                @if (Model.lstVisitorTypeDropdown != null)
+                                                                {
+                                                                    foreach (var item in Model.lstVisitorTypeDropdown)
+                                                                    {
+                                                                        if (item.Text != null)
+                                                                        {
+                                                                            <option value="@item.Value">
+                                                                                @item.Text
+                                                                            </option>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                Visitor Reason
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            @Html.HiddenFor(Model => Model.VisitorreasonIds)
+                                                            @*@Html.HiddenFor(Model => Model.DoorGroupId)*@
+                                                            <select id="ddlVisitorReason" multiple="multiple" required=required name="ddlVisitorReason" onchange="SelectVisitorReason()">
+                                                                @if (Model.lstVisitorReasonDropdown != null)
+                                                                {
+                                                                    foreach (var item in Model.lstVisitorReasonDropdown)
+                                                                    {
+                                                                        if (item.Text != null)
+                                                                        {
+                                                                            <option value="@item.Value">
+                                                                                @item.Text
+                                                                            </option>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group row">
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                Country Code:
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">Phone Number</label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">
+                                                                Email Id:
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                        <div class="col-2 text-left">
+                                                            <label class="col-form-label">National Id</label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            @Html.TextBoxFor(m => m.NationalId, new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-4 text-left">
+                                                            <div class="dual-list-groupa">
+                                                                <h6>Available Services</h6>
+                                                                <input id="listbox1">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4 text-left">
+                                                            <div class="dual-list-groupb">
+                                                                <h6>Assigned Services</h6>
+                                                                <input id="listbox2">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-1 text-left">
+                                                            <label class="col-form-label">Is Active: </label>
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <span class='switch switch-icon'>
+                                                                <label>
+                                                                    @if (Model.IsActive)
+                                                                    {
+                                                                        <input type='checkbox' id="chkIsActive" checked="checked">
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type='checkbox' id="chkIsActive">
+                                                                    }
+                                                                    <span></span>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<link href="~/Content/ej2/customized/material.css" rel="stylesheet" />
+<link href="~/Content/ej2/material.css" rel="stylesheet" />
+<link href="~/Content/ej2/compatibility/material.css" rel="stylesheet" />
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+@*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>*@
+<script src="~/assets/js/popper.min.js"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+<script src="~/assets/js/pages/features/miscellaneous/sweetalert2.js"></script>
+<link href="~/assets/css/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="~/assets/js/bootstrap-multiselect.js"></script>
+<script src="~/Scripts/ej2/ej2.min.js"></script>
+</script>
+
+<script>
+    $(function () {
+        $('#ddlVisitorType').multiselect({
+            includeSelectAllOption: true,
+            selectAllValue: 'multiselect-all',
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: '300',
+            buttonWidth: '235',
+        });
+        $('#ddlVisitorReason').multiselect({
+            includeSelectAllOption: true,
+            selectAllValue: 'multiselect-all',
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: '300',
+            buttonWidth: '235',
+        });
+        LoadAccessGroup();
+    })
+</script>
+<script>
+     function SelectVisitorType() {
+         arrVisitorTypeSelected = [];
+         var selected = $("#ddlVisitorType option:selected");
+         var message = "";
+         selected.each(function () {
+             arrVisitorTypeSelected.push($(this).val() + ',' + $(this).text().trim());
+             message += $(this).text() + " " + $(this).val() + "\n";
+         });
+         $("#VisitorTypeIds").val(arrVisitorTypeSelected.join(','));
+     }
+     function SelectVisitorReason() {
+         arrVisitorReasonSelected = [];
+         var selected = $("#ddlVisitorReason option:selected");
+         var message = "";
+         selected.each(function () {
+             arrVisitorReasonSelected.push($(this).val() + ',' + $(this).text().trim());
+             message += $(this).text() + " " + $(this).val() + "\n";
+         });
+         $("#VisitorreasonIds").val(arrVisitorReasonSelected.join(','));
+     }
+     function LoadAccessGroup() {
+          var listObj = new ej.dropdowns.ListBox({
+          dataSource: @Html.Raw(Json.Encode(ViewBag.GroupA)),
+          fields: { text: 'Text' },
+          scope: '#listbox2',
+          toolbarSettings: { items: ['moveTo','moveAllTo','moveFrom','moveAllFrom'] },
+          height: '200px'
+         });
+         listObj.appendTo('#listbox1');
+         listObj = new ej.dropdowns.ListBox({
+                   dataSource: @Html.Raw(Json.Encode(ViewBag.GroupB)),
+                  fields: { text: 'Text' },
+                  scope: '#listbox1',
+                  height: '200px'
+         });
+         listObj.appendTo('#listbox2');
+    }
+
+    document.getElementById('frmManageReader').addEventListener('submit', function (e) {
+        debugger;
+        var listBoxA = document.getElementById('listbox1').ej2_instances[0];
+        var listBoxB = document.getElementById('listbox2').ej2_instances[0];
+        var selectedItems = listBoxB.jsonData;
+        const ids = selectedItems.map(obj => obj.Value);
+        $("#ServiceIds").val(ids.join(","));
+    });
+</script>
+

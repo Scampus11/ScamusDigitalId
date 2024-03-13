@@ -244,6 +244,7 @@
     <Content Include="assets\js\pages\features\miscellaneous\sweetalert2.min.js" />
     <Content Include="assets\js\pages\widgets.js" />
     <Content Include="assets\js\pages\widgets.min.js" />
+    <Content Include="assets\js\popper.min.js" />
     <Content Include="assets\js\QRCode\audio\beep.mp3" />
     <Content Include="assets\js\QRCode\jsQR\jsQR.js" />
     <Content Include="assets\js\QRCode\jsQR\jsQR.min.js" />
@@ -458,6 +459,7 @@
     <Compile Include="Controllers\VisitorAccessLevelController.cs" />
     <Compile Include="Controllers\VisitorCardController.cs" />
     <Compile Include="Controllers\VisitorReasonController.cs" />
+    <Compile Include="Controllers\VisitorSelfRegistrationController.cs" />
     <Compile Include="Controllers\VisitorStatusController.cs" />
     <Compile Include="Controllers\VisitorTypeController.cs" />
     <Compile Include="Controllers\YearController.cs" />
@@ -497,6 +499,7 @@
     <Compile Include="Models\VisitorAccessLevelModel.cs" />
     <Compile Include="Models\VisitorCardModel.cs" />
     <Compile Include="Models\VisitorReasonModel.cs" />
+    <Compile Include="Models\VisitorSelfRegistrationModel.cs" />
     <Compile Include="Models\VisitorStatusModel.cs" />
     <Compile Include="Models\VisitorTypeModel.cs" />
     <Compile Include="Models\YearModel.cs" />
@@ -527,6 +530,7 @@
     <Compile Include="Repository\VisitorAccessLevel\VisitorAccessLevelRepository.cs" />
     <Compile Include="Repository\VisitorCard\VisitorCardRepository.cs" />
     <Compile Include="Repository\VisitorReason\VisitorReasonRepository.cs" />
+    <Compile Include="Repository\VisitorSelfRegistration\VisitorSelfRegistrationRepository.cs" />
     <Compile Include="Repository\VisitorStatus\VisitorStatusRepository.cs" />
     <Compile Include="Repository\VisitorType\VisitorTypeRepository.cs" />
     <Compile Include="Repository\Year\YearRepository.cs" />
@@ -677,6 +681,8 @@
     <Content Include="Views\StaffAccess\AddEditStaffAccess.cshtml" />
     <Content Include="Views\Services\Services.cshtml" />
     <Content Include="Views\Services\AddEditServices.cshtml" />
+    <Content Include="Views\VisitorSelfRegistration\VisitorSelfRegistration.cshtml" />
+    <Content Include="Views\VisitorSelfRegistration\AddEditVisitorSelfRegistration.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

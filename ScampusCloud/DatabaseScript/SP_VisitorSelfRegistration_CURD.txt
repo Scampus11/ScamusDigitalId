@@ -1,0 +1,45 @@
+CREATE PROCEDURE [dbo].[SP_VisitorSelfRegistration_CURD]
+@Id int = null,
+@Firstname nvarchar(1000) = '',
+@Lastname nvarchar(1000) = '',
+@CompanyId uniqueidentifier = null,
+@Code nvarchar(100) = null,
+@CompanyName nvarchar(1000) = '',
+@VisitorreasonIds nvarchar(100) = '',
+@VisitorTypeIds nvarchar(100) = '',
+@PhoneNumber nvarchar(100) = '',
+@EmailId nvarchar(100) = '',
+@NationalId nvarchar(100) = '',
+@HostEmployeeCode nvarchar(100) = '',
+@AccessCardNumber nvarchar(100) = '',
+@ValidFrom nvarchar(100) = '',
+@ValidTo nvarchar(100) = '',
+@CheckId nvarchar(100) = '',
+@CheckOut nvarchar(100) = '',
+@StatusId int = null,
+@VisitorRegNumber nvarchar(100) = '',
+@ServiceIds nvarchar(100) = '',
+@VisitorPreRegStatus nvarchar(100) = '',
+@ImagePath nvarchar(1000) = '',
+@ImageBase64 nvarchar(1000) = '',
+@Isactive bit = 0,
+@CreatedBy uniqueidentifier=null,
+@ModifiedBy uniqueidentifier=null,
+@ActionType nvarchar(20) = ''
+AS
+
+BEGIN
+    IF @ActionType = 'Insert'
+	BEGIN
+	    INSERT INTO Tbl_Mstr_Visitor_Master 
+		(
+		   FirstName,LastName,CompanyId,Code,CompanyName,VisitorreasonIds,VisitorTypeIds,PhoneNumber,EmailId,NationalId,HostEmployeeCode,AccessCardNumber,ValidFrom,ValidTo,CheckId,CheckOut,StatusId,
+		   VisitorRegNumber,ServiceIds,VisitorPreRegStatus,ImagePath,ImageBase64,IsActive,CreatedDate,ModifiedDate,CreatedBy
+		)
+		VALUES
+		(
+		 @FirstName,@LastName,@CompanyId,@Code,@CompanyName,@VisitorreasonIds,@VisitorTypeIds,@PhoneNumber,@EmailId,@NationalId,@HostEmployeeCode,@AccessCardNumber,@ValidFrom,@ValidTo,@CheckId,
+		 @CheckOut,@StatusId,@VisitorRegNumber,@ServiceIds,@VisitorPreRegStatus,@ImagePath,@ImageBase64,1,GETDATE(),GETDATE(),@CreatedBy
+		)
+	END
+END
