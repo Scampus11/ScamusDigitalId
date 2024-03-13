@@ -1,0 +1,15 @@
+CREATE PROCEDURE [dbo].[Sps_Load_Available_Service_Dropdown]
+@Id INT,
+@CompanyId nvarchar(100)=''	,
+@ActionType nvarchar(20) = ''
+AS
+BEGIN
+IF(@ActionType = 'AvailableService')
+BEGIN
+    IF(@Id = 0)
+	BEGIN
+	    SELECT CONVERT(NVARCHAR(10),Id) as [Value],[Name] AS [Text] FROM Tbl_Mstr_Service_Master 
+	    WHERE IsActive=1 And CompanyId=@CompanyId
+	END
+END
+END
