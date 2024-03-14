@@ -422,6 +422,7 @@
     <Content Include="Logs\ErrorsLogs\Errorserrlog_638401877626364071.txt" />
     <Content Include="Logs\Errors\errlog_637876342818393775.txt" />
     <Content Include="Scripts\ej2\ej2-pdfviewer-lib\pdfium.js" />
+    <Content Include="Scripts\ej2\ej2.js" />
     <Content Include="Scripts\ej2\ej2.min.js" />
     <Content Include="Web.config" />
     <Content Include="webcamjs\flash\README.txt" />
