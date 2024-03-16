@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[SP_VisitorSelfRegistration_CURD]
+ALTER PROCEDURE [dbo].[SP_VisitorSelfRegistration_CURD]
 @Id int = null,
 @Firstname nvarchar(1000) = '',
 @Lastname nvarchar(1000) = '',
@@ -42,4 +42,9 @@ BEGIN
 		 @CheckOut,@StatusId,@VisitorRegNumber,@ServiceIds,@VisitorPreRegStatus,@ImagePath,@ImageBase64,1,GETDATE(),GETDATE(),@CreatedBy
 		)
 	END
+	IF @ActionType = 'Edit' OR @ActionType='Remote'
+	BEGIN  
+		select * from Tbl_Mstr_Visitor_Master C 
+		WHERE (C.Id=@Id or C.Id=@Id or C.EmailId=@EmailId or C.Code=@Code) and CompanyId=@CompanyId
+	END  
 END
