@@ -189,9 +189,6 @@
                                                     <td align="center">
                                                         <input type="button" id="btnCapture" value="Capture" />
                                                     </td>
-                                                    <td align="center">
-                                                        <input type="button" id="btnUpload" value="Upload" disabled="disabled" />
-                                                    </td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -227,7 +224,6 @@
         </div>
     </div>
 </form>
-
 <link href="~/Content/ej2/customized/material.css" rel="stylesheet" />
 <link href="~/Content/ej2/material.css" rel="stylesheet" />
 <link href="~/Content/ej2/compatibility/material.css" rel="stylesheet" />
@@ -256,15 +252,12 @@
         });
         Webcam.attach('#webcam');
         $("#btnCapture").click(function () {
-
             Webcam.snap(function (data_uri) {
                 $("#imgCapture")[0].src = data_uri;
                 $("#ImageBase64").val(data_uri);
             });
         });
     });
-
-
 </script>
 <script>
     $(function () {
@@ -289,7 +282,6 @@
          });
          listObj.appendTo('#listbox2');
     }
-
     document.getElementById('frmManageReader').addEventListener('submit', function (e) {
         var listBoxA = document.getElementById('listbox1').ej2_instances[0];
         var listBoxB = document.getElementById('listbox2').ej2_instances[0];
