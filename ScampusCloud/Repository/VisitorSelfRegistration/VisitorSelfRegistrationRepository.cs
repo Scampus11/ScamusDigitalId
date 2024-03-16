@@ -25,33 +25,43 @@ namespace ScampusCloud.Repository.VisitorSelfRegistration
                     StoredProcedureName = @"SP_VisitorSelfRegistration_CURD",
                     SetQueryType = QueryBuilder.QueryType.SELECT
                 };
-
-                objQueryBuilder.AddFieldValue("@Id", _VisitorSelfRegistrationModel.Id, DataTypes.Numeric, false);
-                objQueryBuilder.AddFieldValue("@Firstname", _VisitorSelfRegistrationModel.FirstName, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@Lastname", _VisitorSelfRegistrationModel.LastName, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@CompanyId", _VisitorSelfRegistrationModel.CompanyId, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@Code", _VisitorSelfRegistrationModel.Code, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@CompanyName", _VisitorSelfRegistrationModel.CompanyName, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@VisitorreasonIds", _VisitorSelfRegistrationModel.VisitorreasonIds, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@VisitorTypeIds", _VisitorSelfRegistrationModel.VisitorTypeIds, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@PhoneNumber", _VisitorSelfRegistrationModel.PhoneNumber, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@EmailId", _VisitorSelfRegistrationModel.EmailId, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@NationalId", _VisitorSelfRegistrationModel.NationalId, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@HostEmployeeCode", _VisitorSelfRegistrationModel.HostEmployeeCode, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@AccessCardNumber", _VisitorSelfRegistrationModel.AccessCardNumber, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@ValidFrom", _VisitorSelfRegistrationModel.ValidFrom, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@ValidTo", _VisitorSelfRegistrationModel.ValidTo, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@CheckId", _VisitorSelfRegistrationModel.CheckId, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@CheckOut", _VisitorSelfRegistrationModel.CheckOut, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@StatusId", _VisitorSelfRegistrationModel.StatusId, DataTypes.Numeric, false);
-                objQueryBuilder.AddFieldValue("@VisitorRegNumber", _VisitorSelfRegistrationModel.VisitorRegNumber, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@ServiceIds", _VisitorSelfRegistrationModel.ServiceIds, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@VisitorPreRegStatus", _VisitorSelfRegistrationModel.VisitorPreRegStatus, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@ImagePath", _VisitorSelfRegistrationModel.ImagePath, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@ImageBase64", _VisitorSelfRegistrationModel.ImageBase64, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@Isactive", _VisitorSelfRegistrationModel.IsActive, DataTypes.Boolean, false);
-                objQueryBuilder.AddFieldValue("@CreatedBy", _VisitorSelfRegistrationModel.CreatedBy, DataTypes.Text, false);
-                objQueryBuilder.AddFieldValue("@ModifiedBy", _VisitorSelfRegistrationModel.ModifiedBy, DataTypes.Text, false);
+                if (_VisitorSelfRegistrationModel.ActionType == "Remote")
+                {
+                    objQueryBuilder.AddFieldValue("@Id", _VisitorSelfRegistrationModel.Id, DataTypes.Numeric, false);
+                    objQueryBuilder.AddFieldValue("@CompanyId", _VisitorSelfRegistrationModel.CompanyId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@EmailId", _VisitorSelfRegistrationModel.EmailId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@Code", _VisitorSelfRegistrationModel.Code, DataTypes.Text, false);
+                }
+                else
+                {
+                    objQueryBuilder.AddFieldValue("@Id", _VisitorSelfRegistrationModel.Id, DataTypes.Numeric, false);
+                    objQueryBuilder.AddFieldValue("@Firstname", _VisitorSelfRegistrationModel.FirstName, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@Lastname", _VisitorSelfRegistrationModel.LastName, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@CompanyId", _VisitorSelfRegistrationModel.CompanyId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@Code", _VisitorSelfRegistrationModel.Code, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@CompanyName", _VisitorSelfRegistrationModel.CompanyName, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@VisitorreasonIds", _VisitorSelfRegistrationModel.VisitorreasonIds, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@VisitorTypeIds", _VisitorSelfRegistrationModel.VisitorTypeIds, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@PhoneNumber", _VisitorSelfRegistrationModel.PhoneNumber, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@EmailId", _VisitorSelfRegistrationModel.EmailId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@NationalId", _VisitorSelfRegistrationModel.NationalId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@HostEmployeeCode", _VisitorSelfRegistrationModel.HostEmployeeCode, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@AccessCardNumber", _VisitorSelfRegistrationModel.AccessCardNumber, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@ValidFrom", _VisitorSelfRegistrationModel.ValidFrom, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@ValidTo", _VisitorSelfRegistrationModel.ValidTo, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@CheckId", _VisitorSelfRegistrationModel.CheckId, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@CheckOut", _VisitorSelfRegistrationModel.CheckOut, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@StatusId", _VisitorSelfRegistrationModel.StatusId, DataTypes.Numeric, false);
+                    objQueryBuilder.AddFieldValue("@VisitorRegNumber", _VisitorSelfRegistrationModel.VisitorRegNumber, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@ServiceIds", _VisitorSelfRegistrationModel.ServiceIds, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@VisitorPreRegStatus", _VisitorSelfRegistrationModel.VisitorPreRegStatus, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@ImagePath", _VisitorSelfRegistrationModel.ImagePath, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@ImageBase64", _VisitorSelfRegistrationModel.ImageBase64, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@Isactive", _VisitorSelfRegistrationModel.IsActive, DataTypes.Boolean, false);
+                    objQueryBuilder.AddFieldValue("@CreatedBy", _VisitorSelfRegistrationModel.CreatedBy, DataTypes.Text, false);
+                    objQueryBuilder.AddFieldValue("@ModifiedBy", _VisitorSelfRegistrationModel.ModifiedBy, DataTypes.Text, false);
+                }
+                
                 objQueryBuilder.AddFieldValue("@ActionType", _VisitorSelfRegistrationModel.ActionType, DataTypes.Text, false);
                 return objgm.ExecuteObjectUsingSp<VisitorSelfRegistrationModel>(objQueryBuilder);
             }

@@ -41,7 +41,8 @@
                                 @Html.HiddenFor(x => x.CreatedBy)
                                 @Html.HiddenFor(x => x.ModifiedBy)
                                 @Html.HiddenFor(x => x.IsActive, new { id = "hdnIsActive" })
-                                @Html.HiddenFor(x => x.ServiceIds);
+                                @Html.HiddenFor(x => x.ServiceIds)
+                                @Html.HiddenFor(x => x.ImageBase64)
                                 <div class="card-toolbar">
                                     <a href="/VisitorSelfRegistration/AddEditVisitorSelfRegistration" class="btn btn-danger font-weight-bolder mr-2">
                                         <i class="flaticon2-left-arrow-1 icon-sm-nm"></i>Back
@@ -95,6 +96,7 @@
                                             </div>
                                             <div class="col-8">
                                                 @Html.TextBoxFor(m => m.Code, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
                                             </div>
 
                                         </div>
@@ -147,6 +149,7 @@
                                             </div>
                                             <div class="col-8">
                                                 @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.EmailId, "", new { @class = "text-danger" })
                                             </div>
 
                                         </div>
@@ -171,6 +174,26 @@
                                                     <input id="listbox2">
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <table border="0" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <th align="center"><u>Visitor Photo</u></th>
+                                                    <th align="center"><u></u></th>
+                                                </tr>
+                                                <tr>
+                                                    <td><div id="webcam"></div></td>
+                                                    <td><img id="imgCapture" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center">
+                                                        <input type="button" id="btnCapture" value="Capture" />
+                                                    </td>
+                                                    <td align="center">
+                                                        <input type="button" id="btnUpload" value="Upload" disabled="disabled" />
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-4 text-right">
@@ -204,15 +227,45 @@
         </div>
     </div>
 </form>
+
 <link href="~/Content/ej2/customized/material.css" rel="stylesheet" />
 <link href="~/Content/ej2/material.css" rel="stylesheet" />
 <link href="~/Content/ej2/compatibility/material.css" rel="stylesheet" />
+@Html.Partial("_LayoutHeadScriptsPartial")
 <script src="~/lib/jquery/dist/jquery.js"></script>
+@Html.Partial("_LayoutFooterScriptsPartial")
+@Html.Partial("_ValidationScriptsPartial")
+<script src="~/assets/js/pages/widgets.js" asp-append-version="true"></script>
+<script src="~/assets/js/pages/crud/ktdatatable/base/html-table.js"></script>
+<script src="~/assets/js/pages/features/miscellaneous/sweetalert2.js"></script>
+<script src="~/assets/js/pages/crud/forms/widgets/bootstrap-select.js"></script>
+<script src="~/assets/js/pages/crud/forms/widgets/select2.js"></script>
 <script src="~/assets/js/popper.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
 <script src="~/assets/js/pages/features/miscellaneous/sweetalert2.js"></script>
 <script src="~/Scripts/ej2/ej2.min.js"></script>
+<script src="~/Scripts/webcam.js"></script>
+<script type="text/javascript">
+    let webcamActive = false;
+    let webcamInstance = null;
+    $(function () {
+        Webcam.set({
+            width: 320,
+            height: 240,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#webcam');
+        $("#btnCapture").click(function () {
+
+            Webcam.snap(function (data_uri) {
+                $("#imgCapture")[0].src = data_uri;
+                $("#ImageBase64").val(data_uri);
+            });
+        });
+    });
+
+
+</script>
 <script>
     $(function () {
         LoadAccessGroup();
@@ -238,7 +291,6 @@
     }
 
     document.getElementById('frmManageReader').addEventListener('submit', function (e) {
-        debugger;
         var listBoxA = document.getElementById('listbox1').ej2_instances[0];
         var listBoxB = document.getElementById('listbox2').ej2_instances[0];
         var selectedItems = listBoxB.jsonData;
