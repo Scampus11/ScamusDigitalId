@@ -350,10 +350,13 @@
     <Content Include="DatabaseScript\Sps_Load_AccessGroup_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_AccessGroup_Type_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_Available_AccessGroup_Dropdown.txt" />
+    <Content Include="DatabaseScript\Sps_Load_Available_Service_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_Available_Staff_AccessGroup_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_DoorGroup_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_Reader_Dropdown.txt" />
     <Content Include="DatabaseScript\Sps_Load_Session_Dropdown.txt" />
+    <Content Include="DatabaseScript\Sps_Load_VisitorReason_Dropdown.txt" />
+    <Content Include="DatabaseScript\Sps_Load_VisitorType_Dropdown.txt" />
     <Content Include="DatabaseScript\SP_AccessGroup_CURD.txt" />
     <Content Include="DatabaseScript\SP_Assign_StaffAccessGroup.txt" />
     <Content Include="DatabaseScript\SP_Assign_StudentAccessGroup.txt" />
@@ -382,6 +385,7 @@
     <Content Include="DatabaseScript\SP_Staff_CURD.txt" />
     <Content Include="DatabaseScript\SP_StudentAccessGroup_CURD.txt" />
     <Content Include="DatabaseScript\SP_Student_CURD.txt" />
+    <Content Include="DatabaseScript\SP_VisitorSelfRegistration_CURD.txt" />
     <Content Include="DatabaseScript\StaffAccessGroupType.txt" />
     <Content Include="DatabaseScript\Student Department Dropdown.txt" />
     <Content Include="DatabaseScript\StudentAccessGroupType.txt" />
@@ -393,6 +397,7 @@
     <Content Include="DatabaseScript\Tbl_Mstr_Session_Master.txt" />
     <Content Include="DatabaseScript\Tbl_Mstr_Staff_Access_Group_Control.txt" />
     <Content Include="DatabaseScript\Tbl_Mstr_Student_Access_Group_Control.txt" />
+    <Content Include="DatabaseScript\Tbl_Mstr_Visitor_Master.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\loading-squre.gif" />
@@ -607,6 +612,7 @@
     <Content Include="Content\ej2\compatibility\fabric.scss" />
     <Content Include="Content\ej2\compatibility\highcontrast.scss" />
     <Content Include="Content\ej2\compatibility\material.scss" />
+    <Content Include="DatabaseScript\DatabaseScript.rar" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
