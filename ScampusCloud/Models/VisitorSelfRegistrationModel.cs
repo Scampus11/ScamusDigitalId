@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,11 +13,15 @@ namespace ScampusCloud.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Guid? CompanyId { get; set; }
+
+        [Remote(action: "IsVisitorCodeExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Code is already in use.")]
         public string Code { get; set; }
         public string CompanyName { get; set; }
         public string VisitorreasonIds { get; set; }
         public string VisitorTypeIds { get; set; }
         public string PhoneNumber { get; set; }
+        [RegularExpression(@"^[_a-z0-9-]+(\.[_a-z0-9-]+)*(\+[a-z0-9-]+)?@[a-z0-9-]+(\.[a-z0-9-]+)*$", ErrorMessage = "Invalid Email Address Format")]
+        [Remote(action: "IsVisitorEmailIdExist", controller: "RemoteValidation", HttpMethod = "POST", ErrorMessage = "Email is already in use.")]
         public string EmailId { get; set; }
         public string NationalId { get; set; }
         public string HostEmployeeCode { get; set; }

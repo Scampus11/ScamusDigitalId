@@ -43,6 +43,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.2.2.5\lib\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video, Version=2.2.5.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Video.2.2.5\lib\AForge.Video.dll</HintPath>
+    </Reference>
     <Reference Include="ClosedXML, Version=0.102.2.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.102.2\lib\netstandard2.0\ClosedXML.dll</HintPath>
     </Reference>
@@ -427,7 +433,14 @@
     <Content Include="Logs\ErrorsLogs\Errorserrlog_638401877626364071.txt" />
     <Content Include="Logs\Errors\errlog_637876342818393775.txt" />
     <Content Include="Scripts\ej2\ej2-pdfviewer-lib\pdfium.js" />
+    <Content Include="Scripts\ej2\ej2.js" />
     <Content Include="Scripts\ej2\ej2.min.js" />
+    <Content Include="Scripts\jquery.webcam.js" />
+    <Content Include="Scripts\jquery.webcam.min.js" />
+    <Content Include="Scripts\jscam.swf" />
+    <Content Include="Scripts\jscam_canvas_only.swf" />
+    <Content Include="Scripts\src\jscam.xml" />
+    <Content Include="Scripts\webcam.js" />
     <Content Include="Web.config" />
     <Content Include="webcamjs\flash\README.txt" />
     <Content Include="webcamjs\webcam.js" />
@@ -689,6 +702,13 @@
     <Content Include="Views\Services\AddEditServices.cshtml" />
     <Content Include="Views\VisitorSelfRegistration\VisitorSelfRegistration.cshtml" />
     <Content Include="Views\VisitorSelfRegistration\AddEditVisitorSelfRegistration.cshtml" />
+    <Content Include="Scripts\bower.json" />
+    <Content Include="Scripts\Makefile" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\src\BitString.as" />
+    <Content Include="Scripts\src\JPGEncoder.as" />
+    <Content Include="Scripts\src\jscam.as" />
+    <Content Include="Scripts\webcam.jquery.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

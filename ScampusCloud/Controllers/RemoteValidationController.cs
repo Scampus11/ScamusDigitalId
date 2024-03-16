@@ -21,6 +21,7 @@ using ScampusCloud.Repository.StudentFacility;
 using ScampusCloud.Repository.VisitorAccessLevel;
 using ScampusCloud.Repository.VisitorCard;
 using ScampusCloud.Repository.VisitorReason;
+using ScampusCloud.Repository.VisitorSelfRegistration;
 using ScampusCloud.Repository.VisitorStatus;
 using ScampusCloud.Repository.VisitorType;
 using ScampusCloud.Repository.Year;
@@ -61,6 +62,7 @@ namespace ScampusCloud.Controllers
         DoorGroupModel DoorGroup = new DoorGroupModel();
         VisitorCardModel VisitorCard = new VisitorCardModel();
         AccessGroupModel AccessGroup = new AccessGroupModel();
+        VisitorSelfRegistrationModel VisitorSelfRegistrationModel = new VisitorSelfRegistrationModel();
         public RemoteValidationController()
         {
         }
@@ -1063,6 +1065,74 @@ namespace ScampusCloud.Controllers
             if (AccessGroup == null)
                 return Json(true);
             else if (AccessGroup.Code == null)
+                return Json(true);
+            else
+                return Json(false);
+
+        }
+        #endregion
+
+        #region Visitor Self Registration
+        [HttpPost]
+        public ActionResult IsVisitorCodeExist(string Code = "")
+        {
+            VisitorSelfRegistrationRepository _Repository = new VisitorSelfRegistrationRepository();
+            string Original_Code = SessionManager.Code;
+            bool IsEditMode = !string.IsNullOrEmpty(Original_Code) ? true : false;
+            string returnMsg = "";
+
+            if (IsEditMode && !string.Equals(Original_Code, Code))
+            {
+                VisitorSelfRegistrationModel.ActionType = "Remote";
+                VisitorSelfRegistrationModel.Code = Code;
+                VisitorSelfRegistrationModel.CompanyId = SessionManager.CompanyId;
+                VisitorSelfRegistrationModel = _Repository.AddEdit_VisitorSelfRegistration(VisitorSelfRegistrationModel);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            else if (!IsEditMode)
+            {
+                VisitorSelfRegistrationModel.ActionType = "Remote";
+                VisitorSelfRegistrationModel.Code = Code;
+                VisitorSelfRegistrationModel.CompanyId = SessionManager.CompanyId;
+                VisitorSelfRegistrationModel = _Repository.AddEdit_VisitorSelfRegistration(VisitorSelfRegistrationModel);
+                returnMsg = $"Code '{Code}' is already in use.";
+            }
+            if (VisitorSelfRegistrationModel == null)
+                return Json(true);
+            else if (VisitorSelfRegistrationModel.Code == null)
+                return Json(true);
+            else
+                return Json(false);
+
+        }
+
+        [HttpPost]
+        public ActionResult IsVisitorEmailIdExist(string EmailId = "")
+        {
+            VisitorSelfRegistrationRepository _Repository = new VisitorSelfRegistrationRepository();
+            string Original_EmailId = SessionManager.EmailId;
+            bool IsEditMode = !string.IsNullOrEmpty(Original_EmailId) ? true : false;
+            string returnMsg = "";
+
+            if (IsEditMode && !string.Equals(Original_EmailId, EmailId))
+            {
+                VisitorSelfRegistrationModel.ActionType = "Remote";
+                VisitorSelfRegistrationModel.EmailId = EmailId;
+                VisitorSelfRegistrationModel.CompanyId = SessionManager.CompanyId;
+                VisitorSelfRegistrationModel = _Repository.AddEdit_VisitorSelfRegistration(VisitorSelfRegistrationModel);
+                returnMsg = $"Email Id '{EmailId}' is already in use.";
+            }
+            else if (!IsEditMode)
+            {
+                VisitorSelfRegistrationModel.ActionType = "Remote";
+                VisitorSelfRegistrationModel.EmailId = EmailId;
+                VisitorSelfRegistrationModel.CompanyId = SessionManager.CompanyId;
+                VisitorSelfRegistrationModel = _Repository.AddEdit_VisitorSelfRegistration(VisitorSelfRegistrationModel);
+                returnMsg = $"Email Id '{EmailId}' is already in use.";
+            }
+            if (VisitorSelfRegistrationModel == null)
+                return Json(true);
+            else if (VisitorSelfRegistrationModel.EmailId == null)
                 return Json(true);
             else
                 return Json(false);
