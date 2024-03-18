@@ -5,6 +5,7 @@ using ScampusCloud.Repository.VisitorSelfRegistration;
 using ScampusCloud.Utility;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -93,16 +94,11 @@ namespace ScampusCloud.Controllers
             {
                 return RedirectToAction("AddEditVisitorSelfRegistration", "AddEditVisitorSelfRegistration");
             }
-            else if (VisitorSelfRegistrationModel.IsEdit == true)
-            {
-                return RedirectToAction("AddEditVisitorSelfRegistration", new { ID = VisitorSelfRegistrationModel.Id });
-            }
             else
             {
                 return RedirectToAction("AddEditVisitorSelfRegistration");
             }
         }
-
         #region Private Method
         private List<SelectListItem> BindVisitorTypeDropDown(string CompanyId)
         {
