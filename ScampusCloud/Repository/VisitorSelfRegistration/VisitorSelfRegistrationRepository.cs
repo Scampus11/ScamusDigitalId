@@ -54,7 +54,6 @@ namespace ScampusCloud.Repository.VisitorSelfRegistration
                     objQueryBuilder.AddFieldValue("@StatusId", _VisitorSelfRegistrationModel.StatusId, DataTypes.Numeric, false);
                     objQueryBuilder.AddFieldValue("@VisitorRegNumber", _VisitorSelfRegistrationModel.VisitorRegNumber, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@ServiceIds", _VisitorSelfRegistrationModel.ServiceIds, DataTypes.Text, false);
-                    objQueryBuilder.AddFieldValue("@VisitorPreRegStatus", _VisitorSelfRegistrationModel.VisitorPreRegStatus, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@ImagePath", _VisitorSelfRegistrationModel.ImagePath, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@ImageBase64", _VisitorSelfRegistrationModel.ImageBase64, DataTypes.Text, false);
                     objQueryBuilder.AddFieldValue("@Isactive", _VisitorSelfRegistrationModel.IsActive, DataTypes.Boolean, false);

@@ -74,7 +74,6 @@ namespace ScampusCloud.Controllers
             _VisitorSelfRegistrationModel.StatusId = VisitorSelfRegistrationModel.StatusId;
             _VisitorSelfRegistrationModel.VisitorRegNumber = VisitorSelfRegistrationModel.VisitorRegNumber;
             _VisitorSelfRegistrationModel.ServiceIds = VisitorSelfRegistrationModel.ServiceIds;
-            _VisitorSelfRegistrationModel.VisitorPreRegStatus = VisitorSelfRegistrationModel.VisitorPreRegStatus;
             _VisitorSelfRegistrationModel.ImagePath = VisitorSelfRegistrationModel.ImagePath;
             _VisitorSelfRegistrationModel.ImageBase64 = VisitorSelfRegistrationModel.ImageBase64;
 
