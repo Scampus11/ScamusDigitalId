@@ -19,7 +19,6 @@ ALTER PROCEDURE [dbo].[SP_VisitorSelfRegistration_CURD]
 @StatusId int = null,
 @VisitorRegNumber nvarchar(100) = '',
 @ServiceIds nvarchar(100) = '',
-@VisitorPreRegStatus nvarchar(100) = '',
 @ImagePath nvarchar(1000) = '',
 @ImageBase64 nvarchar(1000) = '',
 @Isactive bit = 0,
@@ -39,7 +38,7 @@ BEGIN
 		VALUES
 		(
 		 @FirstName,@LastName,@CompanyId,@Code,@CompanyName,@VisitorreasonIds,@VisitorTypeIds,@PhoneNumber,@EmailId,@NationalId,@HostEmployeeCode,@AccessCardNumber,@ValidFrom,@ValidTo,@CheckId,
-		 @CheckOut,@StatusId,@VisitorRegNumber,@ServiceIds,@VisitorPreRegStatus,@ImagePath,@ImageBase64,1,GETDATE(),GETDATE(),@CreatedBy
+		 @CheckOut,@StatusId,@VisitorRegNumber,@ServiceIds,'PreRegistered',@ImagePath,@ImageBase64,1,GETDATE(),GETDATE(),@CreatedBy
 		)
 	END
 	IF @ActionType = 'Edit' OR @ActionType='Remote'
