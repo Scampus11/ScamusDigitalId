@@ -476,6 +476,7 @@
     <Compile Include="Controllers\StudentFacilityController.cs" />
     <Compile Include="Controllers\VisitorAccessLevelController.cs" />
     <Compile Include="Controllers\VisitorCardController.cs" />
+    <Compile Include="Controllers\VisitorController.cs" />
     <Compile Include="Controllers\VisitorReasonController.cs" />
     <Compile Include="Controllers\VisitorSelfRegistrationController.cs" />
     <Compile Include="Controllers\VisitorStatusController.cs" />
@@ -551,6 +552,7 @@
     <Compile Include="Repository\VisitorSelfRegistration\VisitorSelfRegistrationRepository.cs" />
     <Compile Include="Repository\VisitorStatus\VisitorStatusRepository.cs" />
     <Compile Include="Repository\VisitorType\VisitorTypeRepository.cs" />
+    <Compile Include="Repository\Visitor\VisitorRepository.cs" />
     <Compile Include="Repository\Year\YearRepository.cs" />
     <Compile Include="Utility\common.cs" />
     <Compile Include="Utility\EncryptionDecryption.cs" />
@@ -709,6 +711,7 @@
     <Content Include="Scripts\src\JPGEncoder.as" />
     <Content Include="Scripts\src\jscam.as" />
     <Content Include="Scripts\webcam.jquery.json" />
+    <Content Include="Views\Visitor\Visitor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
