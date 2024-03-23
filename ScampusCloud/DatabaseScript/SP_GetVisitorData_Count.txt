@@ -1,0 +1,11 @@
+CREATE PROCEDURE [dbo].[SP_GetVisitorData_Count]
+@Search nvarchar(max)='',
+@CompanyId nvarchar(100)=''
+AS
+BEGIN
+	
+	SET NOCOUNT OFF;
+	SELECT COUNT(C.Id) from Tbl_Mstr_Visitor_Master c
+	WHERE (C.Id LIKE '%' + @Search + '%' or C.FirstName LIKE '%' + @Search + '%' or c.Code LIKE '%' + @Search + '%')
+	and c.CompanyId=@CompanyId
+END

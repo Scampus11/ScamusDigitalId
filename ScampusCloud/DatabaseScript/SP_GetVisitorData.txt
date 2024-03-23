@@ -1,0 +1,16 @@
+CREATE PROCEDURE [dbo].[SP_GetVisitorData]
+@Search nvarchar(max)=''
+,@page INT=1
+,@pagesize INT=10
+,@CompanyId nvarchar(100)=''
+
+AS
+
+BEGIN
+	SELECT C.Id,CONCAT(c.FirstName,'',c.LastName) as [Fullname],C.VisitorRegNumber,c.EmailId,c.PhoneNumber,c.VisitorPreRegStatus,c.ImageBase64,ISNULL(c.IsDeleted,1) AS IsDeleted,ISNULL(c.IsActive,1) AS IsActive ,c.Code from Tbl_Mstr_Visitor_Master c
+	WHERE (C.Id LIKE '%' + @Search + '%' or C.FirstName LIKE '%' + @Search + '%' or c.Code LIKE '%' + @Search + '%')
+	and c.CompanyId=@CompanyId
+	ORDER BY Id ASC
+	OFFSET 	(@Page -1) * @pageSize ROWS
+	FETCH NEXT @pageSize ROWS ONLY
+END
