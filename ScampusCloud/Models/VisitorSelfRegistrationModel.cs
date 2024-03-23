@@ -46,5 +46,6 @@ namespace ScampusCloud.Models
         public bool? IsEdit { get; set; }
         public List<SelectListItem> lstVisitorTypeDropdown { get; set; }
         public List<SelectListItem> lstVisitorReasonDropdown { get; set; }
+        public string Fullname { get; set; }
     }
 }

@@ -38,7 +38,8 @@ namespace ScampusCloud.Controllers
                 groupA = BindAvailableServiceAccessGroupDropDown(SessionManager.CompanyId.ToString(), _VisitorSelfRegistrationModel.Id, "AvailableService");
                 ViewBag.groupA = groupA;
                 List<object> groupB = new List<object>();
-                ViewBag.groupB = BindAvailableServiceAccessGroupDropDown(SessionManager.CompanyId.ToString(), _VisitorSelfRegistrationModel.Id, "AssignedGroup"); ;
+                ViewBag.groupB = BindAvailableServiceAccessGroupDropDown(SessionManager.CompanyId.ToString(), _VisitorSelfRegistrationModel.Id, "AssignedGroup");
+                _VisitorSelfRegistrationModel.IsActive = true;
             }
             catch (Exception ex)
             {
@@ -91,11 +92,12 @@ namespace ScampusCloud.Controllers
 
             if (!string.IsNullOrEmpty(saveAndExit))
             {
-                return RedirectToAction("AddEditVisitorSelfRegistration", "AddEditVisitorSelfRegistration");
+                return RedirectToAction("Visitor", "Visitor", new { area = "" });
+
             }
             else
             {
-                return RedirectToAction("AddEditVisitorSelfRegistration");
+                return RedirectToAction("Visitor", "Visitor", new { area = "" });
             }
         }
         #region Private Method
