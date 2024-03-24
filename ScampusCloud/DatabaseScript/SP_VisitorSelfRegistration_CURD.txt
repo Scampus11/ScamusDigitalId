@@ -43,7 +43,30 @@ BEGIN
 	END
 	IF @ActionType = 'Edit' OR @ActionType='Remote'
 	BEGIN  
-		select * from Tbl_Mstr_Visitor_Master C 
-		WHERE (C.Id=@Id or C.Id=@Id or C.EmailId=@EmailId or C.Code=@Code) and CompanyId=@CompanyId
+		select C.FirstName,
+		       C.LastName,
+			   C.CompanyId,
+			   C.Code,
+			   C.CompanyName,
+			   C.VisitorreasonIds,
+			   C.VisitorTypeIds,
+			   C.PhoneNumber,
+			   C.EmailId,
+			   C.NationalId,
+			   C.HostEmployeeCode,
+			   C.AccessCardNumber,
+			   C.ValidFrom,
+			   C.ValidTo,
+			   C.CheckId,
+			   C.CheckOut,
+			   C.StatusId,
+		       C.VisitorRegNumber,
+			   C.ServiceIds,
+			   C.VisitorPreRegStatus,
+			   C.ImagePath,
+			   C.ImageBase64,
+			   C.IsActive
+		from Tbl_Mstr_Visitor_Master C 
+		WHERE C.Id=@Id  and CompanyId=@CompanyId
 	END  
 END

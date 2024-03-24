@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[SP_GetVisitorData]
+ALTER PROCEDURE [dbo].[SP_GetVisitorData]
 @Search nvarchar(max)=''
 ,@page INT=1
 ,@pagesize INT=10
@@ -7,7 +7,13 @@ CREATE PROCEDURE [dbo].[SP_GetVisitorData]
 AS
 
 BEGIN
-	SELECT C.Id,CONCAT(c.FirstName,'',c.LastName) as [Fullname],C.VisitorRegNumber,c.EmailId,c.PhoneNumber,c.VisitorPreRegStatus,c.ImageBase64,ISNULL(c.IsDeleted,1) AS IsDeleted,ISNULL(c.IsActive,1) AS IsActive ,c.Code from Tbl_Mstr_Visitor_Master c
+	SELECT C.Id,CONCAT(c.FirstName,'',c.LastName) as [Fullname],C.VisitorRegNumber,c.EmailId,c.PhoneNumber,c.VisitorPreRegStatus,
+	c.ImageBase64,
+	ISNULL(c.IsDeleted,1) AS IsDeleted,
+	ISNULL(c.IsActive,1) AS IsActive ,
+	c.Code,VTM.Name AS VisitorType,VRM.Name as VisitorReason from Tbl_Mstr_Visitor_Master c
+        INNER JOIN Tbl_Mstr_VisitorType_Master AS VTM ON C.VisitorTypeIds = VTM.Id
+	INNER JOIN Tbl_Mstr_VisitorReason_Master AS VRM ON C.VisitorreasonIds = VRM.Id
 	WHERE (C.Id LIKE '%' + @Search + '%' or C.FirstName LIKE '%' + @Search + '%' or c.Code LIKE '%' + @Search + '%')
 	and c.CompanyId=@CompanyId
 	ORDER BY Id ASC
