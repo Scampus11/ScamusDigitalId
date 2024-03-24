@@ -712,6 +712,7 @@
     <Content Include="Scripts\src\jscam.as" />
     <Content Include="Scripts\webcam.jquery.json" />
     <Content Include="Views\Visitor\Visitor.cshtml" />
+    <Content Include="Views\Visitor\AddEditVisitor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

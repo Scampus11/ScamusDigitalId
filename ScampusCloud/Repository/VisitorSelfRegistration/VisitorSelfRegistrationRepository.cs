@@ -25,7 +25,7 @@ namespace ScampusCloud.Repository.VisitorSelfRegistration
                     StoredProcedureName = @"SP_VisitorSelfRegistration_CURD",
                     SetQueryType = QueryBuilder.QueryType.SELECT
                 };
-                if (_VisitorSelfRegistrationModel.ActionType == "Remote")
+                if (_VisitorSelfRegistrationModel.ActionType == "Remote" || _VisitorSelfRegistrationModel.ActionType == "Edit")
                 {
                     objQueryBuilder.AddFieldValue("@Id", _VisitorSelfRegistrationModel.Id, DataTypes.Numeric, false);
                     objQueryBuilder.AddFieldValue("@CompanyId", _VisitorSelfRegistrationModel.CompanyId, DataTypes.Text, false);

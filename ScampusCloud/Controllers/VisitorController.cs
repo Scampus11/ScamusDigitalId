@@ -1,5 +1,7 @@
-﻿using ScampusCloud.Repository.Reader;
+﻿using ScampusCloud.Models;
+using ScampusCloud.Repository.Reader;
 using ScampusCloud.Repository.Visitor;
+using ScampusCloud.Repository.VisitorSelfRegistration;
 using ScampusCloud.Utility;
 using System;
 using System.Collections.Generic;
@@ -14,11 +16,14 @@ namespace ScampusCloud.Controllers
 {
     public class VisitorController : Controller
     {
+        VisitorSelfRegistrationModel _VisitorSelfRegistrationModel = new VisitorSelfRegistrationModel();
         private readonly VisitorRepository _VisitorRepository;
+        private readonly VisitorSelfRegistrationRepository _VisitorSelfRegistrationRepository;
 
         public VisitorController()
         {
-                _VisitorRepository = new VisitorRepository();
+            _VisitorRepository = new VisitorRepository();
+            _VisitorSelfRegistrationRepository = new VisitorSelfRegistrationRepository();
         }
         // GET: Visitor
         public ActionResult Visitor()
@@ -27,7 +32,7 @@ namespace ScampusCloud.Controllers
             if (ViewData["currentPage"] == null)
                 ViewData["currentPage"] = 1;
             string searchtxt = "NA";
-            int totals = 0; //Convert.ToInt32(_ReaderRepository.GetAllCount(searchtxt, SessionManager.CompanyId.ToString()));
+            int totals = Convert.ToInt32(_VisitorRepository.GetAllCount(searchtxt, SessionManager.CompanyId.ToString()));
             ViewData["totalrecords"] = totals;
             return View();
         }
@@ -53,7 +58,10 @@ namespace ScampusCloud.Controllers
                     strHTML.Append("<th class='datatable-cell'>Name</th>");
                     strHTML.Append("<th class='datatable-cell'>EmailId</th>");
                     strHTML.Append("<th class='datatable-cell'>PhoneNumber</th>");
+                    strHTML.Append("<th class='datatable-cell'>Visitor Type</th>");
+                    strHTML.Append("<th class='datatable-cell'>Visitor Reason</th>");
                     strHTML.Append("<th class='datatable-cell'>Visitor Register Status</th>");
+                    strHTML.Append("<th class='datatable-cell'>Status</th>");
                     strHTML.Append("<th class='datatable-cell'>Action</th>");
                     strHTML.Append("</tr>");
                     strHTML.Append("</thead>");
@@ -74,14 +82,15 @@ namespace ScampusCloud.Controllers
                         strHTML.Append("<td>" + item.Fullname + "</td>");
                         strHTML.Append("<td>" + item.EmailId + "</td>");
                         strHTML.Append("<td>" + item.PhoneNumber + "</td>");
+                        strHTML.Append("<td>" + item.VisitorType + "</td>");
+                        strHTML.Append("<td>" + item.VisitorReason + "</td>");
                         strHTML.Append("<td>" + item.VisitorPreRegStatus + "</td>");
                         if (item.IsActive)
                             strHTML.Append("<td><span><span class='label font-weight-bold label-lg label-light-primary label-inline'>Active</span></span></td>");
                         else
                             strHTML.Append("<td><span><span class='label font-weight-bold label-lg label-light-danger label-inline'>InActive</span></span></td>");
-
                         strHTML.Append("<td>");
-                        strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3' href= '/Reader/AddEditReader?ID=" + item.Id + "'><i class='flaticon-edit'></i></a>");
+                        strHTML.Append("<a class='btn btn-sm btn-icon btn-lg-light btn-text-primary btn-hover-light-primary mr-3' href= '/Visitor/AddEditVisitor?ID=" + item.Id + "'><i class='flaticon-edit'></i></a>");
                         strHTML.Append("<a id = 'del_" + item.Id + "' class='btn btn-sm btn-icon btn-lg-light btn-text-danger btn-hover-light-danger' onclick=" + DeleteConfirmationEvent + "><i class='flaticon-delete'></i></a>");
                         strHTML.Append("</td>");
                         strHTML.Append("</tr>");
@@ -127,5 +136,77 @@ namespace ScampusCloud.Controllers
                 throw;
             }
         }
+
+        public ActionResult AddEditVisitor(string ID = "")
+        {
+
+            _VisitorSelfRegistrationModel.CreatedBy = SessionManager.UserId;
+            _VisitorSelfRegistrationModel.ModifiedBy = SessionManager.UserId;
+            _VisitorSelfRegistrationModel.CompanyId = SessionManager.CompanyId;
+
+            if (!string.IsNullOrEmpty(ID) && ID != "0")
+            {
+                #region Get Entity by id
+                _VisitorSelfRegistrationModel.ActionType = "Edit";
+                _VisitorSelfRegistrationModel.Id = Convert.ToInt32(ID);
+                _VisitorSelfRegistrationModel = _VisitorSelfRegistrationRepository.AddEdit_VisitorSelfRegistration(_VisitorSelfRegistrationModel);
+                if (_VisitorSelfRegistrationModel != null)
+                {
+                    _VisitorSelfRegistrationModel.IsEdit = true;
+                    SessionManager.Code = _VisitorSelfRegistrationModel.Code;
+                }
+                else
+                {
+                    _VisitorSelfRegistrationModel = new VisitorSelfRegistrationModel();
+                    ViewBag.NoRecordExist = true;
+                   // _VisitorSelfRegistrationModel.Response_Message = "No record found";
+                    SessionManager.Code = null;
+                }
+                #endregion
+            }
+            else if (!string.IsNullOrEmpty(ID) && ID == "0")
+            {
+                return RedirectToAction("AddEditVisitor");
+            }
+            else
+            {
+                _VisitorSelfRegistrationModel.IsEdit = false;
+                _VisitorSelfRegistrationModel.IsActive = true;
+                SessionManager.Code = null;
+            }
+            _VisitorSelfRegistrationModel.lstVisitorTypeDropdown = _VisitorSelfRegistrationRepository.BindVisitorTypeDropDown(SessionManager.CompanyId.ToString());
+            _VisitorSelfRegistrationModel.lstVisitorReasonDropdown = _VisitorSelfRegistrationRepository.BindVisitorReasonDropDown(SessionManager.CompanyId.ToString());
+
+            List<SelectListItem> groupA = new List<SelectListItem>();
+            groupA = BindAvailableServiceAccessGroupDropDown(SessionManager.CompanyId.ToString(), _VisitorSelfRegistrationModel.Id, "AvailableService");
+            ViewBag.groupA = groupA;
+            List<object> groupB = new List<object>();
+            ViewBag.groupB = BindAvailableServiceAccessGroupDropDown(SessionManager.CompanyId.ToString(), _VisitorSelfRegistrationModel.Id, "AssignedGroup");
+            _VisitorSelfRegistrationModel.IsActive = true;
+            return View(_VisitorSelfRegistrationModel);
+        }
+
+        #region Private Method
+        private List<SelectListItem> BindVisitorTypeDropDown(string CompanyId)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _VisitorSelfRegistrationRepository.BindVisitorTypeDropDown(CompanyId);
+            return drpList;
+        }
+
+        private List<SelectListItem> BindVisitorReasonDropDown(string CompanyId)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _VisitorSelfRegistrationRepository.BindVisitorReasonDropDown(CompanyId);
+            return drpList;
+        }
+        private List<SelectListItem> BindAvailableServiceAccessGroupDropDown(string CompanyId, int Id, string ActionType)
+        {
+            List<SelectListItem> drpList = new List<SelectListItem>();
+            drpList = _VisitorSelfRegistrationRepository.BindAvailableServiceAccessGroupDropDown(CompanyId, Id, ActionType);
+            return drpList;
+        }
+        #endregion
+
     }
 }
