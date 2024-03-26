@@ -69,4 +69,10 @@ BEGIN
 		from Tbl_Mstr_Visitor_Master C 
 		WHERE C.Id=@Id  and CompanyId=@CompanyId
 	END  
+
+	IF @ActionType = 'Delete'
+	BEGIN  
+		DELETE from Tbl_Mstr_Visitor_Master 
+		WHERE Id=@Id
+	END  
 END
