@@ -1,10 +1,12 @@
-﻿using ScampusCloud.Models;
+﻿using ClosedXML.Excel;
+using ScampusCloud.Models;
 using ScampusCloud.Repository.Reader;
 using ScampusCloud.Repository.Visitor;
 using ScampusCloud.Repository.VisitorSelfRegistration;
 using ScampusCloud.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -184,6 +186,48 @@ namespace ScampusCloud.Controllers
             ViewBag.groupB = BindAvailableServiceAccessGroupDropDown(SessionManager.CompanyId.ToString(), _VisitorSelfRegistrationModel.Id, "AssignedGroup");
             _VisitorSelfRegistrationModel.IsActive = true;
             return View(_VisitorSelfRegistrationModel);
+        }
+
+        [HttpGet]
+        public FileResult Export(string searchtxt = "")
+        {
+            DataTable dt = new DataTable("Visitor");
+            try
+            {
+                dt = _VisitorRepository.GetVisitorData_Export(searchtxt, SessionManager.CompanyId.ToString());
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(dt);
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        wb.SaveAs(stream);
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Visitor.xlsx");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Delete(string Id)
+        {
+            try
+            {
+                _VisitorSelfRegistrationModel.ActionType = "Delete";
+                _VisitorSelfRegistrationModel.Id = Convert.ToInt32(Id);
+                var response = _VisitorSelfRegistrationRepository.AddEdit_VisitorSelfRegistration(_VisitorSelfRegistrationModel);
+
+                return RedirectToAction("Visitor", "Visitor");
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
+                throw;
+            }
         }
 
         #region Private Method
