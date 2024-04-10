@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[Sps_Load_Available_Service_Dropdown]
+ALTER PROCEDURE [dbo].[Sps_Load_Available_Service_Dropdown]
 @Id INT,
 @CompanyId nvarchar(100)=''	,
 @ActionType nvarchar(20) = ''
@@ -11,5 +11,21 @@ BEGIN
 	    SELECT CONVERT(NVARCHAR(10),Id) as [Value],[Name] AS [Text] FROM Tbl_Mstr_Service_Master 
 	    WHERE IsActive=1 And CompanyId=@CompanyId
 	END
+	ELSE
+	BEGIN
+		SELECT CONVERT(NVARCHAR(10), Id) AS [Value], Name AS [Text]
+		FROM Tbl_Mstr_Service_Master S 
+		WHERE Id NOT IN (
+			SELECT CAST(value AS INT)
+			FROM STRING_SPLIT((SELECT ServiceIds FROM Tbl_Mstr_Visitor_Master WHERE ID = @Id AND CompanyId = @CompanyId), ',')
+		)
+	END
+END
+IF(@ActionType = 'AssignedGroup')
+BEGIN
+    SELECT DISTINCT CONVERT(NVARCHAR(10),S.Id) as [Value],[Name] AS [Text]
+	FROM Tbl_Mstr_Service_Master AS S
+	INNER JOIN Tbl_Mstr_Visitor_Master AS V ON CHARINDEX(',' + CAST(S.Id AS NVARCHAR(MAX)) + ',', ',' + V.ServiceIds + ',') > 0
+	WHERE V.Id = @Id
 END
 END

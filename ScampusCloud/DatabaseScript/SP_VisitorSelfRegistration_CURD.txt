@@ -43,7 +43,8 @@ BEGIN
 	END
 	IF @ActionType = 'Edit' OR @ActionType='Remote'
 	BEGIN  
-		select C.FirstName,
+		select C.Id,
+		       C.FirstName,
 		       C.LastName,
 			   C.CompanyId,
 			   C.Code,
@@ -69,6 +70,34 @@ BEGIN
 		from Tbl_Mstr_Visitor_Master C 
 		WHERE C.Id=@Id  and CompanyId=@CompanyId
 	END  
+
+	IF @ActionType = 'Update'
+	BEGIN
+	      UPDATE Tbl_Mstr_Visitor_Master
+		  SET FirstName = @Firstname,
+		      LastName = @Lastname,
+			  Code = @Code,
+			  CompanyName = @CompanyName,
+			  VisitorreasonIds = @VisitorreasonIds,
+			  VisitorTypeIds = @VisitorTypeIds,
+			  PhoneNumber = @PhoneNumber,
+			  EmailId = @EmailId,
+			  NationalId = @NationalId,
+			  HostEmployeeCode = @HostEmployeeCode,
+			  AccessCardNumber = @AccessCardNumber,
+			  ValidFrom = @ValidFrom,
+			  ValidTo = @ValidTo,
+			  CheckId = @CheckId,
+			  CheckOut = @CheckOut,
+			  StatusId = @StatusId,
+			  VisitorRegNumber = @VisitorRegNumber,
+			  ServiceIds = @ServiceIds,
+			  ImagePath = @ImagePath,
+			  ImageBase64 = @ImageBase64,
+			  IsActive = @Isactive,
+			  ModifiedDate = GETDATE()
+			  WHERE Id = @Id
+	END
 
 	IF @ActionType = 'Delete'
 	BEGIN  
