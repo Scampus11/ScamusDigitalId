@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ScampusCloud.Repository.Visitor
 {
@@ -78,6 +79,18 @@ namespace ScampusCloud.Repository.Visitor
                 ErrorLogger.WriteToErrorLog(ex.Message, ex.StackTrace, ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, this.GetType().Name + " : " + MethodBase.GetCurrentMethod().Name);
                 throw;
             }
+        }
+
+        public List<SelectListItem> BindVisitorStatusDropDown(string CompanyId)
+        {
+            QueryBuilder objQueryBuilder = new QueryBuilder
+            {
+                TableName = "Tbl_Mstr_VisitorStatus_Master",
+                StoredProcedureName = @"Sps_Load_VisitorStatus_Dropdown",
+                SetQueryType = QueryBuilder.QueryType.SELECT,
+            };
+            objQueryBuilder.AddFieldValue("@CompanyId", CompanyId, DataTypes.Text, false);
+            return objgm.GetListUsingSp<SelectListItem>(objQueryBuilder);
         }
     }
 }

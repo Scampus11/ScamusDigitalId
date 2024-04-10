@@ -51,5 +51,7 @@ namespace ScampusCloud.Models
         public string VisitorReason { get; set; }
         public string StartDateTime { get; set; }
         public string EndDateTime { get; set; }
+        public string VisitorStatusIds { get; set; }
+        public List<SelectListItem> lstVisitorStatusDropdown { get; set; }
     }
 }

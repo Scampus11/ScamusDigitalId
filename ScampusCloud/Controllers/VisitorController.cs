@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using ScampusCloud.Models;
 using ScampusCloud.Repository.Reader;
+using ScampusCloud.Repository.Staff;
 using ScampusCloud.Repository.Visitor;
 using ScampusCloud.Repository.VisitorSelfRegistration;
 using ScampusCloud.Utility;
@@ -178,7 +179,7 @@ namespace ScampusCloud.Controllers
             }
             _VisitorSelfRegistrationModel.lstVisitorTypeDropdown = _VisitorSelfRegistrationRepository.BindVisitorTypeDropDown(SessionManager.CompanyId.ToString());
             _VisitorSelfRegistrationModel.lstVisitorReasonDropdown = _VisitorSelfRegistrationRepository.BindVisitorReasonDropDown(SessionManager.CompanyId.ToString());
-
+            _VisitorSelfRegistrationModel.lstVisitorStatusDropdown = _VisitorRepository.BindVisitorStatusDropDown(SessionManager.CompanyId.ToString());
             List<SelectListItem> groupA = new List<SelectListItem>();
             groupA = BindAvailableServiceAccessGroupDropDown(SessionManager.CompanyId.ToString(), _VisitorSelfRegistrationModel.Id, "AvailableService");
             ViewBag.groupA = groupA;
@@ -186,6 +187,58 @@ namespace ScampusCloud.Controllers
             ViewBag.groupB = BindAvailableServiceAccessGroupDropDown(SessionManager.CompanyId.ToString(), _VisitorSelfRegistrationModel.Id, "AssignedGroup");
             _VisitorSelfRegistrationModel.IsActive = true;
             return View(_VisitorSelfRegistrationModel);
+        }
+
+        [HttpPost]
+        public ActionResult AddEditVisitor(VisitorSelfRegistrationModel VisitorSelfRegistrationModel, string saveAndExit = "")
+        {
+
+            _VisitorSelfRegistrationModel.CreatedBy = SessionManager.UserId;
+            _VisitorSelfRegistrationModel.ModifiedBy = SessionManager.UserId;
+            _VisitorSelfRegistrationModel.CompanyId = SessionManager.CompanyId;
+            _VisitorSelfRegistrationModel.Id = Convert.ToInt32(VisitorSelfRegistrationModel.Id);
+            _VisitorSelfRegistrationModel.FirstName = VisitorSelfRegistrationModel.FirstName;
+            _VisitorSelfRegistrationModel.LastName = VisitorSelfRegistrationModel.LastName;
+            _VisitorSelfRegistrationModel.Code = VisitorSelfRegistrationModel.Code;
+            _VisitorSelfRegistrationModel.CompanyName = VisitorSelfRegistrationModel.CompanyName;
+            _VisitorSelfRegistrationModel.VisitorreasonIds = VisitorSelfRegistrationModel.VisitorreasonIds;
+            _VisitorSelfRegistrationModel.VisitorTypeIds = VisitorSelfRegistrationModel.VisitorTypeIds;
+            _VisitorSelfRegistrationModel.PhoneNumber = VisitorSelfRegistrationModel.PhoneNumber;
+            _VisitorSelfRegistrationModel.EmailId = VisitorSelfRegistrationModel.EmailId;
+            _VisitorSelfRegistrationModel.NationalId = VisitorSelfRegistrationModel.NationalId;
+            _VisitorSelfRegistrationModel.HostEmployeeCode = VisitorSelfRegistrationModel.HostEmployeeCode;
+            _VisitorSelfRegistrationModel.AccessCardNumber = VisitorSelfRegistrationModel.AccessCardNumber;
+            _VisitorSelfRegistrationModel.ValidFrom = VisitorSelfRegistrationModel.ValidFrom;
+            _VisitorSelfRegistrationModel.ValidTo = VisitorSelfRegistrationModel.ValidTo;
+            _VisitorSelfRegistrationModel.CheckId = VisitorSelfRegistrationModel.CheckId;
+            _VisitorSelfRegistrationModel.CheckOut = VisitorSelfRegistrationModel.CheckOut;
+            _VisitorSelfRegistrationModel.StatusId = VisitorSelfRegistrationModel.StatusId;
+            _VisitorSelfRegistrationModel.VisitorRegNumber = VisitorSelfRegistrationModel.VisitorRegNumber;
+            _VisitorSelfRegistrationModel.ServiceIds = VisitorSelfRegistrationModel.ServiceIds;
+            _VisitorSelfRegistrationModel.ImagePath = VisitorSelfRegistrationModel.ImagePath;
+            _VisitorSelfRegistrationModel.ImageBase64 = VisitorSelfRegistrationModel.ImageBase64;
+
+            _VisitorSelfRegistrationModel.IsActive = true;
+            if (VisitorSelfRegistrationModel.Id > 0)
+            {
+                _VisitorSelfRegistrationModel.ActionType = "Update";
+            }
+            else
+            {
+                _VisitorSelfRegistrationModel.ActionType = "Insert";
+            }
+
+            VisitorSelfRegistrationModel = _VisitorSelfRegistrationRepository.AddEdit_VisitorSelfRegistration(_VisitorSelfRegistrationModel);
+
+            if (!string.IsNullOrEmpty(saveAndExit))
+            {
+                return RedirectToAction("Visitor", "Visitor", new { area = "" });
+
+            }
+            else
+            {
+                return RedirectToAction("Visitor", "Visitor", new { area = "" });
+            }
         }
 
         [HttpGet]
@@ -249,6 +302,12 @@ namespace ScampusCloud.Controllers
             List<SelectListItem> drpList = new List<SelectListItem>();
             drpList = _VisitorSelfRegistrationRepository.BindAvailableServiceAccessGroupDropDown(CompanyId, Id, ActionType);
             return drpList;
+        }
+        private List<SelectListItem> BindVisitorStatusDropdown(string CompanyId)
+        {
+            List<SelectListItem> visitorStatusList = new List<SelectListItem>();
+            visitorStatusList = _VisitorRepository.BindVisitorStatusDropDown(CompanyId);
+            return visitorStatusList;
         }
         #endregion
 
